@@ -1,8 +1,6 @@
 require 'active_record'
-require 'openssl'
+require 'enumerize'
 require 'yaml'
-
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 Dir.glob('./lib/**/*.rb').each { |file| require file }
 

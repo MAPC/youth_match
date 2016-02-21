@@ -24,6 +24,8 @@ GEM
       safe_yaml (~> 1.0.0)
     database_cleaner (1.5.1)
     docile (1.1.5)
+    enumerize (1.1.1)
+      activesupport (>= 3.2)
     ffi (1.9.10)
     formatador (0.2.5)
     guard (2.13.0)
@@ -89,6 +91,7 @@ DEPENDENCIES
   activesupport
   codeclimate-test-reporter
   database_cleaner
+  enumerize
   guard
   guard-minitest
   logger
