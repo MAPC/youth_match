@@ -1,4 +1,8 @@
 class Position < ActiveRecord::Base
+
+  # TODO: Same question as applicant: coordinates + spatial lookup,
+  #       or grid cell ID?
+
   def self.available(run)
     # where not in run.placements
   end

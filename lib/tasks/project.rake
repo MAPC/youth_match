@@ -33,4 +33,13 @@ namespace :match do
     puts '----> FAIL: Not yet implemented'
     exit 1
   end
+
+  desc 'Exports placements from a given run'
+  # Run this as: `match:export[:id]`
+  task :export, [:id] => [:environment] do |t, args|
+    puts "----> Running task `match:export` in #{DATABASE_ENV} environment."
+    puts "----> Takes in an ID to export. (This run, id: #{args[:id]})"
+    puts '----> FAIL: Not yet implemented'
+    exit 1
+  end
 end

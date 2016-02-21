@@ -2,6 +2,15 @@ require 'test_helper'
 
 class ApplicantTest < Minitest::Test
 
+  def setup
+    @applicant = applicant.dup
+    @applicant.save!
+  end
+
+  def teardown
+    @applicant.destroy!
+  end
+
   def applicant
     @_applicant ||= Applicant.new
   end
@@ -11,8 +20,7 @@ class ApplicantTest < Minitest::Test
   end
 
   def test_uuid
-    applicant.save!
-    assert applicant.reload.uuid
+    assert @applicant.reload.uuid
   end
 
   def test_interests
@@ -26,6 +34,11 @@ class ApplicantTest < Minitest::Test
     assert applicant.prefers_nearby?
     refute applicant.prefers_interest?
     refute applicant.has_transit_pass?
+  end
+
+  def test_grid_id
+    skip 'Once we decide on a strategy; see model file'
+    assert_respond_to applicant, :grid_id
   end
 
 end
