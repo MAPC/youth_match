@@ -9,7 +9,7 @@ class Position < ActiveRecord::Base
   end
 
   def self.available(run)
-    # where not in run.placements
+    where.not(id: run.placements.pluck(:position_id))
   end
 
   def self.within(time = 40.minutes, of: , via: :walking)

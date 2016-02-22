@@ -1,4 +1,7 @@
 class Run < ActiveRecord::Base
+
+  has_many :placements, dependent: :destroy
+
   extend Enumerize
 
   enumerize :status, in: [:fresh, :running, :failed, :succeeded],

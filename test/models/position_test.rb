@@ -5,10 +5,15 @@ class PositionTest < Minitest::Test
   def setup
     @position = position.dup
     @position.save!
+    @run = Run.create!
+    @applicant = Applicant.create!
   end
 
   def teardown
-    @position.destroy
+    @position.destroy!
+    @applicant.destroy!
+    @run.destroy!
+    @placement.destroy! if @placement
   end
 
   def position
@@ -31,6 +36,15 @@ class PositionTest < Minitest::Test
   def test_grid_id
     skip 'Once we decide on a strategy; see model file'
     assert_respond_to position, :grid_id
+  end
+
+  def test_scope_available
+    refute_empty Position.available(@run)
+    @placement = @run.placements.create!(
+      applicant: @applicant,
+      position: @position
+    )
+    assert_empty Position.available(@run)
   end
 
 end
