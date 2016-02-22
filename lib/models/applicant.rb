@@ -9,6 +9,10 @@ class Applicant < ActiveRecord::Base
   #       there only be a #grid_id method, and we determine the grid
   #       cell ID during the geocoding process?
 
+  def mode
+    has_transit_pass? ? :transit : :walking
+  end
+
   def interests
     Array(read_attribute(:interests))
   end

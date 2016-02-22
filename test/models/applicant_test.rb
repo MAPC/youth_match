@@ -41,4 +41,12 @@ class ApplicantTest < Minitest::Test
     assert_respond_to applicant, :grid_id
   end
 
+  def test_mode
+    applicant.has_transit_pass = false
+    assert_equal :walking, applicant.mode
+
+    applicant.has_transit_pass = true
+    assert_equal :transit, applicant.mode
+  end
+
 end
