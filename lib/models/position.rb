@@ -1,10 +1,13 @@
 class Position < ActiveRecord::Base
 
-  # TODO: Same question as applicant: coordinates + spatial lookup,
-  #       or grid cell ID?
+  def grid_id
+    # TODO
+  end
 
-  # TODO: This logic might also be useful the other way around.
-  #       Should write it as a module, and include it
+  def location
+    # TODO [y, x]
+  end
+
   def self.available(run)
     # where not in run.placements
   end

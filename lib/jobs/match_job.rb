@@ -13,9 +13,9 @@ class MatchJob
   end
 
   def find_best_job_for(applicant)
-    best_job = Position.available(@run).
-                        within(40.minutes, of: applicant, via: applicant.mode).
-                        max_by do |position|
+    Position.available(@run).
+             within(40.minutes, of: applicant, via: applicant.mode).
+             max_by do |position|
       MatchScore.new(applicant: applicant, position: position).score
     end
   end
