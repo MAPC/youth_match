@@ -17,5 +17,7 @@ class Position < ActiveRecord::Base
     # where lookup grid cells, travel time between
     # applicant and position is less than time given
     time = time.to_i
+    grid_id = Grid.find_by_sql("SELECT ST_Intersects(geom, #{of})").id
+    TravelTime.where(origin_id: grid_id).where("time < #{time}")
   end
 end
