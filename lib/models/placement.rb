@@ -25,6 +25,7 @@ class Placement < ActiveRecord::Base
   end
 
   def expired
+    return true if expiration.nil?
     expiration < Time.now
   end
   alias_method :expired?, :expired

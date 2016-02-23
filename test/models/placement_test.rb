@@ -55,9 +55,12 @@ class PlacementTest < Minitest::Test
   def test_expired
     assert_respond_to placement, :expired
     assert_respond_to placement, :expired?
-    refute placement.expired?
+    placement.expiration = nil
+    assert placement.expired?
     placement.expiration = Time.at(2000)
     assert placement.expired?
+    placement.expiration = 1.day.from_now
+    refute placement.expired?
   end
 
   def test_status
