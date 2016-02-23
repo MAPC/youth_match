@@ -48,4 +48,36 @@ class PlacementTest < Minitest::Test
     assert @placement.reload.uuid
   end
 
+  def test_expiration
+    assert_respond_to placement, :expiration
+  end
+
+  def test_expired
+    assert_respond_to placement, :expired
+    assert_respond_to placement, :expired?
+    refute placement.expired?
+    placement.expiration = Time.at(2000)
+    assert placement.expired?
+  end
+
+  def test_status
+    assert_equal 'potential', Placement.new.status
+  end
+
+  def test_accept_decline
+    placement.decline
+    assert_equal 'declined', placement.status
+    placement.accept
+    assert_equal 'accepted', placement.status
+    placement.invalidate
+    assert_equal 'invalid', placement.status
+  end
+
+  def test_predicates
+    assert_respond_to placement, :accepted?
+    assert_respond_to placement, :declined?
+    assert_respond_to placement, :potential?
+    assert_respond_to placement, :invalid?
+  end
+
 end

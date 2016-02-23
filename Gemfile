@@ -3,12 +3,18 @@ source 'https://rubygems.org'
 ruby '2.1.5'
 
 
-gem 'activerecord'   # Database
-gem 'activesupport'  # Inflectors, etc.
-gem 'pg'             # Postgres
+gem 'activerecord'  # Database
+gem 'activesupport' # Inflectors, etc.
+gem 'pg'            # Postgres
 gem 'enumerize'
+gem 'airbrake'      # Error reporting
+gem 'foreman', require: false # Environment management
 
 gem 'logger'
+
+# Web application
+gem 'sinatra'
+gem 'sinatra-activerecord'
 
 group :test do
   gem 'minitest'       # Test framework
