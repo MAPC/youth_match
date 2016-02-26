@@ -108,5 +108,5 @@ DEPENDENCIES
   pg
   rake
   rb-fsevent
-  rgeo-activerecord
+  rgeo
   webmock

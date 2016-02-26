@@ -1,7 +1,6 @@
 require 'active_record'
 require 'enumerize'
 require 'yaml'
-# require 'rgeo-activerecord'
 require 'activerecord-postgis-adapter'
 
 Dir.glob('./lib/**/*.rb').each { |file| require file }
