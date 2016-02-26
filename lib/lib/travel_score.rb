@@ -9,6 +9,10 @@ class TravelScore < Score
       travel_mode:  @applicant.mode
     )
     # TODO put time into equation to get the score
+    # Some kind of percentile ranking of travel times... this is 
+    # depends on the entire dataset.
+
+    
   end
 
 end
