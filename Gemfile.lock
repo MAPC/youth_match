@@ -26,6 +26,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     database_cleaner (1.5.1)
+    descriptive_statistics (2.5.1)
     docile (1.1.5)
     enumerize (1.1.1)
       activesupport (>= 3.2)
@@ -99,6 +100,7 @@ DEPENDENCIES
   activesupport
   codeclimate-test-reporter
   database_cleaner
+  descriptive_statistics
   enumerize
   guard
   guard-minitest

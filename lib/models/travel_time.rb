@@ -1,4 +1,8 @@
+require 'descriptive_statistics'
+
 class TravelTime < ActiveRecord::Base
+  extend DescribeStatistics
+
   self.table_name = 'youthjobs.merged_swapped_all'
 
   def self.config_from_yaml
@@ -6,7 +10,7 @@ class TravelTime < ActiveRecord::Base
   end
 
   establish_connection(self.config_from_yaml)
-  
+
   def origin
     [y_origin, x_origin]
   end
