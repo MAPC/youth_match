@@ -25,7 +25,7 @@ class Position < ActiveRecord::Base
     time = time.to_i
     travel_times.where(travel_mode: via)
                 .where("time < #{time}")
-                .exists?(target_id: of.grid_id) if of.respond_to?(:grid_id)
+                .exists?(target_id: of.grid_id)
   end
 
   def self.within(time = 40.minutes, of: , via: :walking)
@@ -35,7 +35,7 @@ class Position < ActiveRecord::Base
             .where(travel_mode: via)
             .where("time < #{time}")
             .pluck(:target_id)
-            .uniq if of.respond_to?(:grid_id)
+            .uniq
 
     self.where(grid_id: ids)
   end
@@ -43,7 +43,7 @@ class Position < ActiveRecord::Base
   private 
 
     def compute_grid_id
-      @grid = Grid.intersecting_grid(location: location)
-      self.grid_id = @grid.g250m_id if @grid
+      grid = Grid.intersecting_grid(location: location)
+      self.grid_id = grid.g250m_id if grid
     end
 end

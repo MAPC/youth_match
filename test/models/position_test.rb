@@ -7,8 +7,10 @@ class PositionTest < Minitest::Test
     @run = Run.create!
   end
 
-  def position
-    @_position ||= @position
+  def position ; @position ; end
+
+  def teardown
+    @run.destroy!
   end
 
   def test_valid
