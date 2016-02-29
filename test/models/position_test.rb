@@ -3,14 +3,16 @@ require 'test_helper'
 class PositionTest < Minitest::Test
 
   def setup
-    @position = Position.first
-    @run = Run.create!
+    @position = position.dup
+    @position.save!
   end
 
-  def position ; @position ; end
-
   def teardown
-    @run.destroy!
+    @position.destroy
+  end
+
+  def position
+    @_position ||= Position.new
   end
 
   def test_valid
@@ -27,19 +29,8 @@ class PositionTest < Minitest::Test
   end
 
   def test_grid_id
+    skip 'Once we decide on a strategy; see model file'
     assert_respond_to position, :grid_id
-  end
-
-  def test_travel_times
-    assert_respond_to position, :travel_times
-  end
-
-  def test_within
-    assert_send [Position, :within, of: Applicant.first]
-  end
-
-  def test_available
-    assert_send [Position, :available, @run]
   end
 
 end

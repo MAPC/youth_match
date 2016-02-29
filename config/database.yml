@@ -1,5 +1,5 @@
 development: &default
-  adapter: postgis
+  adapter: postgresql
   encoding: unicode
   pool: 5
   database: youth_match_development

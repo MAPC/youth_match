@@ -2,8 +2,6 @@ require 'yaml'
 require 'logger'
 require 'active_record'
 require 'active_support/inflector'
-require 'active_record/fixtures'
-require 'csv'
 
 namespace :db do
   def create_database config
@@ -25,10 +23,6 @@ namespace :db do
 
   def template(file_name)
     "class #{file_name.camelize} < ActiveRecord::Migration\n\n  def up\n  end\n\n  def down\n  end\n\nend"
-  end
-
-  def factory
-    RGeo::Geographic.spherical_factory(:srid => 4326)
   end
 
   task :configuration => :environment do
@@ -80,46 +74,5 @@ namespace :db do
       f.write template(file_name)
     }
     exit 0
-  end
-
-  namespace :fixtures do
-    desc 'Load fixtures'
-    task load: [:configure_connection, :environment] do
-      # The environment task isn't loading in the models so I'm not sure the best way to approach.
-
-      require './environment.rb'
-      
-
-      (ENV['FIXTURES'] ? ENV['FIXTURES'].split(/,/) : Dir.glob(File.join('test', 'fixtures', '*.{yml,csv}'))).each do |fixture_file|
-        # We also can't yet write spatial into fixtures via YAML yet, 
-        # see https://github.com/rgeo/activerecord-mysql2spatial-adapter/issues/2
-        # A lot of this task was lifted from the Rails rake tasks themselves
-
-        case fixture_file 
-        when "test/fixtures/applicants.csv"
-          CSV.foreach(fixture_file, headers: true) do |row|
-            location = factory.point(row[0], row[1])
-            Applicant.create!({
-              interests: [row[3],row[4],row[5]],
-              prefers_nearby: row[6],
-              has_transit_pass: row[7],
-              location: location
-            })
-          end
-          puts "Applicants Loaded"
-        when "test/fixtures/positions.csv"
-          CSV.foreach(fixture_file, headers: true) do |row|
-            location = factory.point(row[2], row[3])
-            Position.create!({
-              category: row[1],
-              location: location
-            })
-          end
-          puts "Positions Loaded"
-        else
-          Fixtures.create_fixtures('test/fixtures', File.basename(fixture_file, '.*'))
-        end
-      end
-    end
   end
 end

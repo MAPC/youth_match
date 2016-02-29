@@ -4,8 +4,8 @@ class PlacementTest < Minitest::Test
 
   def setup
     @run = Run.create!
-    @applicant = Applicant.first
-    @position = Position.first
+    @applicant = Applicant.create!
+    @position = Position.create!
 
     @placement = Placement.create!(
       run_id:       @run.id,
