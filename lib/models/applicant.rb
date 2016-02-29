@@ -30,7 +30,7 @@ class Applicant < ActiveRecord::Base
   private 
 
     def compute_grid_id
-      @grid = Grid.intersecting_grid(location: location)
-      self.grid_id = @grid.g250m_id if @grid
+      grid = Grid.intersecting_grid(location: location)
+      self.grid_id = grid.g250m_id if grid
     end
 end
