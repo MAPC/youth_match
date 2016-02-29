@@ -6,6 +6,8 @@ ruby '2.1.5'
 gem 'activerecord'   # Database
 gem 'activesupport'  # Inflectors, etc.
 gem 'pg'             # Postgres
+gem 'rgeo'
+gem 'activerecord-postgis-adapter'
 gem 'enumerize'
 
 gem 'logger'
