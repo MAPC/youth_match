@@ -9,3 +9,10 @@ development: &default
 test:
   <<: *default
   database: youth_match_test
+
+travel_time:
+  <<: *default
+  database:           ENV['TRAVEL_TIME_DB_NAME']
+  host:               ENV['TRAVEL_TIME_DB_HOST']
+  password:           ENV['TRAVEL_TIME_DB_PASSWORD']
+  schema_search_path: ENV['TRAVEL_TIME_DB_SCHEMA_SEARCH_PATH']

@@ -1,12 +1,8 @@
 class TravelTime < ActiveRecord::Base
+
+  establish_connection $config.travel_time.to_h
   self.table_name = 'youthjobs.merged_swapped_all'
 
-  def self.config_from_yaml
-    YAML.load_file('config/internal.yml').fetch("travel_time_development")
-  end
-
-  establish_connection(self.config_from_yaml)
-  
   def origin
     [y_origin, x_origin]
   end
