@@ -1,7 +1,6 @@
 class Grid < ActiveRecord::Base
 
-  establish_connection $config.travel_time.to_h
-  self.table_name = 'youthjobs.grid'
+  self.table_name = 'grid'
 
   def travel_times
     TravelTime.where(input_id: self.g250m_id)

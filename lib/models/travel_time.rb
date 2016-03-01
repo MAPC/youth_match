@@ -1,7 +1,6 @@
 class TravelTime < ActiveRecord::Base
 
-  establish_connection $config.travel_time.to_h
-  self.table_name = 'youthjobs.merged_swapped_all'
+  self.table_name = 'merged_swapped_all'
 
   def origin
     [y_origin, x_origin]

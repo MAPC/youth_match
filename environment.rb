@@ -1,11 +1,13 @@
 require 'active_record'
 require 'enumerize'
+require 'erb'
 require 'yaml'
 require 'activerecord-postgis-adapter'
 require_relative './lib/refinements/ostructable'
 
 def config_from_yaml
-  YAML.load_file File.join(Dir.pwd, 'config', 'database.yml')
+  config_file = File.read File.join(Dir.pwd, 'config', 'database.yml')
+  YAML.load ERB.new(config_file).result
 end
 
 using Ostructable
