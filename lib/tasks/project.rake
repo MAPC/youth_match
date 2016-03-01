@@ -1,7 +1,7 @@
 namespace :match do
 
   task :environment do
-    # require_relative '../../environment'
+    require_relative '../../environment'
     DATABASE_ENV = ENV['DATABASE_ENV'] || 'development'
     MIGRATIONS_DIR = ENV['MIGRATIONS_DIR'] || 'db/migrate'
   end
@@ -32,6 +32,17 @@ namespace :match do
     puts '----> Checking statistics'
     puts '----> FAIL: Not yet implemented'
     exit 1
+  end
+
+  desc 'Import applicants and positions CSV, which must be geocoded'
+  task import: :environment do
+    begin
+      puts "----> Running task `match:import` in #{DATABASE_ENV} environment."
+      ImportJob.new.perform!
+    rescue NotImplementedError
+      puts '----> FAIL: Not yet implemented'
+      exit 1
+    end
   end
 
   desc 'Exports placements from a given run'
