@@ -1,7 +1,6 @@
 class CreateApplicants < ActiveRecord::Migration
 
   def change
-    enable_extension 'uuid-ossp'
     create_table :applicants do |t|
       t.string :interests, array: true
       t.boolean :prefers_nearby,   null: false, default: true

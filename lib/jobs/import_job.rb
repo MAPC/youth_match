@@ -16,6 +16,8 @@ class ImportJob
       load_positions
       $logger.info '----> DONE'
     end
+  rescue
+    $logger.error '----> Rolling back changes.'
   end
 
   private
@@ -23,21 +25,22 @@ class ImportJob
   def load_applicants
     file = assert_file('applicants.csv')
     CSV.foreach(file, headers: true) do |row|
-      location = factory.point(row[0], row[1])
+      location = factory.point(row['X'], row['Y'])
       params = {
-        interests: [row[3], row[4], row[5]],
+        interests: [row['interest1'], row['interest2'], row['interest3']],
         prefers_nearby:   row[6],
         has_transit_pass: row[7],
         location: location
       }
       Applicant.create! params
     end
+  rescue ActiveRecord::RecordInvalid
   end
 
   def load_positions
     file = assert_file 'positions.csv'
     CSV.foreach(file, headers: true) do |row|
-      params = { category: row[1], location: factory.point(row[2], row[3]) }
+      params = { category: row['category'], location: factory.point(row['X'], row['Y']) }
       Position.create! params
     end
   end
