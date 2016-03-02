@@ -1,19 +1,21 @@
 require 'test_helper'
 
 class GridTest < Minitest::Test
+
   def setup
-    @grid = Grid.first
+    @grid = Grid.create!(geom: 'POLYGON((-1 1, 1 1, 1 -1, -1 -1, -1 1))')
   end
 
-  def grid
-    @_grid ||= @grid
+  def teardown
+    @grid.destroy!
   end
 
-  def test_travel_times
-    assert_respond_to grid, :travel_times
+  def applicant
+    @_applicant ||= Applicant.new(location: 'POINT(0 0)')
   end
 
   def test_intersecting_grid
-    assert_send [Grid, :intersecting_grid, location: Applicant.first.location]
+    actual = Grid.intersecting_grid(location: applicant.location)
+    assert_equal @grid, actual
   end
 end
