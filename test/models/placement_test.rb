@@ -8,9 +8,9 @@ class PlacementTest < Minitest::Test
     @position = Position.create!(grid_id: 1)
 
     @placement = Placement.create!(
-      run_id:       @run.id,
-      applicant_id: @applicant.id,
-      position_id:  @position.id
+      run:       @run,
+      applicant: @applicant,
+      position:  @position
     )
   end
 

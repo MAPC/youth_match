@@ -41,15 +41,31 @@ class PositionTest < Minitest::Test
   end
 
   def test_within
-    skip
+    @applicant.update_attribute(:grid_id, 1)
+    @position.update_attribute(:grid_id, 2)
+    @time = TravelTime.create!(input_id: 1, target_id: 2, travel_mode: :walking, time: 10.minutes)
+    refute_empty within_10min_walk
+    assert_includes within_10min_walk, @position
+    assert_empty within_10min_transit
+  ensure
+    @time.destroy if time
   end
 
-  def test_within?
-    skip
+  def within_10min_walk
+    Position.within(10.minutes, of: @applicant, via: :walking)
+  end
+
+  def within_10min_transit
+    Position.within(10.minutes, of: @applicant, via: :transit)
   end
 
   def test_available
-    skip
+    before = Position.available(@run).count
+    @p = @run.placements.create!(position: @position, applicant: @applicant)
+    after = Position.available(@run).count
+    assert_equal 1, (before - after)
+  ensure
+    @p.destroy! if @p
   end
 
 end

@@ -10,28 +10,18 @@ module Locatable
     end
 
     def within(time = 40.minutes, of: , via: :walking)
-      # TOOO: test this
-      ids = of.travel_times.
-              where(travel_mode: via).
-              where("time < #{time.to_i}").
-              pluck(:target_id). # .select(:target_id).distinct
-              uniq
-
+      destination, mode = of, via # clearer aliases
+      ids = destination.
+        travel_times.
+        where(travel_mode: mode).
+        where("time <= #{time.to_i}").
+        pluck(:target_id).uniq
       self.where(grid_id: ids)
     end
   end
 
   def travel_times
     TravelTime.where(input_id: grid_id)
-  end
-
-  def within?(time = 40.minutes, of: , via: :walking)
-    # where lookup grid cells, travel time between
-    # applicant and position is less than time given
-    time = time.to_i
-    travel_times.where(travel_mode: via)
-                .where("time < #{time}")
-                .exists?(target_id: of.grid_id)
   end
 
   private
