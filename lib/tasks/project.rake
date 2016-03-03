@@ -13,7 +13,9 @@ namespace :match do
     Rake::Task['match:check'].invoke
     begin
       $logger.info '----> Starting match!'
-      MatchJob.new.perform!
+      id = MatchJob.new.perform!
+      Rake::Task['match:stats'].invoke(id)
+      Rake::Task['match:export'].invoke(id)
       $logger.info '----> DONE!!!'
     rescue
       $logger.error '----> FAIL: Task errored out.'

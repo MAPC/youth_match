@@ -12,6 +12,7 @@ class MatchJob
     raise
   ensure
     @run.failed! if @run.running?
+    return @run.id
   end
 
   private
