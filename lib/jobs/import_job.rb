@@ -16,8 +16,9 @@ class ImportJob
       load_positions
       $logger.info '----> DONE'
     end
-  rescue
+  rescue StandardError => e
     $logger.error '----> Rolling back changes.'
+    $logger.error "----> Error: #{e.message} #{e.try(:record).inspect}"
   end
 
   private
