@@ -4,6 +4,8 @@ require 'enumerize'
 require 'erb'
 require 'logger'
 require 'yaml'
+require 'descriptive_statistics'
+
 require_relative './lib/refinements/ostructable'
 
 def config_from_yaml

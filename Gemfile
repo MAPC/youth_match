@@ -9,6 +9,8 @@ gem 'pg'             # Postgres
 gem 'rgeo'
 gem 'activerecord-postgis-adapter'
 gem 'enumerize'
+gem 'foreman'
+gem 'descriptive_statistics', '~> 2.4.0', :require => 'descriptive_statistics/safe'
 
 gem 'logger'
 

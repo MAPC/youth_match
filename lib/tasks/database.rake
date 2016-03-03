@@ -18,9 +18,9 @@ namespace :db do
     begin
       create_db.call config
     rescue StandardError => e
-      $logger.fatal "----> ERROR CREATING DATABASE: #{e.message}"
+      puts "----> ERROR CREATING DATABASE: #{e.message}"
     end
-    $logger.info "----> Created database #{config['database']}"
+    puts "----> Created database #{config['database']}"
   end
 
   def template(file_name)
@@ -28,7 +28,8 @@ namespace :db do
   end
 
   task :configuration => :environment do
-    @config = YAML.load_file('config/database.yml')[DATABASE_ENV]
+    DB_ENV   = ENV.fetch('DATABASE_ENV') { 'development' }
+    @config = ENV.fetch('DATABASE_URL') { $config.send(DB_ENV).to_h }
   end
 
   task :configure_connection => :configuration do
@@ -41,11 +42,11 @@ namespace :db do
     create_database @config
   end
 
-  desc 'Drops the database for the current DATABASE_ENV'
-  task :drop => :configure_connection do
-    ActiveRecord::Base.establish_connection @config.merge('database' => nil)
-    ActiveRecord::Base.connection.drop_database @config['database']
-  end
+  # desc 'Drops the database for the current DATABASE_ENV'
+  # task :drop => :configure_connection do
+  #   ActiveRecord::Base.establish_connection @config.merge('database' => nil)
+  #   ActiveRecord::Base.connection.drop_database @config['database']
+  # end
 
   desc 'Migrate the database (options: VERSION=x, VERBOSE=false).'
   task :migrate => :configure_connection do
@@ -61,14 +62,14 @@ namespace :db do
 
   desc "Retrieves the current schema version number"
   task :version => :configure_connection do
-    $logger.info "Current version: #{ActiveRecord::Migrator.current_version}"
+    puts "Current version: #{ActiveRecord::Migrator.current_version}"
   end
 
   desc 'Generate an empty migration file'
   task migration: :environment do
     file_name = ARGV[1]
     if file_name.nil?
-      $logger.error '----> Need a file name (like "create_resource")'
+      puts '----> Need a file name (like "create_resource")'
       exit 1
     end
     time = Time.now.to_i
