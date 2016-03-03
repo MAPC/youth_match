@@ -9,6 +9,10 @@ class Placement < ActiveRecord::Base
   validates :position,  presence: true
 
   def travel_time
-    TravelTime.where(target_id: position.grid_id, input_id: applicant.grid_id, mode: applicant.mode).first.time
+    TravelTime.where(
+      target_id: position.grid_id,
+      input_id: applicant.grid_id,
+      travel_mode: applicant.mode
+    ).first.time
   end
 end

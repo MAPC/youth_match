@@ -4,56 +4,121 @@ class StatsJob
     @run = Run.find(id)
   end
 
-  # Statistics on each run => store in new field :statistics or something
-
-  
-  # How many people who cared about matching interest got a job with a matching interest?
-  # How many people who cared about proximity got a job within a 15-minute commute?
-  # Histogram of travel times, in 5-minute buckets
-  # Average / median / total? travel times
-  # GeoJSON of placements, connected by line; points for unplaced applicants
-
   def perform!
-    @counters = OpenStruct.new(
-      matched_nearby: 0,
-      matched_with_interest: 0,
-      placement_rate: 0,
-      average_travel_time: 0
+    @stats = OpenStruct.new(
+      matched_nearby: 0, matched_with_interest: 0,
+      placement_rate: 0, average_travel_time: 0,
+      geojson: {type: 'FeatureCollection', features: []}
     )
-    # Also want to keep track of travel times.
+
     @run.placements.includes(:applicant, :position).find_each do |placement|
-      # It might be worthwhile to check the RubyTapas episodes on rules
-      applicant = placement.applicant
-      position  = placement.position
-      matched_nearby?(applicant, position)
-      matched_with_interest?(applicant, position)
+      calculate_stats_for_placement(placement)
+      build_geojson_for_placement(placement)
     end
-    placement_rate
-    average_travel_time
-    @run.statistics = @counters.to_json
-    @run.save!
+    calculate_stats_for_run
+    build_geojson_for_run
+    @run.update_attribute(:statistics, @stats.to_json)
   end
 
   private
 
+  def calculate_stats_for_placement(placement)
+    applicant = placement.applicant
+    position  = placement.position
+
+    matched_nearby?(applicant, position)
+    matched_with_interest?(applicant, position)
+  end
+
+  def calculate_stats_for_run
+    @stats.placement_rate = placement_rate
+    @stats.average_travel_time = average_travel_time
+  end
+
+  def build_geojson_for_placement(placement)
+    @stats.geojson[:features] << placement_line(placement)
+    @stats.geojson[:features] << applicant_point(placement.applicant, true)
+    @stats.geojson[:features] << position_point(placement.position, true)
+  end
+
+  def build_geojson_for_run
+    @run.unplaced.each do |id|
+      @stats.geojson[:features] << applicant_point(Applicant.find(id), false)
+    end
+  end
+
   def average_travel_time
-    @counters.average_travel_time = @run.placements.extend(DescriptiveStatistics).mean(&:travel_time)
+    @run.placements.extend(DescriptiveStatistics).mean(&:travel_time)
   end
 
   def placement_rate
-    @counters.placement_rate = @run.unplaced.count.to_f / @run.placements.count.to_f
+    @run.unplaced.count.to_f / @run.placements.count.to_f
   end
 
   def matched_nearby?(a, p)
     if a.prefers_nearby && p.within?(10.minutes, of: a)
-      @counters.matched_nearby += 1
+      @stats.matched_nearby += 1
     end
   end
 
   def matched_with_interest?(a, p)
     if a.prefers_nearby && p.within?(10.minutes, of: a)
-      @counters.matched_nearby += 1
+      @stats.matched_nearby += 1
     end
+  end
+
+  def placement_line(placement)
+    applicant = placement.applicant
+    position = placement.position
+
+    travel = TravelScore.new(applicant: applicant, position: position).score
+    interest = InterestScore.new(applicant: applicant, position: position).score
+    total = travel + interest
+    { type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: [
+          applicant.location.coordinates,
+          position.location.coordinates
+        ]
+      },
+      properties: {
+        score: { total: total, travel: travel, interest: interest },
+        mode: applicant.mode
+      }
+    }
+  end
+
+  def applicant_point(applicant, placed)
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: applicant.location.coordinates
+      },
+      properties: {
+        type: :applicant,
+        interests: applicant.interests.join(', '),
+        mode: applicant.mode,
+        prefers_nearby: applicant.prefers_nearby?,
+        placed: placed
+      }
+    }
+  end
+
+  def position_point(position, placed)
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: position.location.coordinates
+      },
+      properties: {
+        type: :position,
+        category: position.category,
+        placed: placed
+      }
+    }
   end
 
 end
