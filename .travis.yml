@@ -11,4 +11,4 @@ cache: bundler
 addons:
   postgresql: '9.3'
   code_climate:
-    repo_token:
+    repo_token: 6bc1211ff61c0e3f2bd537e783bd38a08803b681ca75945ffd9d9109ca64f374
