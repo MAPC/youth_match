@@ -33,10 +33,10 @@ namespace :match do
     end
   end
 
-  desc 'Statistics on how the matching process is going.'
-  task stats: :environment do
-    $logger.debug "----> Running task `match:stats` in #{DATABASE_ENV} environment."
-    $logger.info  '----> Checking statistics'
+  desc 'Info on how the matching process is going.'
+  task progress: :environment do
+    $logger.debug "----> Running task `match:progress` in #{DATABASE_ENV} environment."
+    $logger.info  '----> Checking progress'
     $logger.error '----> FAIL: Not yet implemented'
     exit 1
   end
@@ -57,10 +57,9 @@ namespace :match do
   # Run this as: `match:export[:id]`
   task :export, [:id] => [:environment] do |t, args|
     $logger.debug "----> Running task `match:export` in #{DATABASE_ENV} environment."
-    $logger.info "----> Takes in an ID to export. (This run, id: #{args[:id]})"
+    $logger.debug "----> Takes in an ID to export. (This run, id: #{args[:id]})"
     ExportJob.new(args[:id]).perform!
-    $logger.error '----> FAIL: Not yet implemented'
-    exit 1
+    $logger.info '----> DONE'
   end
 
   desc 'List all of the runs, chronologically'
@@ -68,5 +67,14 @@ namespace :match do
     $logger.debug "----> Running task `match:list` in #{DATABASE_ENV} environment."
     ListJob.new.perform!
     $logger.info '----> DONE'
+  end
+
+  desc 'Generate statistics for a given run.'
+  task :stats, [:id] => [:environment] do |t, args|
+    $logger.debug "----> Running task `match:stats` in #{DATABASE_ENV} environment."
+    $logger.debug "----> Takes in an ID to generate stats on. (This run, id: #{args[:id]})"
+    ExportJob.new(args[:id]).perform!
+    $logger.error '----> FAIL: Not yet implemented'
+    exit 1
   end
 end
