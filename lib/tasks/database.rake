@@ -28,8 +28,7 @@ namespace :db do
   end
 
   task :configuration => :environment do
-    DB_ENV   = ENV.fetch('DATABASE_ENV') { 'development' }
-    @config = ENV.fetch('DATABASE_URL') { $config.send(DB_ENV).to_h }
+    @config = YAML.load_file('config/database.yml')[DATABASE_ENV]
   end
 
   task :configure_connection => :configuration do
@@ -42,11 +41,11 @@ namespace :db do
     create_database @config
   end
 
-  # desc 'Drops the database for the current DATABASE_ENV'
-  # task :drop => :configure_connection do
-  #   ActiveRecord::Base.establish_connection @config.merge('database' => nil)
-  #   ActiveRecord::Base.connection.drop_database @config['database']
-  # end
+  desc 'Drops the database for the current DATABASE_ENV'
+  task :drop => :configure_connection do
+    ActiveRecord::Base.establish_connection @config.merge('database' => nil)
+    ActiveRecord::Base.connection.drop_database @config['database']
+  end
 
   desc 'Migrate the database (options: VERSION=x, VERBOSE=false).'
   task :migrate => :configure_connection do
