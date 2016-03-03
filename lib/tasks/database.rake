@@ -18,9 +18,9 @@ namespace :db do
     begin
       create_db.call config
     rescue StandardError => e
-      puts "----> ERROR CREATING DATABASE: #{e.message}"
+      $logger.fatal "----> ERROR CREATING DATABASE: #{e.message}"
     end
-    puts "----> Created database #{config['database']}"
+    $logger.info "----> Created database #{config['database']}"
   end
 
   def template(file_name)
@@ -61,14 +61,14 @@ namespace :db do
 
   desc "Retrieves the current schema version number"
   task :version => :configure_connection do
-    puts "Current version: #{ActiveRecord::Migrator.current_version}"
+    $logger.info "Current version: #{ActiveRecord::Migrator.current_version}"
   end
 
   desc 'Generate an empty migration file'
   task migration: :environment do
     file_name = ARGV[1]
     if file_name.nil?
-      puts '----> Need a file name (like "create_resource")'
+      $logger.error '----> Need a file name (like "create_resource")'
       exit 1
     end
     time = Time.now.to_i

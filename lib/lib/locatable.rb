@@ -24,16 +24,6 @@ module Locatable
     TravelTime.where(input_id: grid_id)
   end
 
-  def within?(time = 40.minutes, of: , via: :walking)
-    # adding this method back in after it was removed
-    # this is going to be useful for summary stats...
-    destination, mode = of, via # clearer aliases
-    time = time.to_i
-    travel_times.where(travel_mode: mode)
-                .where("time < #{time}")
-                .exists?(target_id: destination.grid_id)
-  end
-
   private
 
   def compute_grid_id

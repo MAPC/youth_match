@@ -26,13 +26,10 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     database_cleaner (1.5.1)
-    descriptive_statistics (2.4.0)
     docile (1.1.5)
     enumerize (1.1.1)
       activesupport (>= 3.2)
     ffi (1.9.10)
-    foreman (0.78.0)
-      thor (~> 0.19.1)
     formatador (0.2.5)
     guard (2.13.0)
       formatador (>= 0.2.4)
@@ -102,9 +99,7 @@ DEPENDENCIES
   activesupport
   codeclimate-test-reporter
   database_cleaner
-  descriptive_statistics (~> 2.4.0)
   enumerize
-  foreman
   guard
   guard-minitest
   logger
