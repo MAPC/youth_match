@@ -14,32 +14,96 @@ class StatsJob
   # GeoJSON of placements, connected by line; points for unplaced applicants
 
   def perform!
-    counters = OpenStruct.new(
-      matched_nearby: 0,
-      matched_with_interest: 0
-    )
+    # counters = OpenStruct.new(
+    #   matched_nearby: 0,
+    #   matched_with_interest: 0
+    # )
+    geojson = {type: 'FeatureCollection', features: []}
     # Also want to keep track of travel times.
     @run.placements.includes(:applicant, :position).find_each do |placement|
-      # It might be worthwhile to check the RubyTapas episodes on rules
       applicant = placement.applicant
       position  = placement.position
-      matched_nearby?(applicant, position)
-      matched_with_interest?(applicant, position)
+
+      geojson[:features] << placement_line(placement)
+      geojson[:features] << applicant_point(applicant, true)
+      geojson[:features] << position_point(position, true)
+      # matched_nearby?(applicant, position)
+      # matched_with_interest?(applicant, position)
     end
+    @run.unplaced.each do |id|
+      geojson[:features] << applicant_point(Applicant.find(id), false)
+    end
+
+    filename = "./tmp/exports/run-#{@run.id}-#{Time.now.to_i}.geojson"
+    File.open(filename, 'w') { |f| f.write(geojson.to_json) }
   end
 
   private
 
-  def matched_nearby?(a, p)
-    if a.prefers_nearby && p.within(10.minutes, of: a)
-      counters.matched_nearby += 1
-    end
+  # def matched_nearby?(a, p)
+  #   if a.prefers_nearby && p.within(10.minutes, of: a)
+  #     counters.matched_nearby += 1
+  #   end
+  # end
+
+  # def matched_with_interest?(a, p)
+  #   if a.prefers_nearby && p.within(10.minutes, of: a)
+  #     counters.matched_nearby += 1
+  #   end
+  # end
+
+  def placement_line(placement)
+    applicant = placement.applicant
+    position = placement.position
+
+    travel = TravelScore.new(applicant: applicant, position: position).score
+    interest = InterestScore.new(applicant: applicant, position: position).score
+    total = travel + interest
+    { type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: [
+          applicant.location.coordinates,
+          position.location.coordinates
+        ]
+      },
+      properties: {
+        score: { total: total, travel: travel, interest: interest },
+        mode: applicant.mode
+      }
+    }
   end
 
-  def matched_with_interest?(a, p)
-    if a.prefers_nearby && p.within(10.minutes, of: a)
-      counters.matched_nearby += 1
-    end
+  def applicant_point(applicant, placed)
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: applicant.location.coordinates
+      },
+      properties: {
+        type: :applicant,
+        interests: applicant.interests.join(', '),
+        mode: applicant.mode,
+        prefers_nearby: applicant.prefers_nearby?,
+        placed: placed
+      }
+    }
+  end
+
+  def position_point(position, placed)
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: position.location.coordinates
+      },
+      properties: {
+        type: :position,
+        category: position.category,
+        placed: placed
+      }
+    }
   end
 
 end

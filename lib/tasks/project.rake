@@ -73,8 +73,6 @@ namespace :match do
   task :stats, [:id] => [:environment] do |t, args|
     $logger.debug "----> Running task `match:stats` in #{DATABASE_ENV} environment."
     $logger.debug "----> Takes in an ID to generate stats on. (This run, id: #{args[:id]})"
-    ExportJob.new(args[:id]).perform!
-    $logger.error '----> FAIL: Not yet implemented'
-    exit 1
+    StatsJob.new(args[:id]).perform!
   end
 end
