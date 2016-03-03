@@ -6,7 +6,9 @@ class Applicant < ActiveRecord::Base
   validates :grid_id, presence: true
 
   def mode
-    # computing this on the fly makes it hard to query
+    # Computing this on the fly makes it hard to query.
+    # We could easily do this in a before_save, adding it
+    # as a queryable field to Applicant.
     has_transit_pass? ? :transit : :walking
   end
 

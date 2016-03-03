@@ -12,7 +12,9 @@ namespace :match do
     $logger.info '----> Running checks first'
     Rake::Task['match:check'].invoke
     begin
+      $logger.info '----> Starting match!'
       MatchJob.new.perform!
+      $logger.info '----> DONE!!!'
     rescue
       $logger.error '----> FAIL: Task errored out.'
       $logger.error "----> #{e.message}"
@@ -34,7 +36,7 @@ namespace :match do
   desc 'Statistics on how the matching process is going.'
   task stats: :environment do
     $logger.debug "----> Running task `match:stats` in #{DATABASE_ENV} environment."
-    $logger.info '----> Checking statistics'
+    $logger.info  '----> Checking statistics'
     $logger.error '----> FAIL: Not yet implemented'
     exit 1
   end
