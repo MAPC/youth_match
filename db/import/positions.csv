@@ -1,0 +1,332 @@
+X,Y,standardiz,category,interest2,interest3,prefers_ne,has_transi,addrtype,addrlocat
+-71.0746968,42.2990716,"17 HARVARD STREET, BOSTON, 02126",Camp Counselor,Education / Tutoring,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0846997,42.3011849,"19 GLENWAY STREET, BOSTON, 02121",Camp Counselor,Day Care / Teacher,Peer Leadership,FALSE,FALSE,street_address,ROOFTOP
+-71.120202,42.28752,"24 MARION STREET, BOSTON, 02131",Camp Counselor,Construction / Building Trades,,TRUE,TRUE,street_address,ROOFTOP
+-71.117858,42.287614,"28 FLORIAN STREET, BOSTON, 02131",Administrative / Office Assistants,Environmental / Landscaping,Health Care,TRUE,FALSE,street_address,ROOFTOP
+-71.0543495,42.2885087,"7 ASHMONT STREET, BOSTON, 02122",Administrative / Office Assistants,Camp Counselor,Day Care / Teacher,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1299392,42.28247,"14 ALBANO STREET, BOSTON, 02131",Camp Counselor,Health Care,Theatre / Performing Arts,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0640259,42.2931266,"30 CENTRE STREET, BOSTON, 02122",Administrative / Office Assistants,Camp Counselor,Day Care / Teacher,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.091466,42.288582,"26 BROOKVIEW STREET, BOSTON, 02124",Governmental / Public Service,Recreation and Sports,,FALSE,TRUE,street_address,ROOFTOP
+-71.1600531,42.2898357,"14 GRAYFIELD AVENUE, BOSTON, 02132",Camp Counselor,Community Organizing,Day Care / Teacher,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0872427,42.3084922,"22 SONOMA STREET, BOSTON, 02121",Administrative / Office Assistants,Health Care,Library Services,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0700627,42.3215847,"28 EAST COTTAGE STREET, BOSTON, 02125",Administrative / Office Assistants,Day Care / Teacher,Library Services,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0556199,42.3167371,"22 SUDAN STREET, BOSTON, 02125",Administrative / Office Assistants,Recreation and Sports,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0554179,42.376792,"24 DECATUR STREET, BOSTON, 02129",Camp Counselor,Education / Tutoring,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0578413,42.3426503,"9 EAST BROADWAY, BOSTON, 02127",Art,Camp Counselor,Recreation and Sports,FALSE,TRUE,premise,ROOFTOP
+-71.1092342,42.2649712,"20 ANDRIA ROAD, BOSTON, 02136",Camp Counselor,Construction / Building Trades,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0860844,42.2943371,"23 TALBOT AVENUE, BOSTON, 02124",Administrative / Office Assistants,Community Organizing,Library Services,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1158725,42.3169395,"18 JAMAICAWAY COURT, BOSTON, 02130",Health Care,Library Services,Peer Leadership,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0822406,42.3366204,"12 LATTIMORE COURT, BOSTON, 02118",Administrative / Office Assistants,Camp Counselor,,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0557206,42.3142376,"28 HALLAM STREET, BOSTON, 02125",Camp Counselor,Peer Leadership,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.069622,42.3220877,"9 LONGMEADOW STREET, BOSTON, 02119",Administrative / Office Assistants,Camp Counselor,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0677445,42.3163628,"27 VIRGINIA STREET, BOSTON, 02125",Administrative / Office Assistants,Day Care / Teacher,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0657657,42.3072492,"3 MOUNT IDA ROAD, BOSTON, 02122",Administrative / Office Assistants,Community Organizing,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0490217,42.3335324,"6 MERCER STREET, BOSTON, 02127",Camp Counselor,Dance (Performing Arts),Day Care / Teacher,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1143446,42.2622816,"11 CROMWELL ROAD, BOSTON, 02136",Camp Counselor,Community Organizing,Day Care / Teacher,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0553066,42.3428038,"9 EAST THIRD STREET, BOSTON, 02127",Administrative / Office Assistants,Day Care / Teacher,Health Care,FALSE,FALSE,premise,ROOFTOP
+-71.054479,42.3425453,"22 EAST THIRD STREET, BOSTON, 02127",Administrative / Office Assistants,Art,Community Organizing,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1149264,42.2887396,"14 MEYER STREET, BOSTON, 02131",Camp Counselor,Day Care / Teacher,Health Care,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.116151,42.252394,"12 FRANKLIN TERRACE, BOSTON, 02136",Camp Counselor,Day Care / Teacher,Health Care,FALSE,TRUE,street_address,ROOFTOP
+-71.119171,42.2570367,"15 WALTER STREET, BOSTON, 02136",Administrative / Office Assistants,Camp Counselor,Community Organizing,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0591759,42.376722,"10 TREMONT STREET, BOSTON, 02129",Camp Counselor,Health Care,Library Services,FALSE,TRUE,street_address,ROOFTOP
+-70.9996118,42.3890907,"3 GLADSTONE STREET, BOSTON, 02128",Dance (Performing Arts),Theatre / Performing Arts,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0821945,42.3058272,"26 SUPPLE ROAD, BOSTON, 02121",Camp Counselor,Recreation and Sports,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0676317,42.300274,"25 IOWA STREET, BOSTON, 02124",Art,Environmental / Landscaping,Communications / Media / Journalism,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0576573,42.2830357,"26 ELY ROAD, BOSTON, 02124",Camp Counselor,Health Care,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0760369,42.2817946,"2 SELDEN STREET, BOSTON, 02124",Administrative / Office Assistants,Custodial Work / Maintenance,Governmental / Public Service,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.000888,42.388942,"26 GLADSTONE STREET, BOSTON, 02128",Custodial Work / Maintenance,Environmental / Landscaping,Recreation and Sports,TRUE,FALSE,street_address,ROOFTOP
+-71.0568314,42.2815588,"21 GRANVILLE STREET, BOSTON, 02124",Camp Counselor,Day Care / Teacher,Peer Leadership,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0939791,42.2879425,"22 MORTON STREET, BOSTON, 02126",Day Care / Teacher,Governmental / Public Service,Library Services,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1039271,42.3242535,"6 PLANT COURT, BOSTON, 02130",Art,Day Care / Teacher,Theatre / Performing Arts,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0559999,42.3387381,"14 ORTON MAROTTA WAY, BOSTON, 02127",Camp Counselor,Peer Leadership,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0721054,42.2986866,"25 CLAYBOURNE STREET, BOSTON, 02124",Art,Community Organizing,Day Care / Teacher,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.078419,42.285946,"29 MILTON AVENUE, BOSTON, 02124",Camp Counselor,Theatre / Performing Arts,,FALSE,FALSE,street_address,ROOFTOP
+-71.0378302,42.3752739,"27 BENNINGTON STREET, BOSTON, 02128",Construction / Building Trades,Custodial Work / Maintenance,Environmental / Landscaping,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0860967,42.2943408,"21 TALBOT AVENUE, BOSTON, 02124",Camp Counselor,Day Care / Teacher,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0683049,42.3001002,"28 BOYD STREET, BOSTON, 02124",Library Services,,,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0243163,42.3793042,"26 FRANKFORT STREET, BOSTON, 02128",Recreation and Sports,,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0787876,42.2869153,"10 MILTON AVENUE, BOSTON, 02124",Marine Sciences,,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.086018,42.315083,"24 WYOMING STREET, BOSTON, 02121",Library Services,,,FALSE,FALSE,street_address,ROOFTOP
+-71.0529354,42.3784453,"11 MEDFORD STREET, BOSTON, 02129",Library Services,,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.076184,42.287507,"20 PEACEVALE ROAD, BOSTON, 02124",Library Services,Art,Sports,TRUE,FALSE,street_address,ROOFTOP
+-71.0714532,42.2989034,"27 DAKOTA STREET, BOSTON, 02124",Administrative / Office Assistants,Community Organizing,Day Care / Teacher,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.079015,42.3118399,"29 CRESTON STREET, BOSTON, 02121",Camp Counselor,Day Care / Teacher,Recreation and Sports,FALSE,FALSE,street_address,ROOFTOP
+-71.1224976,42.290907,"13 BRADEEN STREET, BOSTON, 02131",Camp Counselor,Education / Tutoring,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0978587,42.3222588,"24 SLAYTON WAY, BOSTON, 02119",Construction / Building Trades,Environmental / Landscaping,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0719358,42.3091405,"22 COLUMBIA ROAD, BOSTON, 02125",Camp Counselor,Day Care / Teacher,Governmental / Public Service,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0721308,42.2990029,"20 CLAYBOURNE STREET, BOSTON, 02124",Camp Counselor,Education / Tutoring,Theatre / Performing Arts,FALSE,FALSE,street_address,ROOFTOP
+-71.0728497,42.2909274,"25 HOPESTILL STREET, BOSTON, 02124",Camp Counselor,Education / Tutoring,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0640579,42.3727036,"14 WASHINGTON STREET, BOSTON, 02124",Marine Sciences,,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0743951,42.2986851,"16 HARVARD PARK, BOSTON, 02124",Camp Counselor,Environmental / Landscaping,Library Services,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0553157,42.3393662,"9 FLAHERTY WAY020, BOSTON, 02127",Administrative / Office Assistants,Governmental / Public Service,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1093946,42.3348106,"24 NEW WHITNEY STREET, BOSTON, 02115",Camp Counselor,Library Services,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0615117,42.3138643,"6 PEVERELL STREET, BOSTON, 02125",Administrative / Office Assistants,Art,Theatre / Performing Arts,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0456867,42.2858856,"28 MINOT STREET, BOSTON, 02122",Camp Counselor,,,TRUE,FALSE,street_address,ROOFTOP
+-71.073937,42.322771,"11 BROOK AVENUE, BOSTON, 02119",Peer Leadership,Recreation and Sports,,TRUE,FALSE,street_address,ROOFTOP
+-71.170327,42.352032,"9 ATKINS STREET, BOSTON, 02135",Camp Counselor,Dance (Performing Arts),Marine Sciences,TRUE,TRUE,street_address,ROOFTOP
+-71.0730683,42.2995568,"12 BOWDOIN STREET, BOSTON, 02124",Camp Counselor,,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0567139,42.3763465,"30 BUNKER HILL STREET, BOSTON, 02129",Administrative / Office Assistants,Communications / Media / Journalism,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.070242,42.3226638,"2 MARSHFIELD STREET, BOSTON, 02119",Community Organizing,Recreation and Sports,,TRUE,FALSE,street_address,ROOFTOP
+-71.0661297,42.3156813,"1 HANCOCK STREET, BOSTON, 02125",Camp Counselor,Day Care / Teacher,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0692704,42.2877724,"11 HARLEY STREET, BOSTON, 02124",Art,,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0658851,42.2791939,"1 DORCHESTER AVENUE, BOSTON, 02125",Camp Counselor,Day Care / Teacher,Theatre / Performing Arts,FALSE,TRUE,street_address,ROOFTOP
+-71.0570241,42.3393912,"20 EAST SIXTH STREET, BOSTON, 02127",Art,Communications / Media / Journalism,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0968604,42.2785696,"3 ITASCA STREET, BOSTON, 02126",Camp Counselor,Dance (Performing Arts),Theatre / Performing Arts,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0870129,42.2853192,"16 WINSTON ROAD, BOSTON, 02124",Camp Counselor,Day Care / Teacher,Theatre / Performing Arts,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0571831,42.294942,"1 CENTRE COURT, BOSTON, 02122",Administrative / Office Assistants,Custodial Work / Maintenance,Governmental / Public Service,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.127608,42.281065,"21 CRANDALL STREET, BOSTON, 02131",Administrative / Office Assistants,Art,Environmental / Landscaping,FALSE,FALSE,street_address,ROOFTOP
+-71.0882022,42.3331573,"9 WHITTIER STREET, BOSTON, 02120",Camp Counselor,Community Organizing,Marine Sciences,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0578409,42.3587954,"9 WASHINGTON STREET, BOSTON, 02124",Camp Counselor,Recreation and Sports,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0951248,42.2710158,"14 ROCKWAY STREET, BOSTON, 02126",Camp Counselor,Day Care / Teacher,Education / Tutoring,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0817228,42.3084218,"22 GENEVA AVENUE, BOSTON, 02121",Construction / Building Trades,Environmental / Landscaping,Marine Sciences,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0535134,42.3175827,"29 SPRING GARDEN STREET, BOSTON, 02125",Camp Counselor,Community Organizing,Marine Sciences,FALSE,FALSE,street_address,ROOFTOP
+-71.0655342,42.2854148,"4 ALBAN STREET, BOSTON, 02124",Administrative / Office Assistants,Health Care,Peer Leadership,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1427005,42.3591183,"5 LAWRENCE STREET A, BOSTON, 02135",Administrative / Office Assistants,Camp Counselor,Custodial Work / Maintenance,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1431723,42.3454131,"6 FIDELIS WAY, BOSTON, 02135",Administrative / Office Assistants,Camp Counselor,Health Care,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0815209,42.320712,"4 CLIFFORD STREET, BOSTON, 02119",Dance (Performing Arts),Day Care / Teacher,Theatre / Performing Arts,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0791904,42.3353479,"11 LENOX STREET, BOSTON, 02118",Administrative / Office Assistants,Day Care / Teacher,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1086924,42.3340618,"20 MISSION PARK DRIVE, BOSTON, 02115",Camp Counselor,Day Care / Teacher,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.060684,42.292549,"22 KING STREET, BOSTON, 02122",Administrative / Office Assistants,Camp Counselor,Governmental / Public Service,TRUE,TRUE,street_address,ROOFTOP
+-71.0893757,42.2756168,"28 HALBORN STREET, BOSTON, 02126",Administrative / Office Assistants,Day Care / Teacher,Library Services,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0653318,42.3107391,"4 HOWE TERRACE, BOSTON, 02125",Dance (Performing Arts),Day Care / Teacher,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.103094,42.3116794,"14 CORNWALL STREET07, BOSTON, 02130",Camp Counselor,,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1346505,42.2820949,"3 METROPOLITAN AVENUE, BOSTON, 02136",Administrative / Office Assistants,Community Organizing,Education / Tutoring,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0856937,42.3012518,"2 MCLELLAN STREET, BOSTON, 02121",Administrative / Office Assistants,Camp Counselor,Recreation and Sports,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1670294,42.349768,"17 LANGLEY ROAD, BOSTON, 02135",Camp Counselor,Peer Leadership,Recreation and Sports,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0069172,42.3922994,"8 VALLAR ROAD, BOSTON, 02128",Camp Counselor,Recreation and Sports,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0660606,42.3152717,"9 HANCOCK STREET, BOSTON, 02125",Day Care / Teacher,,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0836999,42.303236,"25 COLUMBIA ROAD, BOSTON, 02127",Camp Counselor,Recreation and Sports,,TRUE,FALSE,street_address,ROOFTOP
+-71.0744784,42.3329233,"3 NORTHAMPTON STREET A, BOSTON, 02118",Day Care / Teacher,Education / Tutoring,Peer Leadership,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.078934,42.3464,"2 SAINT BOTOLPH STREET, BOSTON, 02116",Camp Counselor,Recreation and Sports,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0679689,42.3114831,"4 STANLEY STREET, BOSTON, 02125",Camp Counselor,Day Care / Teacher,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0795961,42.3268456,"13 MOUNT PLEASANT TERRACE, BOSTON, 02119",Education / Tutoring,Environmental / Landscaping,Marine Sciences,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.072211,42.2999835,"2 WESTVILLE STREET, BOSTON, 02122",Art,Environmental / Landscaping,Governmental / Public Service,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0549435,42.2826177,"1 LENOXDALE AVENUE, BOSTON, 02124",Dance (Performing Arts),Recreation and Sports,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0814134,42.3083224,"28 GENEVA AVENUE, BOSTON, 02121",Construction / Building Trades,Day Care / Teacher,Recreation and Sports,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.125393,42.2544417,"3 DANA AVENUE, BOSTON, 02136",Camp Counselor,Environmental / Landscaping,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1599976,42.2727421,"22 CENTRE STREET, BOSTON, 02132",Administrative / Office Assistants,Camp Counselor,Day Care / Teacher,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1537372,42.357261,"24 GOODENOUGH STREET, BOSTON, 02135",Recreation and Sports,,,FALSE,FALSE,street_address,ROOFTOP
+-71.0420421,42.2863787,"26 WALNUT STREET, BOSTON, 02122",Camp Counselor,Day Care / Teacher,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.112322,42.317348,"9 SPRING PARK AVENUE, BOSTON, 02130",Administrative / Office Assistants,Camp Counselor,,TRUE,FALSE,street_address,ROOFTOP
+-71.0190605,42.3839638,"25 MOORE STREET, BOSTON, 02128",Camp Counselor,Health Care,,FALSE,TRUE,street_address,ROOFTOP
+-71.0736074,42.3142399,"10 CUNNINGHAM STREET, BOSTON, 02125",Day Care / Teacher,Recreation and Sports,Theatre / Performing Arts,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.090335,42.309545,"29 BROOKLEDGE STREET, BOSTON, 02121",Art,Construction / Building Trades,,TRUE,FALSE,street_address,ROOFTOP
+-71.121405,42.244048,"18 WOOD AVENUE, BOSTON, 02136",Administrative / Office Assistants,Camp Counselor,,TRUE,FALSE,street_address,ROOFTOP
+-71.0661242,42.2792265,"19 DORCHESTER AVENUE, BOSTON, 02124",Camp Counselor,Marine Sciences,,TRUE,FALSE,route,GEOMETRIC_CENTER
+-71.0669211,42.3186845,"5 QUINCEFIELD STREET, BOSTON, 02125",Camp Counselor,Recreation and Sports,,TRUE,TRUE,street_address,ROOFTOP
+-71.0726744,42.2993086,"8 CLAYBOURNE STREET, BOSTON, 02124",Construction / Building Trades,Day Care / Teacher,Governmental / Public Service,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0046446,42.3851941,"15 SAINT ANDREW ROAD, BOSTON, 02128",Administrative / Office Assistants,Day Care / Teacher,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1179578,42.2871228,"12 FLORIAN STREET, BOSTON, 02131",Day Care / Teacher,Education / Tutoring,Recreation and Sports,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0641851,42.313637,"19 ROWELL STREET, BOSTON, 02125",Construction / Building Trades,Environmental / Landscaping,Recreation and Sports,TRUE,TRUE,street_address,ROOFTOP
+-71.077554,42.2816317,"27 SELDEN STREET, BOSTON, 02124",Recreation and Sports,,,TRUE,FALSE,street_address,ROOFTOP
+-71.067479,42.30251,"6 LONGFELLOW STREET, BOSTON, 02122",Art,Camp Counselor,Day Care / Teacher,TRUE,TRUE,street_address,ROOFTOP
+-71.1239571,42.2480818,"12 CHITTICK ROAD, BOSTON, 02136",Camp Counselor,Marine Sciences,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0771781,42.2722946,"22 GROVELAND STREET, BOSTON, 02126",Administrative / Office Assistants,Camp Counselor,Recreation and Sports,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0719333,42.3091396,"26 COLUMBIA ROAD, BOSTON, 02125",Education / Tutoring,Governmental / Public Service,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0813673,42.3221097,"14 COPELAND STREET, BOSTON, 02119",Camp Counselor,Health Care,,TRUE,FALSE,street_address,ROOFTOP
+-71.123942,42.2476709,"19 CHITTICK ROAD, BOSTON, 02136",Camp Counselor,Day Care / Teacher,Peer Leadership,TRUE,FALSE,street_address,ROOFTOP
+-71.0661242,42.2792265,"29 DORCHESTER AVENUE, BOSTON, 02124",Administrative / Office Assistants,Education / Tutoring,Library Services,FALSE,FALSE,route,GEOMETRIC_CENTER
+-71.06316,42.301857,"11 DRAPER STREET, BOSTON, 02122",Education / Tutoring,,,FALSE,FALSE,street_address,ROOFTOP
+-71.0661155,42.3156434,"6 HANCOCK STREET, BOSTON, 02125",Camp Counselor,Dance (Performing Arts),Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0891899,42.2951426,"19 SHANDON ROAD, BOSTON, 02124",Community Organizing,Health Care,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.06703,42.302678,"12 LONGFELLOW STREET, BOSTON, 02122",Day Care / Teacher,Library Services,,TRUE,TRUE,street_address,ROOFTOP
+-71.057975,42.3235,"16 DORSET STREET, BOSTON, 02125",Art,Camp Counselor,Marine Sciences,TRUE,FALSE,street_address,ROOFTOP
+-71.0937367,42.313328,"17 HOMESTEAD STREET, BOSTON, 02121",Camp Counselor,Recreation and Sports,,FALSE,TRUE,street_address,ROOFTOP
+-71.0889505,42.3294108,"25 DUDLEY STREET, BOSTON, 02119",Camp Counselor,Recreation and Sports,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0716201,42.3186843,"17 FOLSOM STREET, BOSTON, 02125",Art,Dance (Performing Arts),Marine Sciences,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1569161,42.2596632,"6 STIMSON STREET, BOSTON, 02132",Camp Counselor,Day Care / Teacher,Health Care,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.06717,42.302606,"10 LONGFELLOW STREET, BOSTON, 02122",Library Services,Recreation and Sports,Theatre / Performing Arts,TRUE,FALSE,street_address,ROOFTOP
+-71.0444721,42.3195862,"4 ISLAND VIEW PLACE, BOSTON, 02125",Recreation and Sports,,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1323894,42.2496876,"28 HILLIS ROAD, BOSTON, 02136",Camp Counselor,Community Organizing,Day Care / Teacher,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0635903,42.3079697,"9 ADAMS STREET, BOSTON, 02122",Camp Counselor,Day Care / Teacher,Education / Tutoring,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0726195,42.2896359,"10 NORFOLK STREET, BOSTON, 02126",Camp Counselor,Day Care / Teacher,Education / Tutoring,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.142706,42.3592941,"17 LAWRENCE STREET A, BOSTON, 02135",Camp Counselor,Day Care / Teacher,Theatre / Performing Arts,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.066801,42.318406,"18 DUDLEY STREET, BOSTON, 02125",Camp Counselor,Recreation and Sports,,FALSE,FALSE,street_address,ROOFTOP
+-71.0823354,42.3142996,"23 CARLISLE STREET, BOSTON, 02121",Administrative / Office Assistants,Environmental / Landscaping,Governmental / Public Service,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0727807,42.3538418,"9 COMMONWEALTH AVENUE, BOSTON, 02134",Camp Counselor,Day Care / Teacher,Health Care,FALSE,FALSE,street_address,ROOFTOP
+-71.0719408,42.3091423,"14 COLUMBIA ROAD, BOSTON, 02125",Administrative / Office Assistants,Camp Counselor,Day Care / Teacher,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.130323,42.289477,"24 FAIRVIEW STREET, BOSTON, 02131",Camp Counselor,,,TRUE,TRUE,street_address,ROOFTOP
+-71.0863145,42.2858334,"27 WILLOWWOOD STREET, BOSTON, 02124",Administrative / Office Assistants,Art,,TRUE,TRUE,route,GEOMETRIC_CENTER
+-71.0725601,42.2823168,"25 MORA STREET, BOSTON, 02124",Camp Counselor,Library Services,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.165637,42.280111,"24 CHESBROUGH ROAD, BOSTON, 02132",Camp Counselor,Day Care / Teacher,Theatre / Performing Arts,TRUE,FALSE,street_address,ROOFTOP
+-71.091856,42.2835304,"2 DEERING ROAD, BOSTON, 02126",Administrative / Office Assistants,Camp Counselor,Day Care / Teacher,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0427968,42.4037412,"28 FRANCIS STREET, BOSTON, 02115",Construction / Building Trades,Custodial Work / Maintenance,Day Care / Teacher,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.072024,42.3093059,"4 COLUMBIA ROAD, BOSTON, 02125",Administrative / Office Assistants,Camp Counselor,Marine Sciences,TRUE,FALSE,street_address,ROOFTOP
+-71.1341467,42.2889002,"1 WALTER STREET, BOSTON, 02131",Camp Counselor,Theatre / Performing Arts,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0887213,42.3245933,"22 OSGOOD COURT, BOSTON, 02119",Camp Counselor,,,TRUE,FALSE,route,GEOMETRIC_CENTER
+-71.0443719,42.3352674,"25 G STREET, BOSTON, 02127",Administrative / Office Assistants,Art,Health Care,FALSE,FALSE,street_address,ROOFTOP
+-71.0656372,42.307145,"6 MOUNT IDA ROAD, BOSTON, 02122",Art,Camp Counselor,Library Services,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0788346,42.3136718,"3 FAYSTON STREET, BOSTON, 02121",Construction / Building Trades,Governmental / Public Service,Communications / Media / Journalism,FALSE,FALSE,street_address,ROOFTOP
+-71.0824578,42.2798104,"7 LORNA ROAD, BOSTON, 02126",Administrative / Office Assistants,Camp Counselor,Marine Sciences,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0387224,42.3765029,"4 PRINCETON STREET, BOSTON, 02128",Art,Health Care,Library Services,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0650358,42.3806924,"13 SACKVILLE STREET, BOSTON, 02129",Camp Counselor,Day Care / Teacher,Theatre / Performing Arts,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0642895,42.3728066,"20 WASHINGTON STREET, BOSTON, 02130",Camp Counselor,Governmental / Public Service,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0782992,42.3112139,"26 NORMANDY STREET, BOSTON, 02121",Community Organizing,Governmental / Public Service,Library Services,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.054853,42.295251,"24 TRAIN STREET, BOSTON, 02122",Camp Counselor,Education / Tutoring,Recreation and Sports,TRUE,TRUE,street_address,ROOFTOP
+-71.086704,42.285392,"12 WINSTON ROAD, BOSTON, 02124",Camp Counselor,Community Organizing,Recreation and Sports,FALSE,TRUE,street_address,ROOFTOP
+-71.0840397,42.3035355,"22 COLUMBIA ROAD, BOSTON, 02121",Administrative / Office Assistants,Governmental / Public Service,Communications / Media / Journalism,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0728305,42.2996413,"26 BOWDOIN AVENUE, BOSTON, 02121",Community Organizing,Communications / Media / Journalism,Theatre / Performing Arts,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0571636,42.3163512,"8 MAYFIELD STREET, BOSTON, 02125",Governmental / Public Service,Health Care,Marine Sciences,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0829276,42.3078335,"9 WASHINGTON STREET, BOSTON, 02121",Community Organizing,Education / Tutoring,,FALSE,FALSE,street_address,ROOFTOP
+-71.0834857,42.2831563,"5 CORBET STREET, BOSTON, 02124",Administrative / Office Assistants,Environmental / Landscaping,Library Services,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.136539,42.3586278,"6 ADAMSON STREET, BOSTON, 02134",Art,Community Organizing,Theatre / Performing Arts,TRUE,TRUE,street_address,ROOFTOP
+-71.0837672,42.282604,"29 CORBET STREET, BOSTON, 02124",Administrative / Office Assistants,Education / Tutoring,Environmental / Landscaping,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.169085,42.348093,"11 SOUTH CRESCENT CIRCUIT, BOSTON, 02135",Education / Tutoring,Health Care,Theatre / Performing Arts,TRUE,TRUE,street_address,ROOFTOP
+-71.0788759,42.2880412,"1 MILTON AVENUE, BOSTON, 02124",Camp Counselor,Education / Tutoring,Library Services,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-70.9993831,42.391159,"7 WALDEMAR AVENUE, BOSTON, 02128",Art,Communications / Media / Journalism,Theatre / Performing Arts,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0943489,42.285353,"18 GREENDALE ROAD, BOSTON, 02126",Administrative / Office Assistants,Camp Counselor,Education / Tutoring,TRUE,FALSE,street_address,ROOFTOP
+-71.0810741,42.284036,"5 CAPEN STREET, BOSTON, 02124",Camp Counselor,,,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0818713,42.320724,"2 DALE STREET, BOSTON, 02119",Day Care / Teacher,Environmental / Landscaping,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1467925,42.2783663,"25 MARTIN STREET, BOSTON, 02132",Camp Counselor,Governmental / Public Service,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0978248,42.3304231,"18 OSCAR STREET, BOSTON, 02120",Education / Tutoring,Governmental / Public Service,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1321193,42.2512976,"9 CHARLES STREET, BOSTON, 02136",Administrative / Office Assistants,Camp Counselor,Marine Sciences,TRUE,TRUE,street_address,ROOFTOP
+-71.0902878,42.2941632,"20 WILBERT ROAD, BOSTON, 02124",Environmental / Landscaping,,,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1284005,42.3577996,"29 EMPIRE STREET, BOSTON, 02134",Camp Counselor,Education / Tutoring,Recreation and Sports,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0775501,42.3143727,"7 DACIA STREET, BOSTON, 02125",Recreation and Sports,,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.092674,42.283718,"14 DEERING ROAD, BOSTON, 02126",Camp Counselor,,,TRUE,TRUE,street_address,ROOFTOP
+-71.0964857,42.2700028,"23 REGIS ROAD, BOSTON, 02126",Art,Day Care / Teacher,Theatre / Performing Arts,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.122181,42.2444377,"6 WOODGLEN ROAD, BOSTON, 02136",Camp Counselor,Recreation and Sports,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0965851,42.2845181,"25 WESTMORE ROAD, BOSTON, 02126",Construction / Building Trades,,,FALSE,FALSE,street_address,ROOFTOP
+-71.1458442,42.3499589,"19 WARREN STREET, BOSTON, 02121",Camp Counselor,Education / Tutoring,Governmental / Public Service,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.091277,42.281824,"19 WOOLSON STREET, BOSTON, 02126",Administrative / Office Assistants,Health Care,Library Services,TRUE,FALSE,street_address,ROOFTOP
+-71.1159759,42.2950948,"23 WALK HILL STREET, BOSTON, 02126",Dance (Performing Arts),Governmental / Public Service,Communications / Media / Journalism,TRUE,FALSE,street_address,ROOFTOP
+-71.0795788,42.3222662,"17 LANGFORD PARK, BOSTON, 02119",Administrative / Office Assistants,Health Care,Communications / Media / Journalism,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0936782,42.2801322,"8 ORMOND STREET, BOSTON, 02126",Art,Day Care / Teacher,Communications / Media / Journalism,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0842808,42.308869,"20 CHENEY STREET, BOSTON, 02121",Camp Counselor,Custodial Work / Maintenance,,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0869297,42.3163997,"1 HARRISHOF STREET, BOSTON, 02121",Education / Tutoring,Marine Sciences,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0892119,42.3468043,"3 HEMENWAY STREET, BOSTON, 02115",Dance (Performing Arts),Communications / Media / Journalism,Theatre / Performing Arts,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0880609,42.3194596,"19 HAROLD STREET, BOSTON, 02121",Day Care / Teacher,Education / Tutoring,,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0715487,42.3000003,"15 WESTVILLE STREET, BOSTON, 02124",Camp Counselor,,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0770444,42.319498,"18 JULIAN STREET, BOSTON, 02125",Camp Counselor,Recreation and Sports,,FALSE,FALSE,street_address,ROOFTOP
+-71.0547125,42.3781316,"10 WALFORD WAY, BOSTON, 02129",Art,Community Organizing,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.071547,42.2874229,"12 WASHINGTON STREET, BOSTON, 02124",Dance (Performing Arts),Communications / Media / Journalism,Theatre / Performing Arts,TRUE,TRUE,street_address,ROOFTOP
+-71.0827479,42.3004608,"28 FOWLER STREET, BOSTON, 02121",Camp Counselor,Governmental / Public Service,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.124955,42.2504731,"13 A STREET, BOSTON, 02136",Health Care,Marine Sciences,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0668468,42.3140272,"19 PAYSON AVENUE, BOSTON, 02125",Dance (Performing Arts),Peer Leadership,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.151568,42.2590408,"1 WILLERS STREET, BOSTON, 02132",Camp Counselor,Marine Sciences,Recreation and Sports,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1505012,42.2596034,"25 WILLERS STREET, BOSTON, 02132",Camp Counselor,Day Care / Teacher,Communications / Media / Journalism,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0721966,42.2993141,"11 GREENBRIER STREET, BOSTON, 02124",Camp Counselor,Recreation and Sports,,FALSE,FALSE,street_address,ROOFTOP
+-71.071678,42.299468,"16 GREENBRIER STREET, BOSTON, 02124",Administrative / Office Assistants,Communications / Media / Journalism,Library Services,FALSE,FALSE,street_address,ROOFTOP
+-71.0806376,42.2950541,"26 KINGSDALE STREET, BOSTON, 02124",Camp Counselor,,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0023794,42.3903912,"14 BEACHVIEW ROAD, BOSTON, 02128",Camp Counselor,Day Care / Teacher,Health Care,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0729073,42.3136556,"26 WAYLAND STREET, BOSTON, 02125",Construction / Building Trades,Communications / Media / Journalism,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0364916,42.333505,"27 BECKLER AVENUE, BOSTON, 02127",Art,Camp Counselor,Education / Tutoring,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0695669,42.272407,"4 RIVER STREET, BOSTON, 02126",Camp Counselor,Marine Sciences,Recreation and Sports,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.078618,42.2880863,"12 WOODROW AVENUE, BOSTON, 02124",Health Care,Library Services,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0794856,42.3366625,"10 CAMDEN STREET, BOSTON, 02118",Administrative / Office Assistants,Camp Counselor,Day Care / Teacher,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0894997,42.2951924,"16 SHANDON ROAD, BOSTON, 02124",Construction / Building Trades,Governmental / Public Service,Health Care,FALSE,FALSE,street_address,ROOFTOP
+-71.0986715,42.3161158,"5 ATHERTON STREET, BOSTON, 02119",Administrative / Office Assistants,Governmental / Public Service,Library Services,TRUE,TRUE,street_address,ROOFTOP
+-71.0813414,42.2935418,"26 KERWIN STREET, BOSTON, 02124",Administrative / Office Assistants,Camp Counselor,Day Care / Teacher,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.098483,42.3157179,"1 ATHERTON STREET, BOSTON, 02119",Art,Camp Counselor,Library Services,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.043847,42.3366801,"7 EMERSON STREET, BOSTON, 02127",Camp Counselor,Day Care / Teacher,Health Care,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0443329,42.2863507,"10 MINOT STREET, BOSTON, 02124",Governmental / Public Service,Marine Sciences,Theatre / Performing Arts,TRUE,FALSE,street_address,ROOFTOP
+-71.0841393,42.32351,"29 WALNUT AVENUE, BOSTON, 02119",Administrative / Office Assistants,Camp Counselor,Day Care / Teacher,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.122114,42.248012,"30 GARFIELD AVENUE, BOSTON, 02136",Education / Tutoring,Governmental / Public Service,,TRUE,FALSE,street_address,ROOFTOP
+-71.0543152,42.2884437,"21 ASHMONT STREET, BOSTON, 02122",Administrative / Office Assistants,,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.086999,42.3144351,"28 WABENO STREET, BOSTON, 02121",Camp Counselor,Dance (Performing Arts),,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.076679,42.2873189,"21 PEACEVALE ROAD, BOSTON, 02124",Administrative / Office Assistants,Camp Counselor,Health Care,TRUE,FALSE,street_address,ROOFTOP
+-71.1706858,42.2727183,"6 GOULD STREET, BOSTON, 02135",Administrative / Office Assistants,Day Care / Teacher,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.135297,42.289506,"19 FARQUHAR STREET, BOSTON, 02131",Camp Counselor,Day Care / Teacher,Marine Sciences,FALSE,TRUE,street_address,ROOFTOP
+-71.0718289,42.312684,"11 CEYLON STREET, BOSTON, 02125",Camp Counselor,Day Care / Teacher,Marine Sciences,TRUE,FALSE,street_address,ROOFTOP
+-71.0616231,42.2853864,"18 CARRUTH STREET, BOSTON, 02124",Dance (Performing Arts),Environmental / Landscaping,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0599982,42.2997041,"5 LINCOLN STREET, BOSTON, 02122",Art,Communications / Media / Journalism,Marine Sciences,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0726009,42.2985793,"9 DAKOTA STREET, BOSTON, 02124",Camp Counselor,Day Care / Teacher,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1252639,42.2574098,"23 SUMMER STREET, BOSTON, 02136",Community Organizing,Construction / Building Trades,Custodial Work / Maintenance,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.06358,42.3103418,"28 TOVAR STREET, BOSTON, 02125",Administrative / Office Assistants,Library Services,Recreation and Sports,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0719636,42.2939062,"2 WHEATLAND AVENUE, BOSTON, 02124",Administrative / Office Assistants,Dance (Performing Arts),,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.09385,42.313816,"10 HOMESTEAD STREET, BOSTON, 02121",Administrative / Office Assistants,Library Services,Theatre / Performing Arts,TRUE,FALSE,street_address,ROOFTOP
+-71.0841217,42.3234778,"18 WALNUT AVENUE, BOSTON, 02119",Camp Counselor,Custodial Work / Maintenance,Recreation and Sports,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1324822,42.3625144,"24 RIVERDALE STREET, BOSTON, 02134",Camp Counselor,Day Care / Teacher,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.086449,42.2806821,"3 ASTORIA STREET, BOSTON, 02126",Camp Counselor,Day Care / Teacher,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0940782,42.3137218,"8 HOMESTEAD STREET, BOSTON, 02121",Administrative / Office Assistants,Day Care / Teacher,Education / Tutoring,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.088953,42.2878169,"24 ARBUTUS STREET, BOSTON, 02124",Camp Counselor,Community Organizing,Governmental / Public Service,FALSE,FALSE,street_address,ROOFTOP
+-71.0451043,42.2862283,"15 MINOT STREET, BOSTON, 02122",Camp Counselor,Community Organizing,Governmental / Public Service,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0715116,42.2824987,"4 MORA STREET, BOSTON, 02124",Administrative / Office Assistants,Health Care,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0881525,42.3452169,"17 NORWAY STREET, BOSTON, 02115",Health Care,Recreation and Sports,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0727853,42.3245958,"29 CLARENCE STREET, BOSTON, 02119",Day Care / Teacher,Governmental / Public Service,Peer Leadership,TRUE,TRUE,street_address,ROOFTOP
+-71.0866271,42.2945005,"13 TALBOT AVENUE, BOSTON, 02124",Day Care / Teacher,Health Care,Peer Leadership,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0860407,42.3205301,"3 HUMBOLDT AVENUE, BOSTON, 02121",Administrative / Office Assistants,Camp Counselor,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.085567,42.2862926,"10 MOUNTAIN AVENUE, BOSTON, 02124",Camp Counselor,Communications / Media / Journalism,Peer Leadership,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0702301,42.2892105,"20 BRENT STREET, BOSTON, 02124",Camp Counselor,Recreation and Sports,,TRUE,TRUE,street_address,ROOFTOP
+-71.0691808,42.322823,"14 MARSHFIELD STREET, BOSTON, 02119",Environmental / Landscaping,,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0699896,42.3225314,"9 MARSHFIELD STREET, BOSTON, 02119",Camp Counselor,Day Care / Teacher,Environmental / Landscaping,TRUE,FALSE,street_address,ROOFTOP
+-71.0614298,42.2930414,"12 WHITTEN STREET, BOSTON, 02122",Camp Counselor,Construction / Building Trades,Environmental / Landscaping,TRUE,FALSE,street_address,ROOFTOP
+-71.0715843,42.3070751,"8 PURITAN AVENUE, BOSTON, 02121",Administrative / Office Assistants,Camp Counselor,Peer Leadership,TRUE,FALSE,street_address,ROOFTOP
+-71.1422897,42.2535215,"4 LEIGHTON ROAD, BOSTON, 02136",Camp Counselor,Recreation and Sports,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0719636,42.2939062,"2 WHEATLAND AVENUE, BOSTON, 02124",Administrative / Office Assistants,Peer Leadership,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.064526,42.374074,"21 UNION STREET, BOSTON, 02129",Administrative / Office Assistants,Day Care / Teacher,Peer Leadership,FALSE,FALSE,street_address,ROOFTOP
+-71.0375472,42.3397858,"3 K STREET, BOSTON, 02127",Camp Counselor,Day Care / Teacher,Education / Tutoring,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1020311,42.2666266,"15 FAIRLAWN AVENUE, BOSTON, 02126",Camp Counselor,Health Care,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1404794,42.2516451,"16 VERNON STREET, BOSTON, 02136",Environmental / Landscaping,Governmental / Public Service,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0375203,42.3396742,"24 K STREET, BOSTON, 02127",Health Care,Peer Leadership,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.065537,42.3147702,"28 HANCOCK STREET, BOSTON, 02125",Camp Counselor,,,TRUE,TRUE,street_address,ROOFTOP
+-71.0588076,42.3773897,"18 NEAREN ROW, BOSTON, 02129",Camp Counselor,Day Care / Teacher,Peer Leadership,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0941762,42.3137706,"6 HOMESTEAD STREET, BOSTON, 02121",Camp Counselor,Community Organizing,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0931558,42.3148132,"12 ABBOTSFORD STREET, BOSTON, 02121",Art,Dance (Performing Arts),Communications / Media / Journalism,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0723512,42.2945321,"7 WEST TREMLETT STREET, BOSTON, 02124",Camp Counselor,Recreation and Sports,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0726564,42.2895937,"20 NORFOLK STREET, BOSTON, 02124",Administrative / Office Assistants,Day Care / Teacher,Health Care,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0717651,42.2824765,"9 MORA STREET, BOSTON, 02124",Camp Counselor,Community Organizing,Library Services,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0863404,42.2902756,"16 AMES STREET, BOSTON, 02124",Camp Counselor,Day Care / Teacher,Peer Leadership,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.051597,42.285157,"17 CHARLEMONT STREET, BOSTON, 02122",Day Care / Teacher,Environmental / Landscaping,Library Services,TRUE,FALSE,street_address,ROOFTOP
+-71.163816,42.2682671,"23 NORTHDALE ROAD, BOSTON, 02132",Camp Counselor,Peer Leadership,Recreation and Sports,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1097679,42.2655465,"25 JOYCE ROAD, BOSTON, 02136",Recreation and Sports,,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1080787,42.3340632,"8 MISSION PARK DRIVE, BOSTON, 02115",Environmental / Landscaping,Recreation and Sports,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0565286,42.3663228,"8 SNOW HILL STREET, BOSTON, 02113",Day Care / Teacher,Education / Tutoring,Library Services,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0795397,42.3097293,"3 DEVON STREET, BOSTON, 02121",Administrative / Office Assistants,Dance (Performing Arts),Marine Sciences,FALSE,TRUE,street_address,ROOFTOP
+-71.0295204,42.3379265,"9 O STREET, BOSTON, 02127",Camp Counselor,Day Care / Teacher,,FALSE,FALSE,street_address,ROOFTOP
+-71.0717193,42.2809563,"20 FAIRMOUNT STREET, BOSTON, 02124",Dance (Performing Arts),Peer Leadership,Theatre / Performing Arts,TRUE,FALSE,street_address,ROOFTOP
+-71.1409958,42.2551166,"18 RALDNE ROAD, BOSTON, 02136",Art,Peer Leadership,Recreation and Sports,TRUE,FALSE,street_address,ROOFTOP
+-71.0392318,42.3705725,"10 MERIDIAN STREET, BOSTON, 02128",Health Care,Marine Sciences,Recreation and Sports,TRUE,FALSE,premise,ROOFTOP
+-71.0842941,42.3023011,"22 ELLINGTON STREET, BOSTON, 02121",Art,Dance (Performing Arts),,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0704793,42.2721672,"19 RIVER STREET, BOSTON, 02126",Camp Counselor,Education / Tutoring,,TRUE,TRUE,street_address,ROOFTOP
+-71.1271887,42.2486195,"25 GLENWOOD AVENUE, BOSTON, 02136",Camp Counselor,,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.067342,42.2963874,"3 ALPHA ROAD, BOSTON, 02124",Administrative / Office Assistants,Art,Dance (Performing Arts),TRUE,FALSE,street_address,ROOFTOP
+-71.0657015,42.3072284,"4 MOUNT IDA ROAD, BOSTON, 02122",Camp Counselor,Day Care / Teacher,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0719798,42.2742587,"19 MORTON STREET, BOSTON, 02126",Camp Counselor,Construction / Building Trades,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0945693,42.2883416,"21 MORTON STREET, BOSTON, 02126",Administrative / Office Assistants,Dance (Performing Arts),Education / Tutoring,TRUE,FALSE,street_address,ROOFTOP
+-71.08456,42.3013586,"15 GLENWAY STREET, BOSTON, 02121",Custodial Work / Maintenance,Environmental / Landscaping,Governmental / Public Service,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1278632,42.2862781,"8 CUMMINS HIGHWAY, BOSTON, 02136",Day Care / Teacher,Education / Tutoring,Governmental / Public Service,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0727498,42.3159373,"24 CHAMBLET STREET, BOSTON, 02125",Camp Counselor,Environmental / Landscaping,Recreation and Sports,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1200685,42.2506076,"10 MOUNTFAIR TERRACE, BOSTON, 02136",Administrative / Office Assistants,Camp Counselor,Health Care,FALSE,FALSE,street_address,ROOFTOP
+-71.1188473,42.2942465,"3 BROOKWAY TERRACE, BOSTON, 02131",Peer Leadership,Theatre / Performing Arts,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.063331,42.300388,"29 CHARLES STREET, BOSTON, 02122",Camp Counselor,Health Care,,TRUE,FALSE,street_address,ROOFTOP
+-71.0793701,42.3278363,"14 MOUNT PLEASANT AVENUE, BOSTON, 02119",Camp Counselor,Community Organizing,Health Care,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0200154,42.3847855,"8 BYRON STREET, BOSTON, 02128",Day Care / Teacher,Governmental / Public Service,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0676506,42.301608,"2 RIDGEWOOD STREET, BOSTON, 02122",Camp Counselor,Construction / Building Trades,Recreation and Sports,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0946575,42.3131363,"10 SEAVER STREET, BOSTON, 02121",Camp Counselor,Day Care / Teacher,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0720348,42.3146159,"6 EMROSE TERRACE, BOSTON, 02125",Camp Counselor,Education / Tutoring,Recreation and Sports,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0757416,42.2782451,"2 VERA STREET, BOSTON, 02124",Art,Camp Counselor,Day Care / Teacher,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0936035,42.2764418,"4 MATTAPAN STREET, BOSTON, 02126",Health Care,Communications / Media / Journalism,Marine Sciences,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0200154,42.3847855,"2 BYRON STREET, BOSTON, 02128",Camp Counselor,Marine Sciences,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0591156,42.3176364,"15 PLEASANT STREET, BOSTON, 02125",Day Care / Teacher,Health Care,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0710033,42.2719595,"30 RIVER STREET, BOSTON, 02126",Camp Counselor,Dance (Performing Arts),Peer Leadership,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.054452,42.2893339,"20 WESTGLOW STREET, BOSTON, 02122",Camp Counselor,Day Care / Teacher,Health Care,FALSE,TRUE,street_address,ROOFTOP
+-71.054676,42.288907,"23 WESTGLOW STREET, BOSTON, 02122",Art,,,TRUE,TRUE,street_address,ROOFTOP
+-71.0705808,42.3026065,"18 HOMES AVENUE, BOSTON, 02122",Camp Counselor,Governmental / Public Service,Recreation and Sports,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0851686,42.3138596,"17 WAUMBECK STREET, BOSTON, 02121",Camp Counselor,Library Services,Marine Sciences,FALSE,FALSE,street_address,ROOFTOP
+-71.0921404,42.2777042,"25 WILMORE STREET, BOSTON, 02126",Camp Counselor,Day Care / Teacher,Health Care,FALSE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0700381,42.3036048,"14 TEBROC STREET, BOSTON, 02122",Camp Counselor,Day Care / Teacher,Governmental / Public Service,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0703123,42.3039279,"1 TEBROC STREET, BOSTON, 02122",Art,Camp Counselor,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1043706,42.2625949,"19 BELNEL ROAD, BOSTON, 02136",Camp Counselor,Health Care,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1318175,42.288816,"8 BASTO TERRACE, BOSTON, 02131",Camp Counselor,Community Organizing,Peer Leadership,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1303775,42.2827885,"25 ALBANO STREET, BOSTON, 02131",Administrative / Office Assistants,Day Care / Teacher,Health Care,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0798049,42.327597,"21 MOUNT PLEASANT AVENUE, BOSTON, 02119",Camp Counselor,Day Care / Teacher,Health Care,TRUE,FALSE,street_address,ROOFTOP
+-71.1443412,42.2427139,"8 RIVER STREET, BOSTON, 02136",Communications / Media / Journalism,Recreation and Sports,,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.0679227,42.303965,"9 SPEEDWELL STREET, BOSTON, 02122",Community Organizing,Education / Tutoring,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.076852,42.300375,"17 VASSAR STREET, BOSTON, 02121",Art,Community Organizing,Education / Tutoring,TRUE,FALSE,street_address,ROOFTOP
+-71.0315946,42.3753396,"4 BROOKS STREET, BOSTON, 02128",Education / Tutoring,Library Services,,TRUE,FALSE,street_address,ROOFTOP
+-71.0927027,42.3332716,"17 PRENTISS STREET, BOSTON, 02120",Art,Education / Tutoring,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.057999,42.375209,"20 PROSPECT STREET, BOSTON, 02129",Art,,,TRUE,FALSE,street_address,ROOFTOP
+-71.082532,42.3085966,"8 GENEVA AVENUE, BOSTON, 02121",Art,Library Services,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.102166,42.321959,"15 CHESTNUT AVENUE, BOSTON, 02130",Custodial Work / Maintenance,Environmental / Landscaping,Governmental / Public Service,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1309258,42.2369657,"2 YUILL CIRCLE, BOSTON, 02136",Administrative / Office Assistants,Education / Tutoring,Library Services,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.0604851,42.3510439,"8 TYLER STREET, BOSTON, 02111",Community Organizing,,,TRUE,FALSE,premise,ROOFTOP
+-71.0657716,42.2837156,"12 FULLER STREET, BOSTON, 02124",Administrative / Office Assistants,Custodial Work / Maintenance,,TRUE,FALSE,street_address,RANGE_INTERPOLATED
+-71.08603,42.3290581,"24 SHAWMUT AVENUE, BOSTON, 02118",Administrative / Office Assistants,Education / Tutoring,Health Care,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1445517,42.2737221,"22 LAGRANGE STREET, BOSTON, 02132",Art,Communications / Media / Journalism,Library Services,FALSE,FALSE,street_address,ROOFTOP
+-71.0978183,42.2788022,"7 COLORADO STREET, BOSTON, 02126",Camp Counselor,Day Care / Teacher,,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.1466469,42.2859192,"9 ANAWAN AVENUE, BOSTON, 02132",Day Care / Teacher,Education / Tutoring,Recreation and Sports,FALSE,FALSE,street_address,RANGE_INTERPOLATED
+-71.072228,42.284004,"7 ROCKWELL STREET, BOSTON, 02124",Administrative / Office Assistants,Camp Counselor,Day Care / Teacher,TRUE,FALSE,street_address,ROOFTOP
+-71.0821079,42.3084754,"13 GENEVA AVENUE, BOSTON, 02122",Camp Counselor,Day Care / Teacher,Peer Leadership,TRUE,TRUE,street_address,RANGE_INTERPOLATED
+-71.1231297,42.2488253,"2 GARFIELD AVENUE, BOSTON, 02136",Camp Counselor,Day Care / Teacher,Education / Tutoring,TRUE,FALSE,street_address,ROOFTOP
+-71.0724181,42.3152701,"19 MAGNOLIA SQUARE, BOSTON, 02125",Education / Tutoring,Health Care,Peer Leadership,TRUE,FALSE,street_address,RANGE_INTERPOLATED

@@ -1,20 +1,14 @@
 class Applicant < ActiveRecord::Base
 
-  before_validation :compute_grid_id
+  include Locatable
 
-  # A computed grid_id must be present
+  before_validation :compute_grid_id
   validates :grid_id, presence: true
 
-  def travel_times
-    TravelTime.where(input_id: grid_id)
-  end
-
-  def self.random
-    order('RANDOM()')
-  end
-
   def mode
-    # computing this on the fly makes it hard to query
+    # Computing this on the fly makes it hard to query.
+    # We could easily do this in a before_save, adding it
+    # as a queryable field to Applicant.
     has_transit_pass? ? :transit : :walking
   end
 
@@ -27,10 +21,4 @@ class Applicant < ActiveRecord::Base
   end
   alias_method :prefers_interest?, :prefers_interest
 
-  private 
-
-    def compute_grid_id
-      grid = Grid.intersecting_grid(location: location)
-      self.grid_id = grid.g250m_id if grid
-    end
 end

@@ -3,11 +3,16 @@ require 'test_helper'
 class ApplicantTest < Minitest::Test
 
   def setup
-    @applicant = Applicant.first
+    @applicant = applicant.dup
+    @applicant.save!
+  end
+
+  def teardown
+    @applicant.destroy!
   end
 
   def applicant
-    @_applicant ||= @applicant
+    @_applicant ||= Applicant.new(grid_id: 1)
   end
 
   def test_valid

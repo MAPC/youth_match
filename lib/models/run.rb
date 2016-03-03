@@ -4,7 +4,7 @@ class Run < ActiveRecord::Base
   has_many :placements
 
   enumerize :status, in: [:fresh, :running, :failed, :succeeded],
-    default: :fresh
+    predicates: true, default: :fresh
 
   def running!
     self.update_attribute(:status, :running)
