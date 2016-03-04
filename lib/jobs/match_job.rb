@@ -2,8 +2,9 @@ class MatchJob
 
   def perform!
     boot!
-    Applicant.random.find_each do |applicant|
+    Applicant.random.pluck(:id).each do |applicant_id|
       break if Position.available(@run).count == 0
+      applicant = Applicant.find(applicant_id)
       attempt_to_place(applicant)
     end
     successful_shutdown

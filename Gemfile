@@ -10,6 +10,8 @@ gem 'rgeo'
 gem 'activerecord-postgis-adapter'
 gem 'enumerize'
 
+gem 'descriptive_statistics', '~> 2.4.0'
+
 gem 'logger'
 
 group :test do

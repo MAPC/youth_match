@@ -1,5 +1,6 @@
 require 'active_record'
 require 'activerecord-postgis-adapter'
+require 'descriptive_statistics/safe'
 require 'enumerize'
 require 'erb'
 require 'logger'
