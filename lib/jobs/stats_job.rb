@@ -4,53 +4,68 @@ class StatsJob
     @run = Run.find(id)
   end
 
-  # Statistics on each run => store in new field :statistics or something
-
-  # Placement rate
-  # How many people who cared about matching interest got a job with a matching interest?
-  # How many people who cared about proximity got a job within a 15-minute commute?
-  # Histogram of travel times, in 5-minute buckets
-  # Average / median / total? travel times
-  # GeoJSON of placements, connected by line; points for unplaced applicants
-
   def perform!
-    # counters = OpenStruct.new(
-    #   matched_nearby: 0,
-    #   matched_with_interest: 0
-    # )
-    geojson = {type: 'FeatureCollection', features: []}
-    # Also want to keep track of travel times.
+    @stats = OpenStruct.new(
+      matched_nearby: 0, matched_with_interest: 0,
+      placement_rate: 0, average_travel_time: 0,
+      geojson: {type: 'FeatureCollection', features: []}
+    )
+
     @run.placements.includes(:applicant, :position).find_each do |placement|
-      applicant = placement.applicant
-      position  = placement.position
-
-      geojson[:features] << placement_line(placement)
-      geojson[:features] << applicant_point(applicant, true)
-      geojson[:features] << position_point(position, true)
-      # matched_nearby?(applicant, position)
-      # matched_with_interest?(applicant, position)
+      calculate_stats_for_placement(placement)
+      build_geojson_for_placement(placement)
     end
-    @run.unplaced.each do |id|
-      geojson[:features] << applicant_point(Applicant.find(id), false)
-    end
-
-    filename = "./tmp/exports/run-#{@run.id}-#{Time.now.to_i}.geojson"
-    File.open(filename, 'w') { |f| f.write(geojson.to_json) }
+    calculate_stats_for_run
+    build_geojson_for_run
+    @run.update_attribute(:statistics, @stats.to_json)
   end
 
   private
 
-  # def matched_nearby?(a, p)
-  #   if a.prefers_nearby && p.within(10.minutes, of: a)
-  #     counters.matched_nearby += 1
-  #   end
-  # end
+  def calculate_stats_for_placement(placement)
+    applicant = placement.applicant
+    position  = placement.position
 
-  # def matched_with_interest?(a, p)
-  #   if a.prefers_nearby && p.within(10.minutes, of: a)
-  #     counters.matched_nearby += 1
-  #   end
-  # end
+    matched_nearby?(applicant, position)
+    matched_with_interest?(applicant, position)
+  end
+
+  def calculate_stats_for_run
+    @stats.placement_rate = placement_rate
+    @stats.average_travel_time = average_travel_time
+  end
+
+  def build_geojson_for_placement(placement)
+    @stats.geojson[:features] << placement_line(placement)
+    @stats.geojson[:features] << applicant_point(placement.applicant, true)
+    @stats.geojson[:features] << position_point(placement.position, true)
+  end
+
+  def build_geojson_for_run
+    @run.unplaced.each do |id|
+      @stats.geojson[:features] << applicant_point(Applicant.find(id), false)
+    end
+  end
+
+  def average_travel_time
+    @run.placements.extend(DescriptiveStatistics).mean(&:travel_time)
+  end
+
+  def placement_rate
+    @run.unplaced.count.to_f / @run.placements.count.to_f
+  end
+
+  def matched_nearby?(a, p)
+    if a.prefers_nearby && p.within?(10.minutes, of: a)
+      @stats.matched_nearby += 1
+    end
+  end
+
+  def matched_with_interest?(a, p)
+    if a.prefers_nearby && p.within?(10.minutes, of: a)
+      @stats.matched_nearby += 1
+    end
+  end
 
   def placement_line(placement)
     applicant = placement.applicant
@@ -68,7 +83,7 @@ class StatsJob
         ]
       },
       properties: {
-        score: { total: total, travel: travel, interest: interest },
+        score: { total: total, travel: travel, interest: interest }.to_s,
         mode: applicant.mode
       }
     }
