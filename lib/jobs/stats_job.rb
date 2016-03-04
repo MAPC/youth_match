@@ -17,7 +17,7 @@ class StatsJob
     end
     calculate_stats_for_run
     build_geojson_for_run
-    @run.update_attribute(:statistics, @stats.to_json)
+    @run.update_attribute(:statistics, @stats.to_h.to_json)
   end
 
   private

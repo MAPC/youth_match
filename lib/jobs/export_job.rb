@@ -1,7 +1,11 @@
 class ExportJob
 
   def initialize(id)
-    @run = Run.find(id)
+    if id
+      @run = Run.find(id)
+    else
+      @run = Run.last
+    end
   end
 
   def perform!
@@ -20,7 +24,7 @@ class ExportJob
 
     geojson_file = "./tmp/exports/run-#{@run.id}-#{Time.now.to_i}.geojson"
     File.open(geojson_file, 'w') { |f|
-      f.write(@run.statistics['table']['geojson'].to_json)
+      f.write(@run.statistics['geojson'].to_json)
     }
   end
 

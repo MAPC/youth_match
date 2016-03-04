@@ -12,8 +12,12 @@ gem 'enumerize'
 gem 'foreman'
 gem 'descriptive_statistics', '~> 2.4.0',
   require: 'descriptive_statistics/safe'
-
 gem 'logger'
+
+# Web app
+gem 'sinatra'
+gem 'sinatra-activerecord'
+gem 'haml'
 
 group :test do
   gem 'minitest'       # Test framework
@@ -28,4 +32,5 @@ end
 group :development do
   gem 'guard'          # Autorun tests
   gem 'guard-minitest'
+  gem 'rerun' # Reload web app on changes
 end

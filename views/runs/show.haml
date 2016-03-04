@@ -1,0 +1,26 @@
+%h1 Run #{@run.id} at #{@run.created_at}
+
+%h2 Statistics
+
+%table
+  %tr
+    %td Matched nearby
+    %td= @run.statistics['matched_nearby']
+  %tr
+    %td Matched with interest
+    %td
+      = @run.statistics['matched_with_interest']
+  %tr
+    %td Placement Rate
+    %td
+      = succeed '%' do
+        = (@run.statistics['placement_rate'] * 100.0).round(1)
+  %tr
+    %td Average Travel Time
+    %td
+      = (@run.statistics['average_travel_time'] / 60).round(1)
+      minutes
+
+%h3 Map Data
+= @run.statistics['geojson']
+
