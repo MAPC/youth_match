@@ -3,13 +3,16 @@ class Applicant < ActiveRecord::Base
   include Locatable
 
   before_validation :compute_grid_id
+  before_save :assign_mode
+
   validates :grid_id, presence: true
 
   def mode
-    # Computing this on the fly makes it hard to query.
-    # We could easily do this in a before_save, adding it
-    # as a queryable field to Applicant.
-    has_transit_pass? ? :transit : :walking
+    if has_transit_pass_changed?
+      convert_pass_to_mode
+    else
+      read_attribute :mode
+    end
   end
 
   def interests
@@ -20,5 +23,15 @@ class Applicant < ActiveRecord::Base
     !prefers_nearby
   end
   alias_method :prefers_interest?, :prefers_interest
+
+  private
+
+  def convert_pass_to_mode
+    has_transit_pass? ? 'transit' : 'walking'
+  end
+
+  def assign_mode
+    self.mode = convert_pass_to_mode
+  end
 
 end

@@ -45,11 +45,19 @@ class ApplicantTest < Minitest::Test
   end
 
   def test_mode
-    applicant.has_transit_pass = false
-    assert_equal :walking, applicant.mode
+    @applicant.has_transit_pass = false
+    assert_equal 'walking', @applicant.mode
+    @applicant.save
+    assert_equal 'walking', @applicant.mode
 
-    applicant.has_transit_pass = true
-    assert_equal :transit, applicant.mode
+    @applicant.has_transit_pass = true
+    assert_equal 'transit', @applicant.mode
+    @applicant.update_attribute(:has_transit_pass, true)
+    assert_equal 'transit', @applicant.mode
+  end
+
+  def test_mode_is_enumerized
+    skip 'not critical'
   end
 
 end
