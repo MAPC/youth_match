@@ -16,8 +16,9 @@ class ImportJob
       load_positions
       $logger.info '----> DONE'
     end
-  rescue
+  rescue StandardError => e
     $logger.error '----> Rolling back changes.'
+    $logger.error "----> Error: #{e.message} #{e.try(:record).inspect}"
   end
 
   private
@@ -55,7 +56,7 @@ class ImportJob
 
   def assert_file(filename)
     file = File.join(@directory, filename)
-    raise ArgumentError, "File does not exist: #{file}" unless File.exists?(file)
+    raise ArgumentError, "File does not exist: #{file}" unless File.exist?(file)
     file
   end
 end
