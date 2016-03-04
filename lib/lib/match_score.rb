@@ -4,6 +4,14 @@ class MatchScore < Score
     (travel_score + interest_score).to_i
   end
 
+  def to_h
+    { score: score,
+      travel_score: travel_score,
+      interest_score: interest_score }
+  end
+
+  private
+
   def travel_score
     TravelScore.new(applicant: @applicant, position: @position).score
   end
