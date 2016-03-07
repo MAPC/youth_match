@@ -83,7 +83,7 @@ class StatsJob
         ]
       },
       properties: {
-        score: { total: total, travel: travel, interest: interest }.to_s,
+        score: { total: total, travel: travel, interest: interest },
         mode: applicant.mode
       }
     }

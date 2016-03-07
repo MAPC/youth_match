@@ -1,4 +1,11 @@
+%link{rel: 'stylesheet', href: 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css'}
+%script{src: 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'}
 %h1 Run #{@run.id} at #{@run.created_at}
+
+-# TODO:
+-#  Link to export the CSV of placements for a run
+-#  Link to mark as selected?
+-#  Link to mark as emails-sent, set expiration?
 
 %h2 Statistics
 
@@ -21,6 +28,71 @@
       = (@run.statistics['average_travel_time'] / 60).round(1)
       minutes
 
-%h3 Map Data
-= @run.statistics['geojson']
 
+%h3 Map Data
+#map{style: 'width: 1200px; height: 800px;'}
+
+%ul
+  %li Green circle: placed applicant
+  %li Orange circle: unplaced applicant
+  %li Blue circle: position
+  %li Lines connecting applicant and position are weighted by total score
+
+:javascript
+
+  var map = L.map('map').setView([42.328985,-71.0753532], 13);
+  const ATTRIBUTION = 'Map tiles by <a href="http://mapc.org">MAPC</a>, ' +
+                  'Data by <a href="http://www.mass.gov/mgis/">MassGIS</a>.';
+
+  L.tileLayer('http://tiles.mapc.org/basemap/{z}/{x}/{y}.png', {
+    minZoom: 9,
+    maxZoom: 17,
+    attribution: ATTRIBUTION
+  }).addTo(map);
+
+  var data = #{@run.statistics['geojson'].to_json}
+
+  var circle = function (feature) {
+    var unplaced = "#FF7800"
+      ,   placed = "#22FF90"
+      ,   color  = unplaced
+      ,   radius = 8
+      ,  opacity = 0.8;
+    if (feature.properties.placed) {
+      color   = placed;
+      radius  = 5;
+      opacity = 0.5;
+    };
+    if (feature.properties.type == "position") {
+      color = "#2290FF";
+    }
+    return {
+      radius:      radius,
+      fillColor:   color,
+      opacity:     0,
+      fillOpacity: opacity
+    }
+  };
+
+  function scoreWeight(score) {
+    var x = score;
+    return (0.225 * x) + 2.75;
+  }
+
+  L.geoJson(data, {
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, circle(feature));
+    },
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(feature.properties);
+    },
+    style: function (feature) {
+      if (feature.geometry.type == "LineString") {
+        return {
+          color: '#999999',
+          weight: scoreWeight(feature.properties.score.total),
+          opacity: 1
+        };
+      }
+    }
+  }).addTo(map);
