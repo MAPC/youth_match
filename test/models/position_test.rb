@@ -61,7 +61,7 @@ class PositionTest < Minitest::Test
 
   def test_available
     before = Position.available(@run).count
-    @p = @run.placements.create!(position: @position, applicant: @applicant)
+    @p = @run.placements.create!(position: @position, applicant: @applicant, index: 1)
     after = Position.available(@run).count
     assert_equal 1, (before - after)
   ensure

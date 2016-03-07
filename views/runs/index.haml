@@ -1,0 +1,10 @@
+%h1 Runs
+
+-# TODO:
+-#   Name 'Run #{id}'
+-#   Make a table, with statistics, created_at at end
+-#   Add an X button that deletes the run (or marks it hidden)
+
+- @runs.each do |run|
+  %li
+    %a{href: "/runs/#{run.id}"}= run.created_at

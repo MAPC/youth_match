@@ -5,7 +5,9 @@ class MatchScore < Score
   end
 
   def to_h
-    { score: score,
+    { applicant_id: @applicant.id,
+      position_id: @position.id,
+      total: score,
       travel_score: travel_score,
       interest_score: interest_score }
   end
@@ -13,11 +15,15 @@ class MatchScore < Score
   private
 
   def travel_score
-    TravelScore.new(applicant: @applicant, position: @position).score
+    @_travel_score ||= TravelScore.new(
+      applicant: @applicant, position: @position
+    ).score
   end
 
   def interest_score
-    InterestScore.new(applicant: @applicant, position: @position).score
+    @_interest_score ||= InterestScore.new(
+      applicant: @applicant, position: @position
+    ).score
   end
 
 end

@@ -1,7 +1,11 @@
 class ExportJob
 
   def initialize(id)
-    @run = Run.find(id)
+    if id
+      @run = Run.find(id)
+    else
+      @run = Run.last
+    end
   end
 
   def perform!
@@ -13,14 +17,14 @@ class ExportJob
            order(:applicant_id).
            find_each do |p|
         v = [p.uuid, p.applicant_id, p.position_id,
-                  p.applicant.uuid, p.position.uuid]
+                  p.applicant.uuid, p.position.try(:uuid)]
         csv << v
       end
     end
 
     geojson_file = "./tmp/exports/run-#{@run.id}-#{Time.now.to_i}.geojson"
     File.open(geojson_file, 'w') { |f|
-      f.write(@run.statistics['table']['geojson'].to_json)
+      f.write(@run.statistics['geojson'].to_json)
     }
   end
 
