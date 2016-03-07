@@ -10,7 +10,8 @@ class PlacementTest < Minitest::Test
     @placement = Placement.create!(
       run:       @run,
       applicant: @applicant,
-      position:  @position
+      position:  @position,
+      index: 1
     )
   end
 
@@ -47,6 +48,10 @@ class PlacementTest < Minitest::Test
   def test_requires_run_index
     placement.index = nil
     refute placement.valid?
+  end
+
+  def test_opportunities
+    assert_respond_to placement, :opportunities
   end
 
   def test_percentile

@@ -24,11 +24,15 @@ class Applicant < ActiveRecord::Base
   end
   alias_method :prefers_interest?, :prefers_interest
 
+  # Requires a lot of collaborators and information to test.
+  # This may not be the best architecture, but it works for now.
+  # At its best, from a critical code perspective, it reflects
+  # the autonomy and agency of the job-seeker.
   def get_a_job!(run, index)
-    best_job, opps = JobFinder.new(self, run).best_job
-    params = { run: run, index: index, position: best_job,
+    best_job, opps = JobFinder.new(applicant: self, run: run).best_job_and_opportunities
+    params = { applicant: self, index: index, position: best_job,
       opportunities: opps }
-    self.placements.create! params
+    run.placements.create! params
   end
 
   private

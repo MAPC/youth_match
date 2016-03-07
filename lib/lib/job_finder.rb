@@ -18,8 +18,12 @@ class JobFinder
 
   def best_job
     return nil if opps.count == 0
-    best_job_id = opps.max_by { |opp| opp[:total] }[:id]
-    [Position.find(best_job_id), opps]
+    best_job_id = opps.max_by { |opp| opp[:total] }[:position_id]
+    Position.find(best_job_id)
+  end
+
+  def best_job_and_opportunities
+    [best_job, opportunities]
   end
 
 end

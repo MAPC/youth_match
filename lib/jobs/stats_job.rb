@@ -24,7 +24,7 @@ class StatsJob
 
   def calculate_stats_for_placement(placement)
     applicant = placement.applicant
-    position  = placement.position
+    position  = placement.position || NullPosition.new
 
     matched_nearby?(applicant, position)
     matched_with_interest?(applicant, position)
@@ -36,15 +36,15 @@ class StatsJob
   end
 
   def build_geojson_for_placement(placement)
-    @stats.geojson[:features] << placement_line(placement)
-    @stats.geojson[:features] << applicant_point(placement.applicant, true)
-    @stats.geojson[:features] << position_point(placement.position, true)
+    @stats.geojson[:features] << applicant_point(placement.applicant, !placement.position.nil?)
+    unless placement.position.nil?
+      @stats.geojson[:features] << position_point(placement.position, true)
+      @stats.geojson[:features] << placement_line(placement)
+    end
   end
 
   def build_geojson_for_run
-    @run.unplaced.each do |id|
-      @stats.geojson[:features] << applicant_point(Applicant.find(id), false)
-    end
+    # NO OP
   end
 
   def average_travel_time
@@ -119,6 +119,12 @@ class StatsJob
         placed: placed
       }
     }
+  end
+
+  class NullPosition
+    def within?(*args) ; false ; end
+    def within(*args) ; [] ; end
+    def nil? ; true ; end
   end
 
 end

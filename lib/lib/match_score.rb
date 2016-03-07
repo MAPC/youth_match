@@ -5,7 +5,9 @@ class MatchScore < Score
   end
 
   def to_h
-    { total: score,
+    { applicant_id: @applicant.id,
+      position_id: @position.id,
+      total: score,
       travel_score: travel_score,
       interest_score: interest_score }
   end

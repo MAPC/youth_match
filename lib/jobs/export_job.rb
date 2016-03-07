@@ -17,7 +17,7 @@ class ExportJob
            order(:applicant_id).
            find_each do |p|
         v = [p.uuid, p.applicant_id, p.position_id,
-                  p.applicant.uuid, p.position.uuid]
+                  p.applicant.uuid, p.position.try(:uuid)]
         csv << v
       end
     end
