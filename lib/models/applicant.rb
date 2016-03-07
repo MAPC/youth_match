@@ -24,6 +24,13 @@ class Applicant < ActiveRecord::Base
   end
   alias_method :prefers_interest?, :prefers_interest
 
+  def get_a_job!(run, index)
+    best_job, opps = JobFinder.new(self, run).best_job
+    params = { run: run, index: index, position: best_job,
+      opportunities: opps }
+    self.placements.create! params
+  end
+
   private
 
   def convert_pass_to_mode

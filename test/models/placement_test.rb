@@ -39,13 +39,22 @@ class PlacementTest < Minitest::Test
     refute placement.valid?
   end
 
-  def test_requires_position
+  def test_does_not_require_position
     placement.position = nil
+    assert placement.valid?
+  end
+
+  def test_requires_run_index
+    placement.index = nil
     refute placement.valid?
   end
 
+  def test_percentile
+    skip "for the moment, but we'll want this"
+  end
+
   def test_uuid
-    assert @placement.reload.uuid
+    assert placement.reload.uuid
   end
 
 end

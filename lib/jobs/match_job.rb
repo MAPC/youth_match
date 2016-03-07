@@ -2,10 +2,10 @@ class MatchJob
 
   def perform!
     boot!
-    Applicant.random.pluck(:id).each do |applicant_id|
+    Applicant.random.pluck(:id).each_with_index do |id, index|
       break if Position.available(@run).count == 0
-      applicant = Applicant.find(applicant_id)
-      attempt_to_place(applicant)
+      Applicant.find(id).get_a_job!(@run, index)
+      log_progress
     end
     successful_shutdown
   rescue StandardError => e
@@ -23,43 +23,24 @@ class MatchJob
     @run.running!
   end
 
-  def find_best_job_for(applicant)
-    Position.available(@run).
-      within(40.minutes, of: applicant, via: applicant.mode).
-      max_by do |position|
-        MatchScore.new(applicant: applicant, position: position).score
-      end
-  end
-
-  def attempt_to_place(applicant)
-    if best_job = find_best_job_for(applicant)
-      @run.placements.create! applicant: applicant, position: best_job
-      pass
-    else
-      @run.unplaced << applicant.id
-      fail
-    end
-  end
-
   def successful_shutdown
-    $logger << "\n"
+    log_newline
     $logger.info '----> No more positions available, finishing.'
     @run.succeeded!
   end
 
   def failing_shutdown(e)
-    puts "\n"
-    $logger.error "An error occurred: #{e.message}\n\t#{e.try(:record).inspect}"
+    log_newline
+    $logger.fatal "An error occurred: #{e.message}\n\t#{e.try(:record).inspect}"
     @run.failed!
   end
 
-  def pass
+  def log_progress
     $logger << '.'
   end
 
-  def fail
-    $logger << 'F'
+  def log_newline
+    $logger << "\n"
   end
-
 
 end
