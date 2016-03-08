@@ -7,6 +7,8 @@ require 'tilt/haml'
 
 class App < Sinatra::Base
 
+  set :method_override, true
+
   get '/' do
     "Hello, world!"
   end
@@ -19,6 +21,11 @@ class App < Sinatra::Base
   get '/runs/:id' do
     @run = Run.find params[:id]
     haml :'runs/show'
+  end
+
+  delete '/runs/:id' do
+    Run.find(params[:id]).destroy
+    redirect '/runs'
   end
 end
 

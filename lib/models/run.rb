@@ -1,6 +1,8 @@
 class Run < ActiveRecord::Base
   extend Enumerize
 
+  default_scope { order(:id) }
+
   has_many :placements, dependent: :destroy
 
   enumerize :status, in: [:fresh, :running, :failed, :succeeded],

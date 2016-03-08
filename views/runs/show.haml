@@ -5,12 +5,6 @@
 %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js'}
 %h1 Run #{@run.id} at #{@run.created_at}
 
--# TODO:
--#  Add histogram graph of data (JSFiddle with http://bl.ocks.org/mbostock/3048450 using actual histogram data until it's good, then copy into this page.)
--#  Link to export the CSV of placements for a run
--#  Link to mark as selected?
--#  Link to mark as emails-sent, set expiration?
-
 %h2 Statistics
 
 %table
@@ -46,6 +40,8 @@
 
 :javascript
 
+  var values = #{@run.statistics.fetch('histogram').map(&:last).unshift('data1')};
+
   var chart = c3.generate({
     bindto: '#chart',
     data: {
@@ -53,7 +49,7 @@
         columns: [
           ['x1', 5, 10, 15, 20, 25, 30, 35, 40],
           ['x2', 0],
-          ['data1', 66, 100, 61, 26, 21, 30, 11, 14],
+          values,
           ['data2', 0]
         ],
         type: 'bar'
