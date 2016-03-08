@@ -1,4 +1,12 @@
+require 'rounding'
+require './lib/refinements/histogram'
+
 class StatsJob
+
+  using Histogram
+  # TODO
+  #  - Each: Add travel times to an array
+  #  - End: to_histogram
 
   def initialize(id)
     @run = Run.find(id)
@@ -7,7 +15,8 @@ class StatsJob
   def perform!
     @stats = OpenStruct.new(
       matched_nearby: 0, matched_with_interest: 0,
-      placement_rate: 0, average_travel_time: 0,
+      placement_rate: 0, average_travel_time: 0, travel_times: [],
+      total_travel_time: 0,
       geojson: {type: 'FeatureCollection', features: []}
     )
 
@@ -26,6 +35,8 @@ class StatsJob
     applicant = placement.applicant
     position  = placement.position || NullPosition.new
 
+    @stats.travel_times << placement.travel_time
+
     matched_nearby?(applicant, position)
     matched_with_interest?(applicant, position)
   end
@@ -33,6 +44,9 @@ class StatsJob
   def calculate_stats_for_run
     @stats.placement_rate = placement_rate
     @stats.average_travel_time = average_travel_time
+    histogram = @stats.travel_times.compact.map{|s| s / 60}.to_histogram(interval: 5)
+    @stats.histogram = histogram.sort_by { |k, _v| k.to_i }
+    @stats.total_travel_time = @stats.travel_times.compact.sum
   end
 
   def build_geojson_for_placement(placement)
@@ -48,6 +62,8 @@ class StatsJob
   end
 
   def average_travel_time
+    # Now that we have an array of travel times available, we should
+    # edit this method to use that array.
     @run.placements.extend(DescriptiveStatistics).mean(&:travel_time)
   end
 

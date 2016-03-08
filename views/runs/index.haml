@@ -5,6 +5,44 @@
 -#   Make a table, with statistics, created_at at end
 -#   Add an X button that deletes the run (or marks it hidden)
 
-- @runs.each do |run|
-  %li
-    %a{href: "/runs/#{run.id}"}= run.created_at
+%table
+  %thead
+    %th Run ID
+    %th Placement Rate
+    %th Preference Matched
+    %th Average Travel Time
+    %th Cumulative Travel Time
+    %th Status
+    %th Timestamp
+    %th Export
+    %th Mark as mailed
+    %th Delete
+  %tbody
+    - @runs.each do |run|
+      %tr
+        %td
+          %a{href: "/runs/#{run.id}"}= run.id
+        %td
+          = succeed '%' do
+            = (run.statistics.fetch('placement_rate', 0) * 100.0).round(1)
+        %td --
+        %td
+          = (run.statistics.fetch('average_travel_time', 0) / 60).round(1)
+          minutes
+        %td
+          = (run.statistics.fetch('total_travel_time', 0) / 60 / 60).round(2)
+          hours
+        %td
+          = run.status
+        %td
+          = run.created_at
+        %td --
+        %td --
+        %td
+          %form{method: :post, action: "/runs/#{run.id}", onsubmit: "return confirm('Are you sure?');"}
+            %input{type: 'hidden', name: '_method', value: 'delete'}
+            %button{type: 'submit'}
+              = "Delete run #{run.id}"
+
+
+</form>

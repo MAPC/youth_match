@@ -13,6 +13,7 @@ gem 'foreman'
 gem 'descriptive_statistics', '~> 2.4.0',
   require: 'descriptive_statistics/safe'
 gem 'logger'
+gem 'rounding'
 
 # Web app
 gem 'sinatra'
