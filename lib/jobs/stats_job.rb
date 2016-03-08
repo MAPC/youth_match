@@ -16,6 +16,7 @@ class StatsJob
     @stats = OpenStruct.new(
       matched_nearby: 0, matched_with_interest: 0,
       placement_rate: 0, average_travel_time: 0, travel_times: [],
+      total_travel_time: 0,
       geojson: {type: 'FeatureCollection', features: []}
     )
 
@@ -45,6 +46,7 @@ class StatsJob
     @stats.average_travel_time = average_travel_time
     histogram = @stats.travel_times.compact.map{|s| s / 60}.to_histogram(interval: 5)
     @stats.histogram = histogram.sort_by { |k, _v| k.to_i }
+    @stats.total_travel_time = @stats.travel_times.compact.sum
   end
 
   def build_geojson_for_placement(placement)
