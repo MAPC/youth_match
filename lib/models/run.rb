@@ -8,6 +8,14 @@ class Run < ActiveRecord::Base
   enumerize :status, in: [:fresh, :running, :failed, :succeeded],
     predicates: true, default: :fresh
 
+  def successful_placements
+    placements.where.not(position: nil)
+  end
+
+  def failed_placements
+    placements.where(position: nil)
+  end
+
   def running!
     self.update_attribute(:status, :running)
   end

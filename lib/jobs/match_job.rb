@@ -1,8 +1,9 @@
 class MatchJob
 
-  def perform!
+  def perform!(limit=nil)
     boot!
-    Applicant.random.pluck(:id).each_with_index do |id, index|
+    @limit = limit
+    applicants.each_with_index do |id, index|
       break if Position.available(@run).count == 0
       Applicant.find(id).get_a_job!(@run, index)
       log_progress
@@ -23,9 +24,19 @@ class MatchJob
     @run.running!
   end
 
+  def applicants
+    # nil limit will return all
+    Applicant.random.limit(@limit).pluck(:id)
+  end
+
   def successful_shutdown
     log_newline
-    $logger.info '----> No more positions available, finishing.'
+    msg = if @limit
+      "----> Placed #{@limit} applicants, as requested; finishing."
+    else
+      '----> No more positions available, finishing.'
+    end
+    $logger.info msg
     @run.succeeded!
   end
 

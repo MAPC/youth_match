@@ -68,18 +68,20 @@ class StatsJob
   end
 
   def placement_rate
-    @run.unplaced.count.to_f / @run.placements.count.to_f
+    (@run.successful_placements.count / @run.placements.count.to_f * 100).round(2)
   end
 
   def matched_nearby?(a, p)
-    if a.prefers_nearby && p.within?(10.minutes, of: a)
+    return if p.nil?
+    if a.prefers_nearby? && p.within?(10.minutes, of: a)
       @stats.matched_nearby += 1
     end
   end
 
   def matched_with_interest?(a, p)
-    if a.prefers_nearby && p.within?(10.minutes, of: a)
-      @stats.matched_nearby += 1
+    return if p.nil?
+    if a.prefers_interest? && a.interests.include?(p.category)
+      @stats.matched_with_interest += 1
     end
   end
 
