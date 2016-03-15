@@ -16,6 +16,10 @@ class Run < ActiveRecord::Base
     placements.where(position: nil)
   end
 
+  def sql_seed
+    seed / 10_000.to_f
+  end
+
   def running!
     self.update_attribute(:status, :running)
   end
