@@ -5,44 +5,67 @@
 -#   Make a table, with statistics, created_at at end
 -#   Add an X button that deletes the run (or marks it hidden)
 
-%table
+%table.ui.selectable.compact.table
   %thead
     %th Run ID
+    %th Placements
     %th Placement Rate
-    %th Preference Matched
-    %th Average Travel Time
-    %th Cumulative Travel Time
+    %th
+      Preference
+      %br
+      Matched
+    %th Avg Travel Time
+    %th Daily Travel Time
     %th Status
     %th Timestamp
-    %th Export
-    %th Mark as mailed
-    %th Delete
+    %th
+      Export
+      %br
+      Mail Merge
+    %th
+      Set
+      %br
+      Expiration
+    %th
+      Delete
+      %br
+      Run
   %tbody
     - @runs.each do |run|
-      %tr
+      - mood = run.succeeded? ? 'positive' : 'warning'
+
+      %tr{class: mood}
         %td
           %a{href: "/runs/#{run.id}"}= run.id
+        %td= run.placements.count
         %td
           = succeed '%' do
-            = (run.statistics.fetch('placement_rate', 0) * 100.0).round(1)
-        %td --
+            = run.statistics.fetch('placement_rate', 0).round(1)
+        %td
+          = succeed '%' do
+            = ((run.statistics.fetch('matched_nearby', 0) + run.statistics.fetch('matched_with_interest', 0)) / run.placements.count.to_f * 100).round(1)
         %td
           = (run.statistics.fetch('average_travel_time', 0) / 60).round(1)
-          minutes
+          mins
         %td
           = (run.statistics.fetch('total_travel_time', 0) / 60 / 60).round(2)
           hours
         %td
-          = run.status
+          - if run.succeeded?
+            %i.checkmark.icon
+          - else
+            %i.attention.icon
+            = run.status
         %td
-          = run.created_at
-        %td --
-        %td --
+          %small= run.created_at
+        %td
+          %button.disabled.circular.ui.icon.button
+            %i.cloud.download.icon
+        %td
+          %button.disabled.circular.ui.icon.button
+            %i.wait.icon
         %td
           %form{method: :post, action: "/runs/#{run.id}", onsubmit: "return confirm('Are you sure?');"}
             %input{type: 'hidden', name: '_method', value: 'delete'}
-            %button{type: 'submit'}
-              = "Delete run #{run.id}"
-
-
-</form>
+            %button.basic.red.circular.ui.icon.button{type: 'submit'}
+              %i.remove.icon
