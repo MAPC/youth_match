@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+puts '----> Starting frameworkless console'
+require './environment'
+require 'irb'
+ARGV.clear
+IRB.start
