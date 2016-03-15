@@ -13,7 +13,7 @@ namespace :lottery do
     Rake::Task['lottery:check'].invoke
     begin
       $logger.info '----> Starting match!'
-      id = MatchJob.new.perform!(args[:limit])
+      id = MatchJob.new(args[:limit]).perform!
       Rake::Task['lottery:stats'].invoke(id)
       # TODO: Move to controller action
       # Rake::Task['lottery:export'].invoke(id)
@@ -34,14 +34,6 @@ namespace :lottery do
     rescue StandardError => e
       $logger.error "----> Checks errored with error:\n\t#{e.message}"
     end
-  end
-
-  desc 'Info on how the matching process is going.'
-  task progress: :environment do
-    $logger.debug "----> Running task `lottery:progress` in #{DATABASE_ENV} environment."
-    $logger.info  '----> Checking progress'
-    $logger.error '----> FAIL: Not yet implemented'
-    exit 1
   end
 
   desc 'Import applicants and positions CSV, which must be geocoded'

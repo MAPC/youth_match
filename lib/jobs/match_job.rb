@@ -1,8 +1,13 @@
 class MatchJob
 
-  def perform!(limit=nil)
-    boot!
+  def initialize(limit: nil, seed: nil)
     @limit = limit
+    @seed = seed || random_seed
+  end
+
+  def perform!
+    boot!
+    log_seed
     applicants.each_with_index do |id, index|
       break if Position.available(@run).count == 0
       Applicant.find(id).get_a_job!(@run, index)
@@ -25,8 +30,20 @@ class MatchJob
   end
 
   def applicants
-    # nil limit will return all
+    set_seed
     Applicant.random.limit(@limit).pluck(:id)
+  end
+
+  def random_seed
+    rand(1000..9999)
+  end
+
+  def set_seed
+    exec "SELECT setseed(#{@seed/10_000.to_f})"
+  end
+
+  def exec(sql)
+    ActiveRecord::Base.connection.execute(sql)
   end
 
   def successful_shutdown
@@ -52,6 +69,10 @@ class MatchJob
 
   def log_newline
     $logger << "\n"
+  end
+
+  def log_seed
+    $logger.info "Running with seed #{@seed}"
   end
 
 end
