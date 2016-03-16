@@ -7,13 +7,13 @@ namespace :lottery do
   end
 
   desc 'Runs the matching process.'
-  task :run, [:limit] => :environment do |t, args|
+  task :run, [:limit, :seed] => :environment do |t, args|
     $logger.debug "----> Running task `lottery:run` in #{DATABASE_ENV} environment."
     $logger.info '----> Running checks first'
     Rake::Task['lottery:check'].invoke
     begin
       $logger.info '----> Starting match!'
-      id = MatchJob.new(args[:limit]).perform!
+      id = MatchJob.new(limit: args[:limit], seed: args[:seed]).perform!
       Rake::Task['lottery:stats'].invoke(id)
       # TODO: Move to controller action
       # Rake::Task['lottery:export'].invoke(id)
@@ -21,6 +21,7 @@ namespace :lottery do
     rescue StandardError => e
       $logger.error '----> FAIL: Task errored out.'
       $logger.error "----> #{e.message}"
+      $logger.error e.backtrace.join("\n")
       exit 1
     end
   end

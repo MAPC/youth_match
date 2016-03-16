@@ -1,13 +1,12 @@
 class MatchJob
 
   def initialize(limit: nil, seed: nil)
-    @limit = limit
-    @seed = seed || random_seed
+    params = { limit: limit, seed: seed || random_seed }
+    @run = Run.create!(params)
   end
 
   def perform!
     boot!
-    log_seed
     applicants.each_with_index do |id, index|
       break if Position.available(@run).count == 0
       Applicant.find(id).get_a_job!(@run, index)
@@ -25,21 +24,21 @@ class MatchJob
   private
 
   def boot!
-    @run = Run.create!
+    log_seed
     @run.running!
   end
 
   def applicants
-    set_seed
-    Applicant.random.limit(@limit).pluck(:id)
+    set_seed(@run.sql_seed)
+    Applicant.random.limit(@run.limit).pluck(:id)
   end
 
   def random_seed
     rand(1000..9999)
   end
 
-  def set_seed
-    exec "SELECT setseed(#{@seed/10_000.to_f})"
+  def set_seed(seed)
+    exec "SELECT setseed(#{seed})"
   end
 
   def exec(sql)
@@ -72,7 +71,7 @@ class MatchJob
   end
 
   def log_seed
-    $logger.info "Running with seed #{@seed}"
+    $logger.info "Running with seed #{@run.seed}"
   end
 
 end

@@ -3,7 +3,7 @@ require 'test_helper'
 class RunTest < Minitest::Test
 
   def setup
-    @run = Run.create!
+    @run = Run.create!(limit: 10, seed: 1000)
   end
 
   def teardown
@@ -27,12 +27,19 @@ class RunTest < Minitest::Test
     assert_equal 'succeeded', @run.status
   end
 
-  def test_run_performs_match_job
-    skip 'Does performing the job get done by a collaborator?'
+  def test_limit
+    assert_respond_to @run, :limit
+    assert_equal 10, @run.limit
   end
 
-  def test_generates_stats_after_run
-    skip 'Could be another object that does this'
+  def test_seed
+    assert_respond_to @run, :seed
+    assert_equal 1000, @run.seed
+  end
+
+  def test_sql_seed
+    assert_respond_to @run, :sql_seed
+    assert_equal 0.1000, @run.sql_seed
   end
 
 end
