@@ -2,6 +2,8 @@ require_relative './resource'
 
 class ICIMS::Workflow < ICIMS::Resource
 
+  attr_reader :id, :job_id, :person_id, :status
+
   def initialize(id: , job_id: , person_id: , status: )
     @id = id
     @job_id = job_id
@@ -34,13 +36,13 @@ class ICIMS::Workflow < ICIMS::Resource
     response = post '/search/applicantworkflows',
       { body: build_filters(options).to_json, headers: local_headers }
     handle response do |r|
-      r['searchResults'].map { |res| find(res['id']) }
+      Array(r['searchResults']).map { |res| find(res['id']) }
     end
   end
 
   private
 
-  def self.build_filters
+  def self.build_filters(options)
     filters = { filters: [], operator: '&' }
     filters[:filters] << person_filter(options) if options.include?(:person)
   end

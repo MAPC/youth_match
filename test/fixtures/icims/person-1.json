@@ -1,0 +1,34 @@
+{
+    "firstname": "Shari",
+    "addresses": [
+        {
+            "addresscity": "Boston",
+            "entry": 1001,
+            "addresszip": "02120",
+            "addressstate": {
+                "id": "D41001024",
+                "abbrev": "MA",
+                "value": "Massachusetts"
+            },
+            "addresscountry": {
+                "id": "D41001",
+                "abbrev": "US",
+                "value": "United States"
+            },
+            "addresstype": {
+                "id": "D84002",
+                "formattedvalue": "Home",
+                "value": "Home"
+            },
+            "addressstreet1": "1483 Tremont Street"
+        }
+    ],
+    "links": [
+        {
+            "rel": "self",
+            "title": "The current profile being viewed.",
+            "url": "https://api.icims.com/customers/6405/people/8142"
+        }
+    ],
+    "lastname": "Davis"
+}

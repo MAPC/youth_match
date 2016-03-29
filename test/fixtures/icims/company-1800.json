@@ -1,0 +1,41 @@
+{
+    "addresses": [
+        {
+            "addresscity": "Roxbury",
+            "entry": 23,
+            "addresszip": "02119-1227",
+            "addressstate": {
+                "id": "D41001024",
+                "abbrev": "MA",
+                "value": "Massachusetts"
+            },
+            "addresscountry": {
+                "id": "D41001",
+                "abbrev": "US",
+                "value": "United States"
+            },
+            "addressstreet1": "3035 Washington St"
+        },
+        {
+            "entry": 409,
+            "addresscountry": {
+                "id": "D41001",
+                "abbrev": "US",
+                "value": "United States"
+            }
+        }
+    ],
+    "folder": {
+        "id": "D33001",
+        "formattedvalue": "Active Location",
+        "value": "Active Location"
+    },
+    "name": "826 Boston, Inc.",
+    "links": [
+        {
+            "rel": "self",
+            "title": "The current profile being viewed.",
+            "url": "https://api.icims.com/customers/6405/companies/1800"
+        }
+    ]
+}

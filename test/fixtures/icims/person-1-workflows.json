@@ -1,0 +1,12 @@
+{
+    "searchResults": [
+        {
+            "self": "https://api.icims.com/customers/6405/applicantworkflows/19287",
+            "id": 19287
+        },
+        {
+            "self": "https://api.icims.com/customers/6405/applicantworkflows/19288",
+            "id": 19288
+        }
+    ]
+}
