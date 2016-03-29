@@ -1,0 +1,32 @@
+{
+    "jobid": "2016-1123",
+    "folder": {
+        "id": "D31001",
+        "formattedvalue": "Approved",
+        "value": "Approved"
+    },
+    "hiringmanager": {
+        "profile": "https://api.icims.com/customers/6405/people/327",
+        "id": 327,
+        "value": "Schmidt St. Fleur"
+    },
+    "jobtitle": "Theater & Writing  Group Mentor",
+    "recruiter": {
+        "profile": "https://api.icims.com/customers/6405/people/138",
+        "id": 138,
+        "value": "Jared Blandino"
+    },
+    "links": [
+        {
+            "rel": "self",
+            "title": "The current profile being viewed.",
+            "url": "https://api.icims.com/customers/6405/jobs/1123"
+        }
+    ],
+    "joblocation": {
+        "companyid": 1800,
+        "address": "https://api.icims.com/customers/6405/companies/1800/fields/addresses/23",
+        "id": 23,
+        "value": "826 Boston, Inc. - 3035 Washington St  Roxbury, Massachusetts 02119-1227 United States "
+    }
+}

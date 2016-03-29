@@ -5,6 +5,9 @@ require 'enumerize'
 require 'erb'
 require 'logger'
 require 'yaml'
+require 'dotenv'
+
+Dotenv.load
 
 require_relative './lib/refinements/ostructable'
 

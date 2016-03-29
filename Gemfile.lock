@@ -50,6 +50,9 @@ GEM
     haml (4.0.7)
       tilt
     hashdiff (0.3.0)
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.3)
     listen (3.0.6)
@@ -61,6 +64,7 @@ GEM
     minitest (5.8.4)
     minitest-focus (1.1.2)
       minitest (>= 4, < 6)
+    multi_xml (0.5.5)
     nenv (0.3.0)
     notiffany (0.0.8)
       nenv (~> 0.1)
@@ -124,6 +128,7 @@ DEPENDENCIES
   guard
   guard-minitest
   haml
+  httparty
   logger
   minitest
   minitest-focus

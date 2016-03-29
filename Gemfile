@@ -15,6 +15,9 @@ gem 'descriptive_statistics', '~> 2.4.0',
 gem 'logger'
 gem 'rounding'
 
+# Working with APIs
+gem 'httparty'
+
 # Web app
 gem 'sinatra'
 gem 'sinatra-activerecord'
