@@ -34,4 +34,13 @@ class ICIMS::Resource
     {"Authorization" => "Basic #{ENV['ICIMS_API_KEY']}"}
   end
 
+  def self.limit_results(results, limit)
+    base_results = Array(results['searchResults'])
+    results = if limit
+      base_results.first(limit.to_i)
+    else
+      base_results
+    end
+  end
+
 end

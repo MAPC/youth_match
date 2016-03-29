@@ -32,6 +32,13 @@ class ICIMS::WorkflowTest < Minitest::Test
     assert_equal 1, workflow.person.id
   end
 
+  def test_eligible
+    stub_eligible
+    100.times { |i| stub_workflow(id: i+1) }
+    assert_equal 100, ICIMS::Workflow.eligible.count
+    assert_equal 10, ICIMS::Workflow.eligible(limit: 10).count
+  end
+
   def test_create
     skip
   end
@@ -68,6 +75,16 @@ class ICIMS::WorkflowTest < Minitest::Test
     with(:body => "[{\"name\":\"applicantworkflow.person.id\",\"value\":[\"1\"],\"operator\":\"=\"}]",
          :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
     to_return(status: 200, body: File.read('./test/fixtures/icims/person-1-workflows.json'), headers: {'Content-Type'=>'application/json'})
+  end
+
+  def stub_eligible
+    stub_request(:post, "https://api.icims.com/customers/6405/search/applicantworkflows").
+    with(:body => "{\"filters\":[{\"name\":\"applicantworkflow.customfield4006.text\",\"value\":[],\"operator\":\"=\"},{\"name\":\"applicantworkflow.customfield4007.text\",\"value\":[],\"operator\":\"=\"},{\"name\":\"applicantworkflow.customfield3300.text\",\"value\":[\"135\"],\"operator\":\"=\"},{\"name\":\"applicantworkflow.person.createddate\",\"value\":[\"2013-03-25 4:00 AM\"],\"operator\":\"\\u003c\"}],\"operator\":\"\\u0026\"}",
+         :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+    to_return(
+      status: 200,
+      body: File.read('./test/fixtures/icims/eligible-workflows.json'),
+      headers: {'Content-Type'=>'application/json'})
   end
 
 end

@@ -31,12 +31,20 @@ class ICIMS::JobTest < Minitest::Test
     assert_equal 5, job.positions
   end
 
+  def test_eligible
+    stub_eligible
+    100.times { |i| stub_job(id: i+1) }
+    assert_equal 100, ICIMS::Job.eligible.count
+    assert_equal 10, ICIMS::Job.eligible(limit: 10).count
+  end
+
   private
 
-  def stub_job
-    file = File.read('./test/fixtures/icims/job-1123.json')
-    stub_request(:get, 'https://api.icims.com/customers/6405/jobs/1123').
-      to_return(status: 200, body: file,
+  def stub_job(id: 1123)
+    stub_request(:get, "https://api.icims.com/customers/6405/jobs/#{id}").
+      to_return(
+        status: 200,
+        body: File.read("./test/fixtures/icims/job-1123.json"),
         headers: { 'Content-Type' => 'application/json' })
   end
 
@@ -53,6 +61,14 @@ class ICIMS::JobTest < Minitest::Test
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/job-1123-positions.json'),
         headers: { 'Content-Type' => 'application/json' })
+  end
+
+  def stub_eligible
+    stub_request(:post, "https://api.icims.com/customers/6405/search/jobs").
+    with(:body => "{\"filters\":[{\"name\":\"job.numberofpositions\",\"value\":[\"1\"],\"operator\":\"\\u003e=\"},{\"name\":\"job.postedto\",\"value\":[\"Successlink\"],\"operator\":\"=\"}],\"operator\":\"\\u0026\"}").
+    to_return(:status => 200,
+      :body => File.read('./test/fixtures/icims/eligible-jobs.json'),
+      :headers => { 'Content-Type'=>'application/json' })
   end
 
 end

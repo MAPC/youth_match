@@ -25,11 +25,32 @@ class ICIMS::Job < ICIMS::Resource
     end
   end
 
+  def self.eligible(limit: nil)
+    local_headers = headers.merge({ 'Content-Type' => 'application/json' })
+    response = post '/search/jobs',
+      { body: eligible_filter.to_json, headers: local_headers }
+    handle response do |r|
+      limit_results(r, limit).map { |res| find res['id'] }
+    end
+  end
+
   def self.find(id)
     response = get("/jobs/#{id}", headers: headers)
     handle response do |r|
       self.new(id: id, title: r['jobtitle'],
         company_id: r['joblocation']['companyid'])
     end
+  end
+
+  private
+
+  def self.eligible_filter
+    {
+      filters: [
+        { name: "job.numberofpositions", value: ["1"], operator: ">=" },
+        { name: "job.postedto", value: ["Successlink"], operator: "=" }
+      ],
+      operator: "&"
+    }
   end
 end

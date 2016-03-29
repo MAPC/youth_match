@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ICIMS::JobTest < Minitest::Test
+class ICIMS::PersonTest < Minitest::Test
 
   def setup
     stub_person(id: 1)
@@ -48,6 +48,12 @@ class ICIMS::JobTest < Minitest::Test
 
   def test_interests
     refute_empty person.interests
+  end
+
+  def test_status
+    skip 'not clear how to assign status'
+    assert_equal :available, person.status
+    assert_equal :hired, oppposite_person.status
   end
 
   private
