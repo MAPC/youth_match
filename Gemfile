@@ -14,6 +14,7 @@ gem 'descriptive_statistics', '~> 2.4.0',
   require: 'descriptive_statistics/safe'
 gem 'logger'
 gem 'rounding'
+gem 'dotenv'
 
 # Working with APIs
 gem 'httparty'

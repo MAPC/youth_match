@@ -22,6 +22,14 @@ class ICIMS::Resource
     end
   end
 
+  def attributes
+    self.instance_variable_names.inject(Hash.new) do |hash, name|
+      key = name.delete '@'
+      hash[key] = self.instance_variable_get(name)
+      hash
+    end
+  end
+
   def self.headers
     {"Authorization" => "Basic #{ENV['ICIMS_API_KEY']}"}
   end

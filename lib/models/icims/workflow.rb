@@ -25,18 +25,25 @@ class ICIMS::Workflow < ICIMS::Resource
     @person ||= ICIMS::Person.find(@person_id)
   end
 
+  def create
+    raise NotImplementedError, "find me in #{__FILE__}"
+  end
+
   def self.where(options={})
-    filters = {filters: [], operator: '&'}
-    filters[:filters] << person_filter(options) if options.include?(:person)
     local_headers = headers.merge({ 'Content-Type' => 'application/json' })
     response = post '/search/applicantworkflows',
-      { body: filters.to_json, headers: local_headers }
+      { body: build_filters(options).to_json, headers: local_headers }
     handle response do |r|
       r['searchResults'].map { |res| find(res['id']) }
     end
   end
 
   private
+
+  def self.build_filters
+    filters = { filters: [], operator: '&' }
+    filters[:filters] << person_filter(options) if options.include?(:person)
+  end
 
   def self.person_filter(options)
     {

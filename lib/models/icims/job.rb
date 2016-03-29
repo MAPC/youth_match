@@ -28,11 +28,8 @@ class ICIMS::Job < ICIMS::Resource
   def self.find(id)
     response = get("/jobs/#{id}", headers: headers)
     handle response do |r|
-      self.new(
-        id: id,
-        title: r['jobtitle'],
-        company_id: r['joblocation']['companyid']
-      )
+      self.new(id: id, title: r['jobtitle'],
+        company_id: r['joblocation']['companyid'])
     end
   end
 end

@@ -4,6 +4,7 @@ if ENV['CODECLIMATE_REPO_TOKEN']
 end
 
 ENV['DATABASE_ENV'] = 'test'
+ENV['ICIMS_API_KEY'] = ''
 
 require 'minitest/autorun'
 require 'minitest/hell'

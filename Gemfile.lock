@@ -28,6 +28,7 @@ GEM
     database_cleaner (1.5.1)
     descriptive_statistics (2.4.0)
     docile (1.1.5)
+    dotenv (2.1.0)
     enumerize (1.1.1)
       activesupport (>= 3.2)
     ffi (1.9.10)
@@ -123,6 +124,7 @@ DEPENDENCIES
   codeclimate-test-reporter
   database_cleaner
   descriptive_statistics (~> 2.4.0)
+  dotenv
   enumerize
   foreman
   guard
