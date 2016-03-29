@@ -7,7 +7,7 @@ class ICIMS::Person < ICIMS::Resource
   def initialize(id: , status: , interests: , transit_pass: , preference: , addresses: )
     @id           = id
     @status       = status
-    @interests    = interests
+    @interests    = Array(interests)
     @transit_pass = transit_pass
     @preference   = preference
     @addresses    = addresses

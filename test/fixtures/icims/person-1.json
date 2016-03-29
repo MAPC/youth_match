@@ -23,11 +23,36 @@
             "addressstreet1": "1483 Tremont Street"
         }
     ],
+    "field23848": [
+        {"id": "C23892", "formattedvalue": "Child Care or Teacher's Assistant", "value": "Child Care or Teacher's Assistant"},
+        {"id": "C23894", "formattedvalue": "Community Organizing", "value": "Community Organizing"},
+        {"id": "C23896", "formattedvalue": "Construction or Building Trades", "value": "Construction or Building Trades"},
+        {"id": "C23898", "formattedvalue": "Digital Media, Communications or Film", "value": "Digital Media, Communications or Film"},
+        {"id": "C23900", "formattedvalue": "Education or Tutoring", "value": "Education or Tutoring"},
+        {"id": "C23897", "formattedvalue": "Engineering and/or Math", "value": "Engineering and/or Math"},
+        {"id": "C23902", "formattedvalue": "Environment, Natural Resources, and/or Agriculture", "value": "Environment, Natural Resources, and/or Agriculture"},
+        {"id": "C23907", "formattedvalue": "Government, or Public Service", "value": "Government, or Public Service"},
+        {"id": "C23904", "formattedvalue": "Health Care", "value": "Health Care"},
+        {"id": "C23906", "formattedvalue": "Hospitality & Tourism", "value": "Hospitality & Tourism"},
+        {"id": "C23908", "formattedvalue": "Information Technology", "value": "Information Technology"},
+        {"id": "C23888", "formattedvalue": "Law", "value": "Law"},
+        {"id": "C23905", "formattedvalue": "Maintenance/Landscaping", "value": "Maintenance/Landscaping"},
+        {"id": "C23909", "formattedvalue": "Other", "value": "Other"},
+        {"id": "C23903", "formattedvalue": "Peer Leadership", "value": "Peer Leadership"},
+        {"id": "C23901", "formattedvalue": "Science", "value": "Science"},
+        {"id": "C23895", "formattedvalue": "Sports, Fitness and/or Recreation", "value": "Sports, Fitness and/or Recreation"},
+        {"id": "C23899", "formattedvalue": "Technology", "value": "Technology"},
+        {"id": "C23893", "formattedvalue": "Transportation", "value": "Transportation"},
+        {"id": "C23891", "formattedvalue": "Veterinary or Marine Science", "value": "Veterinary or Marine Science"},
+        {"id": "C23890", "formattedvalue": "Visual or Performing Arts", "value": "Visual or Performing Arts"}
+    ],
+    "field29946": "Close to me",
+    "field36999": "Yes",
     "links": [
         {
             "rel": "self",
             "title": "The current profile being viewed.",
-            "url": "https://api.icims.com/customers/6405/people/8142"
+            "url": "https://api.icims.com/customers/6405/people/2"
         }
     ],
     "lastname": "Davis"

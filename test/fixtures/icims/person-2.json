@@ -1,0 +1,41 @@
+{
+    "firstname": "Matt",
+    "addresses": [
+        {
+            "addresscity": "Boston",
+            "entry": 1001,
+            "addresszip": "02111",
+            "addressstate": {
+                "id": "D41001024",
+                "abbrev": "MA",
+                "value": "Massachusetts"
+            },
+            "addresscountry": {
+                "id": "D41001",
+                "abbrev": "US",
+                "value": "United States"
+            },
+            "addresstype": {
+                "id": "D84002",
+                "formattedvalue": "Home",
+                "value": "Home"
+            },
+            "addressstreet1": "60 Temple Place"
+        }
+    ],
+    "field23848": [
+        {"id": "C23892", "formattedvalue": "Child Care or Teacher's Assistant", "value": "Child Care or Teacher's Assistant"},
+        {"id": "C23894", "formattedvalue": "Community Organizing", "value": "Community Organizing"},
+        {"id": "C23896", "formattedvalue": "Construction or Building Trades", "value": "Construction or Building Trades"}
+    ],
+    "field29946": "In a Category I selected",
+    "field36999": "No",
+    "links": [
+        {
+            "rel": "self",
+            "title": "The current profile being viewed.",
+            "url": "https://api.icims.com/customers/6405/people/2"
+        }
+    ],
+    "lastname": "Cloyd"
+}

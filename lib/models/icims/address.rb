@@ -26,7 +26,7 @@ class ICIMS::Address
   end
 
   def to_s
-    "#{street} #{city}, #{state} #{zip}"
+    "#{street}, #{city} #{state} #{zip}"
   end
 
 end
