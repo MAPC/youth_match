@@ -23,7 +23,8 @@ class ICIMS::Resource
   end
 
   def attributes
-    self.instance_variable_names.inject(Hash.new) do |hash, name|
+    attr_hash = HashWithIndifferentAccess.new
+    self.instance_variable_names.inject(attr_hash) do |hash, name|
       key = name.delete '@'
       hash[key] = self.instance_variable_get(name)
       hash
@@ -31,7 +32,10 @@ class ICIMS::Resource
   end
 
   def self.headers
-    {"Authorization" => "Basic #{ENV['ICIMS_API_KEY']}"}
+    {
+      'Authorization' => "Basic #{ENV['ICIMS_API_KEY']}",
+      'Content-Type'  => 'application/json'
+    }
   end
 
   def self.limit_results(results, limit)
@@ -41,6 +45,10 @@ class ICIMS::Resource
     else
       base_results
     end
+  end
+
+  def ==(other)
+    self.attributes == other.attributes
   end
 
 end

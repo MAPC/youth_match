@@ -26,9 +26,8 @@ class ICIMS::Job < ICIMS::Resource
   end
 
   def self.eligible(limit: nil)
-    local_headers = headers.merge({ 'Content-Type' => 'application/json' })
     response = post '/search/jobs',
-      { body: eligible_filter.to_json, headers: local_headers }
+      { body: eligible_filter.to_json, headers: headers }
     handle response do |r|
       limit_results(r, limit).map { |res| find res['id'] }
     end

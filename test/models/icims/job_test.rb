@@ -13,7 +13,7 @@ class ICIMS::JobTest < Minitest::Test
   end
 
   def test_find
-    assert_equal new_job.attributes, job.attributes
+    assert_equal new_job, job
   end
 
   def test_company
