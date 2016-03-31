@@ -2,12 +2,14 @@ require_relative './resource'
 
 class ICIMS::Job < ICIMS::Resource
 
-  attr_accessor :id, :title, :address
+  attr_accessor :id, :title, :address, :category, :positions
 
-  def initialize(id: , title: , company_id: )
-    @id    = id
-    @title = title
-    @company_id = company_id
+  def initialize(attributes={})
+    @id    = attributes[:id]
+    @title = attributes[:title]
+    @company_id = attributes[:company_id]
+    @positions  = attributes[:positions]
+    @category   = attributes[:category]
   end
 
   def company
@@ -16,13 +18,6 @@ class ICIMS::Job < ICIMS::Resource
 
   def address
     company.address
-  end
-
-  def positions
-    response = self.class.get("/jobs/#{@id}?fields=numberofpositions", headers: self.class.headers)
-    handle response do |r|
-      r['numberofpositions']
-    end
   end
 
   def self.eligible(limit: nil)
@@ -34,14 +29,21 @@ class ICIMS::Job < ICIMS::Resource
   end
 
   def self.find(id)
-    response = get("/jobs/#{id}", headers: headers)
+    response = get("/jobs/#{id}?fields=#{field_names.join(',')}", headers: headers)
     handle response do |r|
       self.new(id: id, title: r['jobtitle'],
-        company_id: r['joblocation']['companyid'])
+        company_id: r['joblocation']['companyid'],
+        positions:  r['numberofpositions'],
+        category:   r['positioncategory']['formattedvalue']
+      )
     end
   end
 
   private
+
+  def self.field_names
+    %w( joblocation jobtitle numberofpositions positioncategory )
+  end
 
   def self.eligible_filter
     {

@@ -97,7 +97,7 @@ class ICIMS::WorkflowTest < Minitest::Test
   end
 
   def stub_job
-    stub_request(:get, "https://api.icims.com/customers/6405/jobs/1346").
+    stub_request(:get, "https://api.icims.com/customers/6405/jobs/1346?fields=joblocation,jobtitle,numberofpositions,positioncategory").
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/job-1123.json'),
         headers: { 'Content-Type' => 'application/json' })

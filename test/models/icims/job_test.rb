@@ -2,13 +2,17 @@ require 'test_helper'
 
 class ICIMS::JobTest < Minitest::Test
 
+  def setup
+    stub_job
+  end
+
   def new_job
     @_job = ICIMS::Job.new(id: 1123, company_id: 1800,
-      title: 'Theater & Writing Group Mentor')
+      title: 'Theater & Writing Group Mentor',
+      positions: 5, category: "Education or Tutoring")
   end
 
   def job
-    stub_job
     ICIMS::Job.find(1123)
   end
 
@@ -26,8 +30,11 @@ class ICIMS::JobTest < Minitest::Test
     assert_equal job.address, job.company.address
   end
 
+  def test_category
+    assert_equal "Education or Tutoring", job.category
+  end
+
   def test_positions
-    stub_positions
     assert_equal 5, job.positions
   end
 
@@ -41,7 +48,7 @@ class ICIMS::JobTest < Minitest::Test
   private
 
   def stub_job(id: 1123)
-    stub_request(:get, "https://api.icims.com/customers/6405/jobs/#{id}").
+    stub_request(:get, "https://api.icims.com/customers/6405/jobs/#{id}?fields=joblocation,jobtitle,numberofpositions,positioncategory").
       to_return(
         status: 200,
         body: File.read("./test/fixtures/icims/job-1123.json"),
@@ -52,14 +59,6 @@ class ICIMS::JobTest < Minitest::Test
     stub_request(:get, "https://api.icims.com/customers/6405/companies/1800").
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/company-1800.json'),
-        headers: { 'Content-Type' => 'application/json' })
-  end
-
-  def stub_positions
-    stub_request(:get, "https://api.icims.com/customers/6405/jobs/1123?fields=numberofpositions").
-      with(:headers => {'Authorization'=>'Basic'}).
-      to_return(status: 200,
-        body: File.read('./test/fixtures/icims/job-1123-positions.json'),
         headers: { 'Content-Type' => 'application/json' })
   end
 
