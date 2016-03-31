@@ -39,10 +39,16 @@ class ICIMS::WorkflowTest < Minitest::Test
     assert_equal 10, ICIMS::Workflow.eligible(limit: 10).count
   end
 
+  def test_updatable
+    workflow.status = "NOT UPDATABLE"
+    refute workflow.accepted
+    refute workflow.declined
+  end
+
   def test_create_from_attributes
     stub_create
-    expected = ICIMS::Workflow.new(id: 21282, job_id: 1, person_id: 2, status: 'TODO')
-    actual = ICIMS::Workflow.create(job_id: 1, person_id: 2, status: 'TODO')
+    expected = ICIMS::Workflow.new(id: 21282, job_id: 1, person_id: 2, status: 'PLACED')
+    actual = ICIMS::Workflow.create(job_id: 1, person_id: 2, status: 'PLACED')
     assert_equal expected, actual
   end
 
@@ -54,30 +60,38 @@ class ICIMS::WorkflowTest < Minitest::Test
 
   def test_save_from_new
     stub_create
-    new_workflow = ICIMS::Workflow.new(id: nil, job_id: 1, person_id: 2, status: 'TODO')
+    new_workflow = ICIMS::Workflow.new(id: nil, job_id: 1, person_id: 2, status: 'PLACED')
     assert new_workflow.save
     assert_equal 21282, new_workflow.id
   end
 
   def test_update_from_attributes
     stub_update
-    assert_equal 'C36951', workflow.update(status: 'C36951')
+    assert workflow.update(status: 'C36951')
+    assert_equal 'C36951', workflow.status
+    refute workflow.update(status: 'C36951')
   end
 
   def test_accepted
     stub_update
-    assert_equal "C36951", workflow.accepted
+    assert workflow.accepted
+    assert_equal "C36951", workflow.status
+    refute workflow.accepted
   end
 
   def test_declined
     stub_update(status: "C14661")
-    assert_equal "C14661", workflow.declined
+    assert workflow.declined
+    assert_equal "C14661", workflow.status
+    refute workflow.declined
   end
 
   def test_placed
     skip 'TODO'
     stub_update(status: "PLACED STATUS")
-    assert_equal 'PLACED_STATUS', workflow.placed
+    assert workflow.placed
+    assert_equal "PLACED STATUS", workflow.status
+    refute workflow.placed
   end
 
   private
@@ -122,7 +136,7 @@ class ICIMS::WorkflowTest < Minitest::Test
 
   def stub_create
     stub_request(:post, "https://api.icims.com/customers/6405/applicantworkflows").
-    with(:body => "{\"baseprofile\":1,\"associatedprofile\":2,\"status\":{\"id\":\"TODO\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
+    with(:body => "{\"baseprofile\":1,\"associatedprofile\":2,\"status\":{\"id\":\"PLACED\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
          :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
     to_return(
       status: 201,
@@ -143,4 +157,3 @@ class ICIMS::WorkflowTest < Minitest::Test
   end
 
 end
-

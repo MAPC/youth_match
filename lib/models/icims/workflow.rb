@@ -3,13 +3,14 @@ require 'active_support/hash_with_indifferent_access'
 
 class ICIMS::Workflow < ICIMS::Resource
 
-  attr_reader :id, :job_id, :person_id, :status
+  attr_reader :id, :job_id, :person_id
+  attr_accessor :status
 
   def initialize(id: , job_id: , person_id: , status: )
     @id = id
     @job_id = job_id
     @person_id = person_id
-    @status = status
+    @status = status || 'PLACED'
   end
 
   def job
@@ -43,25 +44,24 @@ class ICIMS::Workflow < ICIMS::Resource
     end
   end
 
-  def update(status: nil)
-    status = status || @status
+  def update(status: nil, validate: true)
+    return false if @status == status
     payload = { status: { id: status } }.to_json
     response = self.class.patch "/applicantworkflows/#{@id}", {
       body: payload, headers: self.class.headers
     }
-    if response.response.code == "204"
-      status
-    else
-      raise StandardError, "Invalid status #{response.response.code}, should have been 204"
+    handle response do |r|
+      @status = status
+      return true
     end
   end
 
   def accepted
-    update(status: "C36951")
+    update(status: "C36951") if assert_status_updatable
   end
 
   def declined
-    update(status: "C14661")
+    update(status: "C14661") if assert_status_updatable
   end
 
   def placed
@@ -94,6 +94,10 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   private
+
+  def assert_status_updatable
+    ["C36951", "C14661", "PLACED", "D10100"].include? @status.to_s
+  end
 
   def self.get_id_from(response)
     response.headers['location'].to_s.rpartition('/').last.to_i
