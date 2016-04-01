@@ -2,12 +2,12 @@ require_relative './resource'
 
 class ICIMS::Person < ICIMS::Resource
 
-  attr_reader :id, :status, :workflows, :preference, :addresses
+  attr_reader :id, :status, :interests, :workflows, :preference, :addresses
 
   def initialize(id: , status: , interests: , transit_pass: , preference: , addresses: )
     @id           = id
     @status       = status
-    @interests    = Array(interests)
+    @interests    = process_interests(interests)
     @transit_pass = transit_pass
     @preference   = preference
     @addresses    = addresses
@@ -37,10 +37,6 @@ class ICIMS::Person < ICIMS::Resource
   alias_method :prefers_interest?, :prefers_interest
   alias_method :transit_pass?, :transit_pass
 
-  def interests
-    @interests.flat_map { |i| CategorySplitter.split(i['formattedvalue']) }
-  end
-
   def self.find(id)
     response = get("/people/#{id}?fields=#{fields}", headers: headers)
     handle response do |r|
@@ -51,6 +47,10 @@ class ICIMS::Person < ICIMS::Resource
   end
 
   private
+
+  def process_interests(interests)
+    Array(interests).flat_map { |i| CategorySplitter.split(i['formattedvalue']) }
+  end
 
   def self.fields
         # interests, location, T pass

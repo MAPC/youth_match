@@ -2,7 +2,7 @@ require_relative './resource'
 
 class ICIMS::Job < ICIMS::Resource
 
-  attr_accessor :id, :title, :address, :positions
+  attr_reader :id, :title, :address, :positions, :categories
 
   def initialize(attributes={})
     @id    = attributes[:id]
@@ -10,6 +10,7 @@ class ICIMS::Job < ICIMS::Resource
     @company_id = attributes[:company_id]
     @positions  = attributes[:positions]
     @category   = attributes[:category]
+    @categories ||= categories
   end
 
   def categories

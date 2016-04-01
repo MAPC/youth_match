@@ -1,6 +1,7 @@
 class Applicant < ActiveRecord::Base
 
   include Locatable
+  include CreatableFromICIMS
 
   before_validation :compute_grid_id
   before_save :assign_mode

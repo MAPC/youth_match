@@ -62,8 +62,13 @@ class ApplicantTest < Minitest::Test
 
   def test_new_from_icims
     stub_person(id: 2)
-    expected = Applicant.new()
-    actual = Applicant.new(ICIMS::Person.find(2).attributes)
+    expected = Applicant.new(
+      id: 2,
+      interests: ["Child Care", "Teacher's Assistant", "Community Organizing", "Construction", "Building Trades"],
+      prefers_nearby: true,
+      has_transit_pass: false
+    )
+    actual = Applicant.new_from_icims(ICIMS::Person.find(2))
     assert_equal expected, actual
   end
 

@@ -28,8 +28,8 @@ class PositionTest < Minitest::Test
     assert @position.reload.uuid
   end
 
-  def test_category
-    assert_respond_to position, :category
+  def test_categories
+    assert_respond_to position, :categories
   end
 
   def test_grid_id
@@ -70,9 +70,20 @@ class PositionTest < Minitest::Test
 
   def test_new_from_icims
     stub_job(id: 1123)
-    expected = Position.new()
-    actual = Position.new(ICIMS::Job.find(1123).attributes)
-    assert_equal expected, actual
+    stub_company
+    expected = Position.new(id: 1123, categories: ['Education', 'Tutoring'])
+    new_position = Position.new_from_icims(ICIMS::Job.find(1123))
+    assert_equal expected, new_position
+  end
+
+  def test_new_from_icims
+    stub_job(id: 1123)
+    stub_company
+    created = Position.create_from_icims(ICIMS::Job.find(1123))
+    assert_equal ['Education', 'Tutoring'], created.categories
+    assert created.uuid
+  ensure
+    created.destroy! if created
   end
 
   private
@@ -82,6 +93,13 @@ class PositionTest < Minitest::Test
       to_return(
         status: 200,
         body: File.read("./test/fixtures/icims/job-1123.json"),
+        headers: { 'Content-Type' => 'application/json' })
+  end
+
+  def stub_company
+    stub_request(:get, "https://api.icims.com/customers/6405/companies/1800").
+      to_return(status: 200,
+        body: File.read('./test/fixtures/icims/company-1800.json'),
         headers: { 'Content-Type' => 'application/json' })
   end
 
