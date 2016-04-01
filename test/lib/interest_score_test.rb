@@ -17,25 +17,25 @@ class InterestScoreTest < Minitest::Test
 
   def test_match_care
     applicant.expect(:prefers_interest?, true)
-    position.expect(:category, 'a')
+    position.expect(:categories, ['a'])
     assert_equal 5, score.score
   end
 
   def test_no_match_care
     applicant.expect(:prefers_interest?, true)
-    position.expect(:category, 'no-match')
+    position.expect(:categories, ['no-match'])
     assert_equal -5, score.score
   end
 
   def test_match_no_care
     applicant.expect(:prefers_interest?, false)
-    position.expect(:category, 'a')
+    position.expect(:categories, ['a'])
     assert_equal 3, score.score
   end
 
   def test_no_match_no_care
     applicant.expect(:prefers_interest?, false)
-    position.expect(:category, 'no-match')
+    position.expect(:categories, ['no-match'])
     assert_equal -3, score.score
   end
 

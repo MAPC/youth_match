@@ -28,7 +28,7 @@ GEM
     database_cleaner (1.5.1)
     descriptive_statistics (2.4.0)
     docile (1.1.5)
-    dotenv (2.1.0)
+    dotenv (2.1.1)
     enumerize (1.1.1)
       activesupport (>= 3.2)
     ffi (1.9.10)
@@ -78,7 +78,9 @@ GEM
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
-    rake (10.5.0)
+    rack-test (0.6.3)
+      rack (>= 1.0)
+    rake (11.1.2)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
@@ -135,6 +137,7 @@ DEPENDENCIES
   minitest
   minitest-focus
   pg
+  rack-test
   rake
   rb-fsevent
   rerun

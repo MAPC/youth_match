@@ -30,8 +30,8 @@ class ICIMS::JobTest < Minitest::Test
     assert_equal job.address, job.company.address
   end
 
-  def test_category
-    assert_equal "Education or Tutoring", job.category
+  def test_categories
+    assert_equal ["Education", "Tutoring"], job.categories
   end
 
   def test_positions

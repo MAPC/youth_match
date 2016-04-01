@@ -60,4 +60,20 @@ class ApplicantTest < Minitest::Test
     skip 'not critical'
   end
 
+  def test_new_from_icims
+    stub_person(id: 2)
+    expected = Applicant.new()
+    actual = Applicant.new(ICIMS::Person.find(2).attributes)
+    assert_equal expected, actual
+  end
+
+  private
+
+  def stub_person(id: 1)
+    stub_request(:get, "https://api.icims.com/customers/6405/people/#{id}?fields=field29946,field23848,field36999,addresses").
+        to_return(status: 200,
+          body: File.read("./test/fixtures/icims/person-#{id}.json"),
+          headers: { 'Content-Type' => 'application/json' })
+  end
+
 end

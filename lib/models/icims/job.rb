@@ -2,7 +2,7 @@ require_relative './resource'
 
 class ICIMS::Job < ICIMS::Resource
 
-  attr_accessor :id, :title, :address, :category, :positions
+  attr_accessor :id, :title, :address, :positions
 
   def initialize(attributes={})
     @id    = attributes[:id]
@@ -10,6 +10,10 @@ class ICIMS::Job < ICIMS::Resource
     @company_id = attributes[:company_id]
     @positions  = attributes[:positions]
     @category   = attributes[:category]
+  end
+
+  def categories
+    CategorySplitter.split(@category)
   end
 
   def company

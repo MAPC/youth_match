@@ -9,6 +9,7 @@ ENV['ICIMS_API_KEY'] = ''
 require 'minitest/autorun'
 require 'minitest/hell'
 require 'minitest/focus'
+require 'rack/test'
 require 'webmock/minitest'
 require 'active_record'
 require 'database_cleaner'
@@ -29,4 +30,7 @@ MiniTest.after_run do
 end
 
 require_relative '../environment'
-$logger = Logger.new('/dev/null') # Silence the logger during tests.
+
+# Silence the logger during tests.
+$logger = Logger.new('/dev/null')
+ActiveRecord::Base.logger = $logger

@@ -34,4 +34,7 @@ $logger = Logger.new(log_location).tap do |log|
   log.progname = 'youth_match'
 end
 
+
 Dir.glob('./lib/**/*.rb').each { |file| require file }
+require_relative './apps'
+Dir.glob('./apps/*.rb').each { |file| require file }

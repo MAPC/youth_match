@@ -13,7 +13,8 @@ class InterestScore < Score
   end
 
   def matches
-    @applicant.interests.include?(@position.category) ? 1 : -1
+    intersection = @applicant.interests & @position.categories
+    intersection.any? ? 1 : -1
   end
 
 end

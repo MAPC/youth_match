@@ -38,7 +38,7 @@ class ICIMS::Person < ICIMS::Resource
   alias_method :transit_pass?, :transit_pass
 
   def interests
-    @interests.map { |i| i['formattedvalue'] }
+    @interests.flat_map { |i| CategorySplitter.split(i['formattedvalue']) }
   end
 
   def self.find(id)

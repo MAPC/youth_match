@@ -68,4 +68,21 @@ class PositionTest < Minitest::Test
     @p.destroy! if @p
   end
 
+  def test_new_from_icims
+    stub_job(id: 1123)
+    expected = Position.new()
+    actual = Position.new(ICIMS::Job.find(1123).attributes)
+    assert_equal expected, actual
+  end
+
+  private
+
+  def stub_job(id: 1123)
+    stub_request(:get, "https://api.icims.com/customers/6405/jobs/#{id}?fields=joblocation,jobtitle,numberofpositions,positioncategory").
+      to_return(
+        status: 200,
+        body: File.read("./test/fixtures/icims/job-1123.json"),
+        headers: { 'Content-Type' => 'application/json' })
+  end
+
 end
