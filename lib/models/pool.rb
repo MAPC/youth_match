@@ -1,4 +1,3 @@
-# Instead of JobFinder
 class Pool < ActiveRecord::Base
 
   before_save :allocate_positions
@@ -16,23 +15,24 @@ class Pool < ActiveRecord::Base
     Position.find(best_job_id)
   end
 
+  def base_proportion
+    (positions.count / Pool.max(:position_count).to_f) * 100
+  end
+
   private
 
   def allocate_positions
-    self.positions = pool_position_query
-    self.positions << allocate_citywide_positions
+    self.positions = base_pool
+    self.positions << Compressor.new(self).positions
   end
 
-  def pool_position_query
+  def base_pool
     Position.available(@run).
+      where(reserve: false)
       within(40.minutes, of: @applicant, via: @applicant.mode).
       map do |position|
         # Not sure about this extra entity.
         ScoredPosition.create(applicant: applicant, position: position, run: run)
       end
-  end
-
-  def allocate_citywide_positions
-    CitywideAllocator.new(self).positions
   end
 end

@@ -1,32 +1,35 @@
 class Compressor
 
-  def initalize(pool)
-    @applicant = pool.applicant
-    @pooled_positions = pool.positions
-    @run = pool.run
+  attr_reader :pool, :applicant, :run
+
+  def initialize(pool)
+    @pool = pool
+    @applicant = @pool.applicant
+    @run = @pool.run
+    @pooled_positions = @pool.positions
   end
+
+  def positions
+    Position.available(@run).where(reserve: true).
+      limit(gain).order('RANDOM()')
+  end
+
+  def gain
+    return 0 if @pool.base_proportion > config.balancer_threshhold
+    equation
+  end
+
+  private
 
   def config
     $config.lottery
   end
 
-  def positions
-    Position.where(citywide: true).
-      order(:distance_from_applicant).
-      limit(count)
-  end
-
-  def gain
-    thresh = config.balancer_threshhold
-    return 0 if pool.base_proportion > thresh
-
-  end
-
-  def equation(coefficient, x)
-    (1.08 ** (60 - x)) - 1
+  def equation
+    (coefficient ** (60 - @pool.base_proportion)) - 1
   end
 
   def coefficient
-    1 + (config.balancer_coefficient * 0.008)
+    1 + (config.balancer_coefficient * 0.0008)
   end
 end
