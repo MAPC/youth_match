@@ -11,13 +11,19 @@ Dotenv.load
 
 require_relative './lib/refinements/ostructable'
 
-def config_from_yaml
+def database_yaml
   config_file = File.read File.join(Dir.pwd, 'config', 'database.yml')
   YAML.load ERB.new(config_file).result
 end
 
+def lottery_yaml
+  config_file = File.read File.join(Dir.pwd, 'config', 'lottery.yml')
+  YAML.load ERB.new(config_file).result
+end
+
 using Ostructable
-$config = Hash.to_ostructs(config_from_yaml)
+$config = Hash.to_ostructs(database_yaml)
+$config.lottery = Hash.to_ostructs(lottery_yaml)
 
 DB_ENV   = ENV.fetch('DATABASE_ENV') { 'development' }
 database = ENV.fetch('DATABASE_URL') { $config.send(DB_ENV).to_h }

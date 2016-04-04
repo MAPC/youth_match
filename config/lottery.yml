@@ -1,0 +1,29 @@
+# :score_multipliers: have no stated range.
+
+# Setting :travel: to 10 and interest to 1 would mean that travel score is
+# given 10 times the weight it would otherwise be given, for all applicants.
+# (This is multiplied by the weight of the applicant's preference, so an
+# applicant who prefers a nearby job would have their preference weight
+# multiplied by this global weight configuration.)
+
+# Setting both to 0 means that neither score has any significance, and jobs are
+# chosen randomly, with no thought to location or interest in weighting jobs.
+score_multipliers:
+  interest: 1
+  travel: 1
+
+# :balancer_threshhold: ranges from 0 to 100.
+# A threshhold of 60 means that someone with access to a pool of jobs that is
+# 60% or less of the maximum base job pool size -- at runtime -- has some
+# access to reserve jobs. Anyone with a base job pool of 61-100% the size of the
+# maximum job pool is not given access
+balancer_threshhold: 60
+
+# :balancer_coefficient: ranges from 1 to 100.
+# 100 means that someone with no opportunities near them would have access
+# to being placed in 100% of the reserve jobs. 0 means that someone with no
+# opportunities near them would
+# The range between the two is exponential, and not yet mapped one-to-one.
+# This means that a coefficient of 50 would really result in about 20-25% of
+# the reserve jobs
+balancer_coefficient: 100
