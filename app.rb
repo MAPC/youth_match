@@ -3,7 +3,6 @@ require 'json'
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'haml'
-require 'tilt/haml'
 
 class App < Sinatra::Base
 

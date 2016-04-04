@@ -27,7 +27,7 @@ gem 'haml'
 group :test do
   gem 'minitest'       # Test framework
   gem 'minitest-focus' # One test at a time
-  gem 'rack-test' # For testing web apps
+  gem 'rack-test'
   gem 'database_cleaner'
   gem 'webmock', require: false # Ensure we don't query external services
   gem 'rb-fsevent', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'

@@ -15,6 +15,7 @@ class RelayTest < Minitest::Test
     @placement = Placement.create!(
       applicant: @applicant, position: @position, run: @run, index: 1
     )
+    @placement.reload
   end
 
   def teardown
@@ -39,11 +40,23 @@ class RelayTest < Minitest::Test
   end
 
   def test_accepted_ok
-    skip
+    get "/placements/#{@placement.uuid}/accept",
+      applicant_id: @placement.applicant.uuid,
+      position_id: @placement.position.uuid
+    assert last_response.redirect?, last_response.status
+    follow_redirect!
+    assert_includes last_request.url, 'lottery-accepted'
+    assert_equal 'accepted', @placement.reload.status
   end
 
   def test_declined_ok
-    skip
+    get "/placements/#{@placement.uuid}/decline",
+      applicant_id: @placement.applicant.uuid,
+      position_id: @placement.position.uuid
+    assert last_response.redirect?, last_response.status
+    follow_redirect!
+    assert_includes last_request.url, 'lottery-declined'
+    assert_equal 'declined', @placement.reload.status
   end
 
   def test_accepted_one_character_deleted

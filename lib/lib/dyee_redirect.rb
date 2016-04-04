@@ -12,8 +12,10 @@ module DYEERedirect
   end
 
   def self.status_for(action)
-    # Temporary when error, permanent when selection
-    action.to_sym == :error ? 307 : 308
+    # Rack doesn't yet recognize 308 as a redirect, but when it does, we
+    # want a temporary redirect when error, permanent when selection.
+    # action.to_sym == :error ? 307 : 308
+    307
   end
 
   PATHS = {

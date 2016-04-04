@@ -7,12 +7,12 @@ class DYEERedirectTest < Minitest::Test
   end
 
   def test_accept
-    expected = ['http://youth.boston.gov/lottery-accepted', 308]
+    expected = ['http://youth.boston.gov/lottery-accepted', 307] # 308 w new rack
     assert_equal expected, redirect.to(:accept)
   end
 
   def test_decline
-    expected = ['http://youth.boston.gov/lottery-declined', 308]
+    expected = ['http://youth.boston.gov/lottery-declined', 307] # 308 w new rack
     assert_equal expected, redirect.to(:decline)
   end
 
