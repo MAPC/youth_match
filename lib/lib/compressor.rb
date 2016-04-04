@@ -14,6 +14,9 @@ class Compressor
       limit(gain).order('RANDOM()')
   end
 
+  # TODO: At present, gain is proportion, not a count. To limit it by gain
+  # could be limiting it by 100, not 100% of positions, or 1, not 1% of
+  # positions.
   def gain
     return 0 if @pool.base_proportion > config.balancer_threshhold
     equation
