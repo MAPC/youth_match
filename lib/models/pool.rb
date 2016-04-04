@@ -4,7 +4,7 @@ class Pool < ActiveRecord::Base
 
   belongs_to :applicant
   belongs_to :run
-  has_and_belongs_to_many :positions # May want to simulate with an array.
+  has_and_belongs_to_many :positions, join_table: :pooled_positions
 
   validates :applicant, presence: true
   validates :run, presence: true
@@ -15,24 +15,26 @@ class Pool < ActiveRecord::Base
     Position.find(best_job_id)
   end
 
-  def base_proportion
-    (positions.count / Pool.max(:position_count).to_f) * 100
-  end
-
   private
 
   def allocate_positions
     self.positions = base_pool
+    self.base_proportion = calculate_base_proportion
+
     self.positions << Compressor.new(self).positions
+    self.position_count = self.positions.count
+  end
+
+  def calculate_base_proportion
+    (self.positions.count / Pool.maximum(:position_count)) * 100
+  rescue
+    0
   end
 
   def base_pool
-    Position.available(@run).
-      where(reserve: false)
-      within(40.minutes, of: @applicant, via: @applicant.mode).
-      map do |position|
-        # Not sure about this extra entity.
-        ScoredPosition.create(applicant: applicant, position: position, run: run)
-      end
+    Position.base_pool_for(applicant, run).map do |position|
+      PooledPosition.create(applicant: applicant, position: position, run: run)
+    end
   end
+
 end

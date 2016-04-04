@@ -6,7 +6,7 @@ class Applicant < ActiveRecord::Base
   before_validation :compute_grid_id
   before_save :assign_mode
 
-  validates :grid_id, presence: true
+  validates :grid_id, presence: true, if: 'location.present?'
 
   def mode
     if has_transit_pass_changed?
