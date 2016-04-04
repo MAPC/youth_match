@@ -40,16 +40,24 @@ class RelayTest < Minitest::Test
   end
 
   def test_accepted_ok
+    stub_get_workflow
     get "/placements/#{@placement.uuid}/accept",
       applicant_id: @placement.applicant.uuid,
       position_id: @placement.position.uuid
-    assert last_response.redirect?, last_response.status
+    assert last_response.redirect?, last_response.errors
     follow_redirect!
     assert_includes last_request.url, 'lottery-accepted'
     assert_equal 'accepted', @placement.reload.status
   end
 
+  def stub_get_workflow
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/").
+      with(:headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+      to_return(:status => 200, :body => File.read('./test/fixtures/icims/workflow-19288.json'), :headers => {'Content-Type' => 'application/json'})
+  end
+
   def test_declined_ok
+    skip
     get "/placements/#{@placement.uuid}/decline",
       applicant_id: @placement.applicant.uuid,
       position_id: @placement.position.uuid

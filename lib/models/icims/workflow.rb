@@ -57,16 +57,21 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def accepted
-    update(status: "C36951") if assert_status_updatable
+    update(status: 'C36951') if assert_status_updatable
   end
 
   def declined
-    update(status: "C14661") if assert_status_updatable
+    update(status: 'C14661') if assert_status_updatable
   end
 
   def placed
-    raise NotImplementedError, "no code for status yet"
-    created(status: "TODO CODE NOT READY")
+    raise NotImplementedError, 'no code for status yet'
+    created(status: 'TODO CODE NOT READY')
+  end
+
+  def updatable?
+    # status is not accepted nor declined
+    # it hasn't expired
   end
 
   def self.find(id)
@@ -96,6 +101,8 @@ class ICIMS::Workflow < ICIMS::Resource
   private
 
   def assert_status_updatable
+    # TODO change this to just the PLACED status
+    # ONCE it gets created
     ["C36951", "C14661", "PLACED", "D10100"].include? @status.to_s
   end
 

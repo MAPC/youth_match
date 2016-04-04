@@ -20,22 +20,16 @@ class Apps::Relay < Sinatra::Base
 
   get '/placements/:id/accept' do
     load_placement(params)
-    workflow = ICIMS::Workflow.find(@placement.workflow_id)
-    handle_error_cases(workflow)
-    if workflow.updatable?
+    handle_error_cases(@placement)
+    if workflow.updatable? # change to @placement
+      # @placement.accepted does workflow accepted, 500 should go to error
       @placement.accepted if workflow.accepted
       redirect *DYEERedirect.to(:accept)
     end
   end
 
   get '/placements/:id/decline' do
-    load_placement(params)
-    workflow = ICIMS::Workflow.find(@placement.workflow_id)
-    handle_error_cases(workflow)
-    if workflow.updatable?
-      @placement.accepted if workflow.accepted
-      redirect *DYEERedirect.to(:accept)
-    end
+    # NO OP
   end
 
   get '/applicants/:id/opt-out' do
@@ -43,12 +37,17 @@ class Apps::Relay < Sinatra::Base
   end
 
   error 404 do
-    Airbrake.notify('Record not found', params: params)
+    Airbrake.notify('Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 422 do
-    Airbrake.notify('Unprocessable entity', params: params)
+    Airbrake.notify('Unprocessable Entity', params: params)
+    redirect *DYEERedirect.to(:error)
+  end
+
+  error 500 do
+    Airbrake.notify('Internal Server Error', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
@@ -61,9 +60,9 @@ class Apps::Relay < Sinatra::Base
       applicant: applicant, position: position)
   end
 
-  def handle_error_cases(workflow)
-    redirect *DYEERedirect.to(:error) if workflow.already_decided?
-    redirect *DYEERedirect.to(:expired) if workflow.expired?
+  def handle_error_cases(placement)
+    redirect *DYEERedirect.to(:expired) if placement.expired?
+    redirect *DYEERedirect.to(:error) if placement.already_decided?
     false
   end
 end

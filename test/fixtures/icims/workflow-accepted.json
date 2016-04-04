@@ -1,0 +1,36 @@
+{
+    "associatedprofile": {
+        "profile": "https://api.icims.com/customers/6405/people/1",
+        "id": 1,
+        "value": "Shari Davis"
+    },
+    "sourcename": "Applicant from previous year",
+    "links": [
+        {
+            "rel": "self",
+            "title": "The current profile being viewed.",
+            "url": "https://api.icims.com/customers/6405/applicantworkflows/19288"
+        },
+        {
+            "rel": "self",
+            "title": "The base profile of this workflow.",
+            "url": "https://api.icims.com/customers/6405/jobs/1346"
+        },
+        {
+            "rel": "self",
+            "title": "The associated profile of this workflow.",
+            "url": "https://api.icims.com/customers/6405/people/1"
+        }
+    ],
+    "source": "Other (Please Specify)",
+    "baseprofile": {
+        "profile": "https://api.icims.com/customers/6405/jobs/1346",
+        "id": 1346,
+        "value": "Harbor Discoveries Junior Counselor"
+    },
+    "status": {
+        "id": "C36951",
+        "formattedvalue": "DYEE Lottery - Lottery Accepted",
+        "value": "DYEE Lottery - Lottery Accepted"
+    }
+}
