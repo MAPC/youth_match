@@ -1,5 +1,5 @@
 require './environment'
-require 'sinatra'
+require 'sinatra/base'
 require 'sinatra/activerecord'
 
 # Airbrake.configure do |c|

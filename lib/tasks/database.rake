@@ -4,6 +4,8 @@ require 'active_record'
 require 'active_support/inflector'
 require 'active_record/fixtures'
 require 'csv'
+require './config/initializers/config'
+require './config/initializers/database'
 
 namespace :db do
   def create_database config
@@ -28,12 +30,13 @@ namespace :db do
   end
 
   task :configuration => :environment do
-    @config = YAML.load_file('config/database.yml')[DATABASE_ENV]
+    Initializers::Config.load
+    @config = $config.send(Initializers::Database.environment)
   end
 
   task :configure_connection => :configuration do
     ActiveRecord::Base.establish_connection @config
-    ActiveRecord::Base.logger = Logger.new STDOUT if @config['logger']
+    ActiveRecord::Base.logger = Logger.new $stdout if @config['logger']
   end
 
   desc 'Create the database from config/database.yml for the current DATABASE_ENV'
