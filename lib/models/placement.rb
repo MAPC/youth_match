@@ -10,6 +10,8 @@ class Placement < ActiveRecord::Base
   validates :applicant, presence: true
   validates :index,     presence: true
 
+  validate :expires_at_in_past, if: -> { status == 'expired' }
+
   enumerize :status, in: [:pending, :placed, :accepted, :declined, :expired],
     default: :pending, predicates: { except: [:expired] }
 
@@ -76,6 +78,12 @@ class Placement < ActiveRecord::Base
   end
 
   private
+
+  def expires_at_in_past
+    unless expires_at.past?
+      errors.add(:expires_at, 'must be in the past when status is "expired"')
+    end
+  end
 
   def check_expired
     if expires_at && Time.now > expires_at

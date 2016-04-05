@@ -123,10 +123,13 @@ class PlacementTest < Minitest::Test
 
     # You can't go back once it's expired, because the status is set.
     placement.expires_at = 4.days.from_now
-    assert placement.expired?
+    refute placement.valid?
+    placement.status = :expired # Checking if symbol, not string, makes a diff
+    refute placement.valid?
 
     # You can if you manually set the status, though.
     placement.status = :placed
+    assert placement.valid?
     refute placement.expired?
   end
 
