@@ -108,11 +108,20 @@ class RelayTest < Minitest::Test
   end
 
   def test_expired_locally
-    skip 'to expiration page'
+    @placement.update_attributes(expires_at: 1.day.ago)
+    accept
+    assert_redirect_to_expiration_page
+    decline
+    assert_redirect_to_expiration_page
   end
 
   def test_opt_out
-    skip 'to opt out page'
+    stub_get_workflow
+    stub_decline_workflow
+    opt_out
+    assert_redirect_to_optout_page
+    assert_equal 'declined', @placement.reload.status
+    assert_equal 'opted_out', @placement.applicant.status
   end
 
   def test_already_hired
@@ -180,6 +189,12 @@ class RelayTest < Minitest::Test
       position_id:  @placement.position.uuid
   end
 
+  def opt_out
+    get "/placements/#{@placement.uuid}/opt-out",
+      applicant_id: @placement.applicant.uuid,
+      position_id:  @placement.position.uuid
+  end
+
   def stub_get_workflow
     stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
       with(:headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
@@ -210,6 +225,12 @@ class RelayTest < Minitest::Test
     assert_includes last_request.url, 'error'
   end
 
+  def assert_redirect_to_expiration_page
+    assert last_response.redirect?, last_response.inspect
+    follow_redirect!
+    assert_includes last_request.url, 'expir'
+  end
+
   def assert_redirect_to_accepted
     assert last_response.redirect?, last_response.errors
     follow_redirect!
@@ -220,6 +241,12 @@ class RelayTest < Minitest::Test
     assert last_response.redirect?, last_response.errors
     follow_redirect!
     assert_includes last_request.url, 'lottery-declined'
+  end
+
+  def assert_redirect_to_optout_page
+    assert last_response.redirect?, last_response.errors
+    follow_redirect!
+    assert_includes last_request.url, 'opt-out'
   end
 
 end

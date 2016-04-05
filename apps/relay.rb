@@ -36,8 +36,14 @@ class Apps::Relay < Sinatra::Base
     end
   end
 
-  get '/applicants/:id/opt-out' do
-    #NO OP
+  get '/placements/:id/opt-out' do
+    load_placement(params)
+    handle_error_cases(@placement)
+    if @placement.updatable?
+      @placement.declined
+      @placement.applicant.opted_out
+      redirect *DYEERedirect.to(:opt_out)
+    end
   end
 
   error ActiveRecord::RecordNotFound do
