@@ -62,18 +62,20 @@ class PlacementTest < Minitest::Test
     assert placement.reload.uuid
   end
 
-  def test_no_workflow
+  def test_null_workflow
     refute placement.workflow_id
-    refute placement.workflow
+    assert placement.workflow
+    assert placement.workflow.nil?
+    refute placement.workflow.present?
   end
 
   def test_finalize
     stub_finalize(job_id: placement.position.id, person_id: placement.applicant.id)
     stub_workflow
-    assert_equal 'pending', placement.status
+    assert_equal Status.pending, placement.status
     placement.finalize!
     assert_equal 21282, placement.workflow_id
-    assert_equal 'placed', placement.status
+    assert_equal Status.placed, placement.status
     assert placement.workflow
   end
 
@@ -82,9 +84,9 @@ class PlacementTest < Minitest::Test
     stub_workflow
     p = Placement.new(workflow_id: 21282)
     refute p.already_decided?
-    p.status = 'declined'
+    p.status = Status.declined
     assert p.already_decided?
-    p.status = 'accepted'
+    p.status = Status.accepted
     assert p.already_decided?
   end
 

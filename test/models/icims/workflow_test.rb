@@ -81,19 +81,27 @@ class ICIMS::WorkflowTest < Minitest::Test
   end
 
   def test_not_updatable_after_deciding
+    stub_update(status: ICIMS::Status.placed)
+    stub_update(status: ICIMS::Status.accepted)
     workflow.placed
+    workflow.accepted
+    refute workflow.updatable?
   end
 
   def test_accepted
-    stub_update
-    assert workflow.accepted
+    stub_update(status: ICIMS::Status.placed)
+    stub_update(status: ICIMS::Status.accepted)
+    workflow.placed
+    assert workflow.accepted, workflow.inspect
     assert_equal ICIMS::Status.accepted, workflow.status
     refute workflow.accepted
   end
 
   def test_declined
+    stub_update(status: ICIMS::Status.placed)
     stub_update(status: ICIMS::Status.declined)
-    assert workflow.declined
+    workflow.placed
+    assert workflow.declined, workflow.inspect
     assert_equal ICIMS::Status.declined, workflow.status
     refute workflow.declined
   end
@@ -103,6 +111,12 @@ class ICIMS::WorkflowTest < Minitest::Test
     assert workflow.placed
     assert_equal ICIMS::Status.placed, workflow.status
     refute workflow.placed
+  end
+
+  def test_null
+    [:placeable?, :decided?, :updatable?].each do |method|
+      assert_respond_to ICIMS::Workflow.null, method
+    end
   end
 
   private

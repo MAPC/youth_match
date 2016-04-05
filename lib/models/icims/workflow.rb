@@ -75,7 +75,11 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def placeable?
-    ![ICIMS::Status.accepted, ICIMS::Status.declined].include? @status.to_s
+    !decided? || !expired?
+  end
+
+  def decided?
+    [ICIMS::Status.accepted, ICIMS::Status.declined].include? @status.to_s
   end
 
   def self.find(id)
@@ -110,8 +114,15 @@ class ICIMS::Workflow < ICIMS::Resource
 
   def self.build_null_object
     Naught.build do |c|
-      c.mimic(self.class)
+      c.mimic(ICIMS::Workflow)
       c.black_hole
+      c.predicates_return false
+      def nil?
+        true
+      end
+      def present?
+        false
+      end
     end
   end
 

@@ -46,9 +46,9 @@ class Placement < ActiveRecord::Base
 
   def workflow
     @workflow ||= if workflow_id
-      ICIMS::Workflow.null
-    else
       ICIMS::Workflow.find(workflow_id)
+    else
+      ICIMS::Workflow.null
     end
   end
 
@@ -62,17 +62,13 @@ class Placement < ActiveRecord::Base
   end
 
   def already_decided?
-    decided? || decided_remotely?
+    decided? || workflow.decided?
   end
 
   private
 
   def decided?
     [:accepted, :declined].include?(status.to_sym)
-  end
-
-  def decided_remotely?
-    workflow ? workflow.decided? : false
   end
 
   def create_workflow
