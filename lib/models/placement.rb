@@ -20,13 +20,13 @@ class Placement < ActiveRecord::Base
   end
 
   def updatable?
-    !already_decided?
+    !already_decided? && workflow.updatable?
   end
 
   def accepted
-    # Test the new conditionals
-    # If there's no workflow, just do it anyway
-    update_attribute(:status, :accepted) if workflow.accepted
+    if workflow.accepted
+      update_attribute(:status, :accepted)
+    end
   end
 
   def declined

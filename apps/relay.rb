@@ -28,25 +28,35 @@ class Apps::Relay < Sinatra::Base
   end
 
   get '/placements/:id/decline' do
-    # NO OP
+    load_placement(params)
+    handle_error_cases(@placement)
+    if @placement.updatable?
+      @placement.declined
+      redirect *DYEERedirect.to(:decline)
+    end
   end
 
   get '/applicants/:id/opt-out' do
     #NO OP
   end
 
+  error ActiveRecord::RecordNotFound do
+    # Airbrake.notify('Record Not Found', params: params)
+    redirect *DYEERedirect.to(:error)
+  end
+
   error 404 do
-    Airbrake.notify('Record Not Found', params: params)
+    # Airbrake.notify('Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 422 do
-    Airbrake.notify('Unprocessable Entity', params: params)
+    # Airbrake.notify('Unprocessable Entity', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 500 do
-    Airbrake.notify('Internal Server Error', params: params)
+    # Airbrake.notify('Internal Server Error', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
@@ -57,11 +67,14 @@ class Apps::Relay < Sinatra::Base
     position  = Position.find_by  uuid: params[:position_id]
     @placement = Placement.find_by(uuid: params[:id],
       applicant: applicant, position: position)
+  rescue ActiveRecord::RecordNotFound # Not sure this does anything
+    halt 404
   end
 
   def handle_error_cases(placement)
+    halt 404 if placement.nil?
     redirect *DYEERedirect.to(:expired) if placement.expired?
-    redirect *DYEERedirect.to(:error) if placement.already_decided?
+    redirect *DYEERedirect.to(:error)   if placement.already_decided?
     false
   end
 end
