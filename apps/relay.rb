@@ -21,9 +21,8 @@ class Apps::Relay < Sinatra::Base
   get '/placements/:id/accept' do
     load_placement(params)
     handle_error_cases(@placement)
-    if workflow.updatable? # change to @placement
-      # @placement.accepted does workflow accepted, 500 should go to error
-      @placement.accepted if workflow.accepted
+    if @placement.updatable?
+      @placement.accepted
       redirect *DYEERedirect.to(:accept)
     end
   end

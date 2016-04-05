@@ -21,12 +21,18 @@ class Placement < ActiveRecord::Base
     end
   end
 
+  def updatable?
+    !already_decided?
+  end
+
   def accepted
-    update_attribute(:status, :accepted)
+    # Test the new conditionals
+    # If there's no workflow, just do it anyway
+    update_attribute(:status, :accepted) if workflow.accepted
   end
 
   def declined
-    update_attribute(:status, :declined)
+    update_attribute(:status, :declined) if workflow.declined
   end
 
   def placed
@@ -34,12 +40,16 @@ class Placement < ActiveRecord::Base
   end
 
   def expired
+    # TODO figure out when to check this.
     update_attribute(:status, :expired)
   end
 
   def workflow
-    return nil unless workflow_id
-    @workflow ||= ICIMS::Workflow.find(workflow_id)
+    @workflow ||= if workflow_id
+      ICIMS::Workflow.null
+    else
+      ICIMS::Workflow.find(workflow_id)
+    end
   end
 
   def travel_time
@@ -52,18 +62,17 @@ class Placement < ActiveRecord::Base
   end
 
   def already_decided?
-    decided_locally? || decided_remotely?
+    decided? || decided_remotely?
   end
 
   private
 
-  def decided_locally?
+  def decided?
     [:accepted, :declined].include?(status.to_sym)
   end
 
   def decided_remotely?
-    return false unless workflow
-    ['C36951', 'C14661'].include?(workflow.status)
+    workflow ? workflow.decided? : false
   end
 
   def create_workflow

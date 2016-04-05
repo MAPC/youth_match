@@ -1,5 +1,6 @@
 require_relative './resource'
 require 'active_support/hash_with_indifferent_access'
+require 'naught'
 
 class ICIMS::Workflow < ICIMS::Resource
 
@@ -10,7 +11,7 @@ class ICIMS::Workflow < ICIMS::Resource
     @id = id
     @job_id = job_id
     @person_id = person_id
-    @status = status || 'PLACED'
+    @status = status || ICIMS::Status.placed
   end
 
   def job
@@ -57,21 +58,24 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def accepted
-    update(status: 'C36951') if assert_status_updatable
+    update(status: ICIMS::Status.accepted) if updatable?
   end
 
   def declined
-    update(status: 'C14661') if assert_status_updatable
+    update(status: ICIMS::Status.declined) if updatable?
   end
 
   def placed
-    raise NotImplementedError, 'no code for status yet'
-    created(status: 'TODO CODE NOT READY')
+    update(status: ICIMS::Status.placed) if placeable?
   end
 
   def updatable?
-    # status is not accepted nor declined
-    # it hasn't expired
+    # TODO: AND NOT EXPIRED
+    @status.to_s == ICIMS::Status.placed
+  end
+
+  def placeable?
+    ![ICIMS::Status.accepted, ICIMS::Status.declined].include? @status.to_s
   end
 
   def self.find(id)
@@ -98,12 +102,17 @@ class ICIMS::Workflow < ICIMS::Resource
     end
   end
 
+  def self.null
+    @@null ||= build_null_object.new
+  end
+
   private
 
-  def assert_status_updatable
-    # TODO change this to just the PLACED status
-    # ONCE it gets created
-    ["C36951", "C14661", "PLACED", "D10100"].include? @status.to_s
+  def self.build_null_object
+    Naught.build do |c|
+      c.mimic(self.class)
+      c.black_hole
+    end
   end
 
   def self.get_id_from(response)
@@ -116,9 +125,11 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def self.person_filter(options)
-    { name: 'applicantworkflow.person.id',
+    {
+      name: 'applicantworkflow.person.id',
       value: [options[:person].to_s],
-      operator: '=' }
+      operator: '='
+    }
   end
 
   def self.eligible_filter

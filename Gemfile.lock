@@ -66,6 +66,7 @@ GEM
     minitest-focus (1.1.2)
       minitest (>= 4, < 6)
     multi_xml (0.5.5)
+    naught (1.1.0)
     nenv (0.3.0)
     notiffany (0.0.8)
       nenv (~> 0.1)
@@ -136,6 +137,7 @@ DEPENDENCIES
   logger
   minitest
   minitest-focus
+  naught
   pg
   rack-test
   rake
