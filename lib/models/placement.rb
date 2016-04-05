@@ -11,7 +11,7 @@ class Placement < ActiveRecord::Base
   validates :index,     presence: true
 
   enumerize :status, in: [:pending, :placed, :accepted, :declined, :expired],
-    default: :pending, predicates: true
+    default: :pending, predicates: { except: [:expired] }
 
   def finalize!
     if workflow = create_workflow
@@ -39,9 +39,8 @@ class Placement < ActiveRecord::Base
     update_attribute(:status, :placed)
   end
 
-  def expired
-    # TODO figure out when to check this.
-    update_attribute(:status, :expired)
+  def expired?
+    status == 'expired' || check_expired
   end
 
   def workflow
@@ -67,13 +66,19 @@ class Placement < ActiveRecord::Base
 
   private
 
+  def check_expired
+    if expires_at && Time.now > expires_at
+      update_attribute(:status, :expired)
+    end
+  end
+
   def decided?
     [:accepted, :declined].include?(status.to_sym)
   end
 
   def create_workflow
     ICIMS::Workflow.create({ job_id: position.id, person_id: applicant.id,
-      status: 'PLACED' })
+      status: ICIMS::Status.placed })
   end
 
 end

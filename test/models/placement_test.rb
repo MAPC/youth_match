@@ -96,6 +96,24 @@ class PlacementTest < Minitest::Test
     assert p.already_decided?
   end
 
+  def test_expired
+    assert_respond_to placement, :expired?
+    assert_respond_to placement, :expires_at
+    refute placement.expired?
+    placement.expires_at = 4.days.from_now
+    refute placement.expired?
+    placement.expires_at = 4.days.ago
+    assert placement.expired?
+
+    # You can't go back once it's expired, because the status is set.
+    placement.expires_at = 4.days.from_now
+    assert placement.expired?
+
+    # You can if you manually set the status, though.
+    placement.status = :placed
+    refute placement.expired?
+  end
+
   private
 
   def stub_finalize(job_id: 2305, person_id: 2587)
