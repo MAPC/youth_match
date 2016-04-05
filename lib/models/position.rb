@@ -1,3 +1,6 @@
+require './lib/lib/locatable'
+require './lib/lib/creatable_from_icims'
+
 class Position < ActiveRecord::Base
 
   include Locatable
