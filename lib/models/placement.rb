@@ -14,11 +14,7 @@ class Placement < ActiveRecord::Base
     default: :pending, predicates: { except: [:expired] }
 
   def finalize!
-    if workflow = create_workflow
-      self.status = :placed
-      self.workflow_id = workflow.id
-      save
-    end
+    placed(workflow: create_workflow)
   end
 
   def updatable?
@@ -35,8 +31,12 @@ class Placement < ActiveRecord::Base
     update_attribute(:status, :declined) if workflow.declined
   end
 
-  def placed
-    update_attribute(:status, :placed)
+  def placed(workflow: )
+    update_attributes(
+      status: :placed,
+      expires_at: expiration_date,
+      workflow_id: workflow.id
+    )
   end
 
   def expired?
@@ -62,6 +62,17 @@ class Placement < ActiveRecord::Base
 
   def already_decided?
     decided? || workflow.decided?
+  end
+
+  def expiration_date
+    # The next Friday we assign people to must be 4 days from now.
+    # If it's Monday, the next Friday should be that week.
+    # If it's Tuesday, it must be the next week's Friday.
+    min_days_from_now = 4
+    max_days_from_now = 10
+    range = (min_days_from_now..max_days_from_now).to_a
+    date = range.map.select { |i| i.days.from_now.friday? }.last.days.from_now
+    Time.new(date.year, date.month, date.day, 17)
   end
 
   private

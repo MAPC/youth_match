@@ -75,8 +75,24 @@ class PlacementTest < Minitest::Test
     assert_equal Status.pending, placement.status
     placement.finalize!
     assert_equal 21282, placement.workflow_id
-    assert_equal Status.placed, placement.status
     assert placement.workflow
+    assert_equal Status.placed, placement.status
+    assert placement.expires_at
+  end
+
+  def test_expiration_date
+    Time.stub :now, Time.parse("Mon Apr 4 2016 09:00 AM") do
+      expected = Time.parse("Fri Apr 8 2016 5:00 PM")
+      assert_equal expected, placement.expiration_date
+    end
+    Time.stub :now, Time.parse("Tue Apr 5 2016 00:00 AM") do
+      expected = Time.parse("Fri Apr 15 2016 5:00 PM")
+      assert_equal expected, placement.expiration_date
+    end
+    Time.stub :now, Time.parse("Fri Apr 8 2016 05:00 PM") do
+      expected = Time.parse("Fri Apr 15 2016 5:00 PM")
+      assert_equal expected, placement.expiration_date
+    end
   end
 
   def test_already_decided
