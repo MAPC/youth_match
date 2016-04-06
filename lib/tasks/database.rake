@@ -28,7 +28,9 @@ namespace :db do
   end
 
   task :configuration => :environment do
-    @config = YAML.load_file('config/database.yml')[DATABASE_ENV]
+    @config = ENV.fetch('DATABASE_URL') {
+      YAML.load_file('config/database.yml')[DATABASE_ENV]
+    }
   end
 
   task :configure_connection => :configuration do
