@@ -5,7 +5,8 @@ rvm:
 env:
   - DATABASE_ENV=test
 before_script:
-  - bundle exec rake db:create db:migrate
+  - bundle exec rake db:create
+  - bundle exec rake db:migrate
 bundler_args: --without development
 cache: bundler
 addons:
