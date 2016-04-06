@@ -6,7 +6,7 @@ module Initializers
   module Database
 
     def self.connect(tries: 2)
-      db = $config.send(environment).to_h
+      db = $config.send(environment)
       ActiveRecord::Base.establish_connection(db)
     rescue => e
       puts "retrying after error: #{e.inspect}"

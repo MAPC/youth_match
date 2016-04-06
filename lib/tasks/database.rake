@@ -31,7 +31,7 @@ namespace :db do
 
   task :configuration => :environment do
     Initializers::Config.load
-    @config = $config.send(Initializers::Database.environment).to_h
+    @config = $config.send(Initializers::Database.environment)
   end
 
   task :configure_connection => :configuration do
