@@ -11,8 +11,8 @@ namespace :db do
   def create_database config
     create_db = lambda do |config|
       # Establish connection, but not to the database in use, by setting db: nil
-      ActiveRecord::Base.establish_connection config.merge('database' => nil)
-      ActiveRecord::Base.connection.create_database config['database']
+      ActiveRecord::Base.establish_connection config.merge(database: nil)
+      ActiveRecord::Base.connection.create_database config[:database]
       # Then, establish the conection
       ActiveRecord::Base.establish_connection config
     end
@@ -32,7 +32,6 @@ namespace :db do
   task :configuration => :environment do
     Initializers::Config.load
     @config = $config.send(Initializers::Database.environment)
-    puts "CONFIG: #{@config.inspect}"
   end
 
   task :configure_connection => :configuration do
@@ -47,8 +46,8 @@ namespace :db do
 
   desc 'Drops the database for the current DATABASE_ENV'
   task :drop => :configure_connection do
-    ActiveRecord::Base.establish_connection @config.merge('database' => nil)
-    ActiveRecord::Base.connection.drop_database @config['database']
+    ActiveRecord::Base.establish_connection @config.merge(database: nil)
+    ActiveRecord::Base.connection.drop_database @config[:database]
   end
 
   desc 'Migrate the database (options: VERSION=x, VERBOSE=false).'
