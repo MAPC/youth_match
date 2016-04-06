@@ -15,7 +15,7 @@ class ICIMS::Company < ICIMS::Resource
   end
 
   def self.find(id)
-    response = get("/companies/#{id}", headers: headers)
+    response = retry_get("/companies/#{id}", headers: headers)
     handle response do |r|
       self.new(id: id, name: r['name'], addresses: r['addresses'])
     end

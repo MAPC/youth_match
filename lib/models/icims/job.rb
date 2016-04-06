@@ -26,7 +26,7 @@ class ICIMS::Job < ICIMS::Resource
   end
 
   def self.eligible(limit: nil)
-    response = post '/search/jobs',
+    response = retry_post '/search/jobs',
       { body: eligible_filter.to_json, headers: headers }
     handle response do |r|
       limit_results(r, limit).map { |res| find res['id'] }
@@ -34,7 +34,7 @@ class ICIMS::Job < ICIMS::Resource
   end
 
   def self.find(id)
-    response = get("/jobs/#{id}?fields=#{field_names.join(',')}", headers: headers)
+    response = retry_get("/jobs/#{id}?fields=#{field_names.join(',')}", headers: headers)
     handle response do |r|
       self.new(id: id, title: r['jobtitle'],
         company_id: r['joblocation']['companyid'],
