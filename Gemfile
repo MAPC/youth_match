@@ -22,6 +22,7 @@ gem 'dotenv'
 
 # Working with APIs
 gem 'httparty'
+gem 'retries', git: 'https://github.com/ooyala/retries.git'
 
 # Web app
 gem 'sinatra'

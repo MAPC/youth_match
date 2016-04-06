@@ -119,6 +119,11 @@ class ICIMS::WorkflowTest < Minitest::Test
     end
   end
 
+  def test_resource_retries
+    stub_timeouts
+    assert workflow
+  end
+
   private
 
   def stub_workflow(id: 19288)
@@ -179,6 +184,15 @@ class ICIMS::WorkflowTest < Minitest::Test
       body: '',
       headers: JSON.parse(File.read('./test/fixtures/icims/create-workflow-headers.json'))
     )
+  end
+
+  def stub_timeouts
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+      to_timeout.then.
+      to_timeout.then.
+      to_return(status: 200,
+        body: File.read('./test/fixtures/icims/workflow-19288.json'),
+        headers: { 'Content-Type' => 'application/json' })
   end
 
 end

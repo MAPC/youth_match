@@ -37,7 +37,7 @@ class ICIMS::Workflow < ICIMS::Resource
       source: "Other (Please Specify)",
       sourcename: 'org.mapc.youthjobs.lottery'
     }.to_json
-    response = post '/applicantworkflows', { body: payload, headers: headers }
+    response = retry_post '/applicantworkflows', { body: payload, headers: headers }
     if return_instance
       new(attributes.merge({ id: get_id_from(response) }))
     else
@@ -48,9 +48,8 @@ class ICIMS::Workflow < ICIMS::Resource
   def update(status: nil, validate: true)
     return false if @status == status
     payload = { status: { id: status } }.to_json
-    response = self.class.patch "/applicantworkflows/#{@id}", {
-      body: payload, headers: self.class.headers
-    }
+    response = self.class.retry_patch "/applicantworkflows/#{@id}", {
+        body: payload, headers: self.class.headers }
     handle response do |r|
       @status = status
       return true
@@ -86,7 +85,7 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def self.find(id)
-    response = get("/applicantworkflows/#{id}", headers: headers)
+    response = retry_get("/applicantworkflows/#{id}", headers: headers)
     handle response do |r|
       new(id: id, job_id: r['baseprofile']['id'], status: r['status']['id'],
         person_id: r['associatedprofile']['id'])
@@ -94,7 +93,7 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def self.where(options={})
-    response = post '/search/applicantworkflows',
+    response = retry_post '/search/applicantworkflows',
       { body: build_filters(options).to_json, headers: headers }
     handle response do |r|
       Array(r['searchResults']).map { |res| find(res['id']) }
@@ -102,7 +101,7 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def self.eligible(limit: nil)
-    response = post '/search/applicantworkflows',
+    response = retry_post '/search/applicantworkflows',
       { body: eligible_filter.to_json, headers: headers }
     handle response do |r|
       limit_results(r, limit).map { |res| find res['id'] }
