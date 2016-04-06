@@ -32,6 +32,7 @@ namespace :db do
   task :configuration => :environment do
     Initializers::Config.load
     @config = $config.send(Initializers::Database.environment)
+    puts "CONFIG: #{@config.inspect}"
   end
 
   task :configure_connection => :configuration do
