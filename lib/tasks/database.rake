@@ -35,7 +35,6 @@ namespace :db do
   end
 
   task :configure_connection => :configuration do
-    puts "----> configuration: #{@config.inspect}"
     ActiveRecord::Base.establish_connection @config
     ActiveRecord::Base.logger = Logger.new $stdout if @config['logger']
   end
