@@ -35,6 +35,16 @@ $logger = Logger.new(log_location).tap do |log|
 end
 
 
-Dir.glob('./lib/**/*.rb').each { |file| require file }
-require_relative './apps'
-Dir.glob('./apps/*.rb').each { |file| require file }
+Dir.glob('./lib/**/*.rb').each { |file|
+  puts file.inspect
+  require file
+}
+
+puts 'requiring ./apps'
+require './apps'
+
+
+Dir.glob('./apps/*.rb').each { |file|
+  puts file.inspect
+  require file
+}
