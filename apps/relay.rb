@@ -1,5 +1,5 @@
 require './environment'
-require 'sinatra'
+require 'sinatra/base'
 require 'sinatra/activerecord'
 
 # Airbrake.configure do |c|
@@ -20,35 +20,49 @@ class Apps::Relay < Sinatra::Base
 
   get '/placements/:id/accept' do
     load_placement(params)
-    workflow = ICIMS::Workflow.find(@placement.workflow_id)
-    handle_error_cases(workflow)
-    if workflow.updatable?
-      @placement.accepted if workflow.accepted
+    handle_error_cases(@placement)
+    if @placement.updatable?
+      @placement.accepted
       redirect *DYEERedirect.to(:accept)
     end
   end
 
   get '/placements/:id/decline' do
     load_placement(params)
-    workflow = ICIMS::Workflow.find(@placement.workflow_id)
-    handle_error_cases(workflow)
-    if workflow.updatable?
-      @placement.accepted if workflow.accepted
-      redirect *DYEERedirect.to(:accept)
+    handle_error_cases(@placement)
+    if @placement.updatable?
+      @placement.declined
+      redirect *DYEERedirect.to(:decline)
     end
   end
 
-  get '/applicants/:id/opt-out' do
-    #NO OP
+  get '/placements/:id/opt-out' do
+    load_placement(params)
+    handle_error_cases(@placement)
+    if @placement.updatable?
+      @placement.declined
+      @placement.applicant.opted_out
+      redirect *DYEERedirect.to(:opt_out)
+    end
+  end
+
+  error ActiveRecord::RecordNotFound do
+    # Airbrake.notify('Record Not Found', params: params)
+    redirect *DYEERedirect.to(:error)
   end
 
   error 404 do
-    Airbrake.notify('Record not found', params: params)
+    # Airbrake.notify('Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 422 do
-    Airbrake.notify('Unprocessable entity', params: params)
+    # Airbrake.notify('Unprocessable Entity', params: params)
+    redirect *DYEERedirect.to(:error)
+  end
+
+  error 500 do
+    # Airbrake.notify('Internal Server Error', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
@@ -59,11 +73,14 @@ class Apps::Relay < Sinatra::Base
     position  = Position.find_by  uuid: params[:position_id]
     @placement = Placement.find_by(uuid: params[:id],
       applicant: applicant, position: position)
+  rescue ActiveRecord::RecordNotFound # Not sure this does anything
+    halt 404
   end
 
-  def handle_error_cases(workflow)
-    redirect *DYEERedirect.to(:error) if workflow.already_decided?
-    redirect *DYEERedirect.to(:expired) if workflow.expired?
+  def handle_error_cases(placement)
+    halt 404 if placement.nil?
+    redirect *DYEERedirect.to(:expired) if placement.expired?
+    redirect *DYEERedirect.to(:error)   if placement.already_decided?
     false
   end
 end

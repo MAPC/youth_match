@@ -1,0 +1,1 @@
+web: rerun 'ruby apps/relay.rb' --no-notify

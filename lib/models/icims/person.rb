@@ -38,7 +38,7 @@ class ICIMS::Person < ICIMS::Resource
   alias_method :transit_pass?, :transit_pass
 
   def self.find(id)
-    response = get("/people/#{id}?fields=#{fields}", headers: headers)
+    response = retry_get("/people/#{id}?fields=#{fields}", headers: headers)
     handle response do |r|
       self.new(id: id, status: 'lol', interests: r['field23848'],
         transit_pass: r['field36999'], preference: r['field29946'],

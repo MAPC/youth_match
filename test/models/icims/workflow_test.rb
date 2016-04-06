@@ -40,6 +40,13 @@ class ICIMS::WorkflowTest < Minitest::Test
   end
 
   def test_updatable
+    stub_update(status: ICIMS::Status.placed)
+    assert_respond_to workflow, :updatable?
+    workflow.placed
+    assert workflow.updatable?, "workflow status: #{workflow.status.inspect}"
+  end
+
+  def test_not_updatable
     workflow.status = "NOT UPDATABLE"
     refute workflow.accepted
     refute workflow.declined
@@ -47,8 +54,8 @@ class ICIMS::WorkflowTest < Minitest::Test
 
   def test_create_from_attributes
     stub_create
-    expected = ICIMS::Workflow.new(id: 21282, job_id: 1, person_id: 2, status: 'PLACED')
-    actual = ICIMS::Workflow.create(job_id: 1, person_id: 2, status: 'PLACED')
+    expected = ICIMS::Workflow.new(id: 21282, job_id: 1, person_id: 2, status: ICIMS::Status.placed)
+    actual = ICIMS::Workflow.create(job_id: 1, person_id: 2, status: ICIMS::Status.placed)
     assert_equal expected, actual
   end
 
@@ -67,31 +74,54 @@ class ICIMS::WorkflowTest < Minitest::Test
 
   def test_update_from_attributes
     stub_update
-    assert workflow.update(status: 'C36951')
-    assert_equal 'C36951', workflow.status
-    refute workflow.update(status: 'C36951')
+    accepted = ICIMS::Status.accepted
+    assert workflow.update(status: accepted)
+    assert_equal accepted, workflow.status
+    refute workflow.update(status: accepted)
+  end
+
+  def test_not_updatable_after_deciding
+    stub_update(status: ICIMS::Status.placed)
+    stub_update(status: ICIMS::Status.accepted)
+    workflow.placed
+    workflow.accepted
+    refute workflow.updatable?
   end
 
   def test_accepted
-    stub_update
-    assert workflow.accepted
-    assert_equal "C36951", workflow.status
+    stub_update(status: ICIMS::Status.placed)
+    stub_update(status: ICIMS::Status.accepted)
+    workflow.placed
+    assert workflow.accepted, workflow.inspect
+    assert_equal ICIMS::Status.accepted, workflow.status
     refute workflow.accepted
   end
 
   def test_declined
-    stub_update(status: "C14661")
-    assert workflow.declined
-    assert_equal "C14661", workflow.status
+    stub_update(status: ICIMS::Status.placed)
+    stub_update(status: ICIMS::Status.declined)
+    workflow.placed
+    assert workflow.declined, workflow.inspect
+    assert_equal ICIMS::Status.declined, workflow.status
     refute workflow.declined
   end
 
   def test_placed
-    skip 'TODO'
-    stub_update(status: "PLACED STATUS")
+    stub_update(status: ICIMS::Status.placed)
     assert workflow.placed
-    assert_equal "PLACED STATUS", workflow.status
+    assert_equal ICIMS::Status.placed, workflow.status
     refute workflow.placed
+  end
+
+  def test_null
+    [:placeable?, :decided?, :updatable?].each do |method|
+      assert_respond_to ICIMS::Workflow.null, method
+    end
+  end
+
+  def test_resource_retries
+    stub_timeouts
+    assert workflow
   end
 
   private
@@ -145,7 +175,7 @@ class ICIMS::WorkflowTest < Minitest::Test
     )
   end
 
-  def stub_update(status: "C36951")
+  def stub_update(status: ICIMS::Status.accepted)
     stub_request(:patch, "https://api.icims.com/customers/6405/applicantworkflows/19288").
     with(:body => "{\"status\":{\"id\":\"#{status}\"}}",
          :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
@@ -154,6 +184,15 @@ class ICIMS::WorkflowTest < Minitest::Test
       body: '',
       headers: JSON.parse(File.read('./test/fixtures/icims/create-workflow-headers.json'))
     )
+  end
+
+  def stub_timeouts
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+      to_timeout.then.
+      to_timeout.then.
+      to_return(status: 200,
+        body: File.read('./test/fixtures/icims/workflow-19288.json'),
+        headers: { 'Content-Type' => 'application/json' })
   end
 
 end

@@ -1,1 +1,1 @@
-web: rerun 'ruby app.rb' --no-notify
+web: ruby apps/relay.rb

@@ -4,13 +4,15 @@ require 'active_record'
 require 'active_support/inflector'
 require 'active_record/fixtures'
 require 'csv'
+require './config/initializers/config'
+require './config/initializers/database'
 
 namespace :db do
   def create_database config
     create_db = lambda do |config|
       # Establish connection, but not to the database in use, by setting db: nil
-      ActiveRecord::Base.establish_connection config.merge('database' => nil)
-      ActiveRecord::Base.connection.create_database config['database']
+      ActiveRecord::Base.establish_connection config.merge(database: nil)
+      ActiveRecord::Base.connection.create_database config[:database]
       # Then, establish the conection
       ActiveRecord::Base.establish_connection config
     end
@@ -28,12 +30,13 @@ namespace :db do
   end
 
   task :configuration => :environment do
-    @config = YAML.load_file('config/database.yml')[DATABASE_ENV]
+    Initializers::Config.load
+    @config = $config.send(Initializers::Database.environment)
   end
 
   task :configure_connection => :configuration do
     ActiveRecord::Base.establish_connection @config
-    ActiveRecord::Base.logger = Logger.new STDOUT if @config['logger']
+    ActiveRecord::Base.logger = Logger.new $stdout if @config['logger']
   end
 
   desc 'Create the database from config/database.yml for the current DATABASE_ENV'
@@ -43,8 +46,8 @@ namespace :db do
 
   desc 'Drops the database for the current DATABASE_ENV'
   task :drop => :configure_connection do
-    ActiveRecord::Base.establish_connection @config.merge('database' => nil)
-    ActiveRecord::Base.connection.drop_database @config['database']
+    ActiveRecord::Base.establish_connection @config.merge(database: nil)
+    ActiveRecord::Base.connection.drop_database @config[:database]
   end
 
   desc 'Migrate the database (options: VERSION=x, VERBOSE=false).'

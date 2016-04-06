@@ -1,3 +1,5 @@
+require_relative './score'
+
 class MatchScore < Score
 
   def score

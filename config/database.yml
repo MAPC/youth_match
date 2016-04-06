@@ -9,3 +9,6 @@ development: &default
 test:
   <<: *default
   database: youth_match_test
+
+production:
+  url: <%= ENV['DATABASE_URL'].to_s.sub(/^postgres/, 'postgis') %>

@@ -6,41 +6,10 @@ require 'erb'
 require 'logger'
 require 'yaml'
 require 'dotenv'
+require './config/initializers.rb'
 
 Dotenv.load
+Initializers.load
 
-require_relative './lib/refinements/ostructable'
-
-def database_yaml
-  config_file = File.read File.join(Dir.pwd, 'config', 'database.yml')
-  YAML.load ERB.new(config_file).result
-end
-
-def lottery_yaml
-  config_file = File.read File.join(Dir.pwd, 'config', 'lottery.yml')
-  YAML.load ERB.new(config_file).result
-end
-
-using Ostructable
-$config = Hash.to_ostructs(database_yaml)
-$config.lottery = Hash.to_ostructs(lottery_yaml)
-
-DB_ENV   = ENV.fetch('DATABASE_ENV') { 'development' }
-database = ENV.fetch('DATABASE_URL') { $config.send(DB_ENV).to_h }
-
-ActiveRecord::Base.establish_connection(database)
-
-log_location = if ENV['LOG_FILE']
-  File.new ENV['LOG_FILE']
-else
-  $stdout
-end
-
-$logger = Logger.new(log_location).tap do |log|
-  log.progname = 'youth_match'
-end
-
-
-Dir.glob('./lib/**/*.rb').each { |file| require file }
-require_relative './apps'
-Dir.glob('./apps/*.rb').each { |file| require file }
+autoload_paths = ['./lib/**/*.rb', './apps', './apps/*.rb']
+Dir.glob(autoload_paths).each { |file| require file }

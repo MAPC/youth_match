@@ -1,5 +1,6 @@
 require_relative './resource'
 require 'active_support/hash_with_indifferent_access'
+require 'naught'
 
 class ICIMS::Workflow < ICIMS::Resource
 
@@ -10,7 +11,7 @@ class ICIMS::Workflow < ICIMS::Resource
     @id = id
     @job_id = job_id
     @person_id = person_id
-    @status = status || 'PLACED'
+    @status = status || ICIMS::Status.placed
   end
 
   def job
@@ -36,7 +37,7 @@ class ICIMS::Workflow < ICIMS::Resource
       source: "Other (Please Specify)",
       sourcename: 'org.mapc.youthjobs.lottery'
     }.to_json
-    response = post '/applicantworkflows', { body: payload, headers: headers }
+    response = retry_post '/applicantworkflows', { body: payload, headers: headers }
     if return_instance
       new(attributes.merge({ id: get_id_from(response) }))
     else
@@ -47,9 +48,8 @@ class ICIMS::Workflow < ICIMS::Resource
   def update(status: nil, validate: true)
     return false if @status == status
     payload = { status: { id: status } }.to_json
-    response = self.class.patch "/applicantworkflows/#{@id}", {
-      body: payload, headers: self.class.headers
-    }
+    response = self.class.retry_patch "/applicantworkflows/#{@id}", {
+        body: payload, headers: self.class.headers }
     handle response do |r|
       @status = status
       return true
@@ -57,20 +57,35 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def accepted
-    update(status: "C36951") if assert_status_updatable
+    return false unless updatable?
+    update status: ICIMS::Status.accepted
   end
 
   def declined
-    update(status: "C14661") if assert_status_updatable
+    return false unless updatable?
+    update(status: ICIMS::Status.declined)
   end
 
   def placed
-    raise NotImplementedError, "no code for status yet"
-    created(status: "TODO CODE NOT READY")
+    return false unless placeable?
+    update(status: ICIMS::Status.placed)
+  end
+
+  def updatable?
+    # TODO: AND NOT EXPIRED
+    @status.to_s == ICIMS::Status.placed
+  end
+
+  def placeable?
+    !decided? || !expired?
+  end
+
+  def decided?
+    [ICIMS::Status.accepted, ICIMS::Status.declined].include? @status.to_s
   end
 
   def self.find(id)
-    response = get("/applicantworkflows/#{id}", headers: headers)
+    response = retry_get("/applicantworkflows/#{id}", headers: headers)
     handle response do |r|
       new(id: id, job_id: r['baseprofile']['id'], status: r['status']['id'],
         person_id: r['associatedprofile']['id'])
@@ -78,7 +93,7 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def self.where(options={})
-    response = post '/search/applicantworkflows',
+    response = retry_post '/search/applicantworkflows',
       { body: build_filters(options).to_json, headers: headers }
     handle response do |r|
       Array(r['searchResults']).map { |res| find(res['id']) }
@@ -86,17 +101,31 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def self.eligible(limit: nil)
-    response = post '/search/applicantworkflows',
+    response = retry_post '/search/applicantworkflows',
       { body: eligible_filter.to_json, headers: headers }
     handle response do |r|
       limit_results(r, limit).map { |res| find res['id'] }
     end
   end
 
+  def self.null
+    @@null ||= build_null_object.new
+  end
+
   private
 
-  def assert_status_updatable
-    ["C36951", "C14661", "PLACED", "D10100"].include? @status.to_s
+  def self.build_null_object
+    Naught.build do |c|
+      c.mimic(ICIMS::Workflow)
+      c.black_hole
+      c.predicates_return false
+      def nil?
+        true
+      end
+      def present?
+        false
+      end
+    end
   end
 
   def self.get_id_from(response)
@@ -109,9 +138,11 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def self.person_filter(options)
-    { name: 'applicantworkflow.person.id',
+    {
+      name: 'applicantworkflow.person.id',
       value: [options[:person].to_s],
-      operator: '=' }
+      operator: '='
+    }
   end
 
   def self.eligible_filter

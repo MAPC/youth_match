@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/ooyala/retries.git
+  revision: 9622c684f32dae96bf181dafff344bd096df1217
+  specs:
+    retries (1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -66,6 +72,7 @@ GEM
     minitest-focus (1.1.2)
       minitest (>= 4, < 6)
     multi_xml (0.5.5)
+    naught (1.1.0)
     nenv (0.3.0)
     notiffany (0.0.8)
       nenv (~> 0.1)
@@ -136,11 +143,13 @@ DEPENDENCIES
   logger
   minitest
   minitest-focus
+  naught
   pg
   rack-test
   rake
   rb-fsevent
   rerun
+  retries!
   rgeo
   rounding
   sinatra

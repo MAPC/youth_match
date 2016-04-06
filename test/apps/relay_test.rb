@@ -13,8 +13,8 @@ class RelayTest < Minitest::Test
     @position  = Position.create!(grid_id: 1)
     @applicant = Applicant.create!(grid_id: 1)
     @placement = Placement.create!(
-      applicant: @applicant, position: @position, run: @run, index: 1
-    )
+      applicant: @applicant, position: @position, run: @run, index: 1,
+      workflow_id: 19288)
     @placement.reload
   end
 
@@ -40,79 +40,213 @@ class RelayTest < Minitest::Test
   end
 
   def test_accepted_ok
-    get "/placements/#{@placement.uuid}/accept",
-      applicant_id: @placement.applicant.uuid,
-      position_id: @placement.position.uuid
-    assert last_response.redirect?, last_response.status
-    follow_redirect!
-    assert_includes last_request.url, 'lottery-accepted'
+    stub_get_workflow
+    stub_accept_workflow
+    accept
+    assert_redirect_to_accepted
     assert_equal 'accepted', @placement.reload.status
   end
 
   def test_declined_ok
-    get "/placements/#{@placement.uuid}/decline",
-      applicant_id: @placement.applicant.uuid,
-      position_id: @placement.position.uuid
-    assert last_response.redirect?, last_response.status
-    follow_redirect!
-    assert_includes last_request.url, 'lottery-declined'
+    stub_get_workflow
+    stub_decline_workflow
+    decline
+    assert_redirect_to_declined
     assert_equal 'declined', @placement.reload.status
   end
 
   def test_accepted_one_character_deleted
-    skip
+    get "/placements/#{@placement.uuid}/accept",
+      applicant_id: @placement.applicant.uuid,
+      position_id:  @placement.position.uuid[0..34] # Truncate by 1
+    assert_redirect_to_error_page
   end
 
+
   def test_accepted_different_job
-    skip
+    position = Position.create
+    get "/placements/#{@placement.uuid}/accept",
+      applicant_id: @placement.applicant.uuid,
+      position_id:  position.uuid
+    assert_redirect_to_error_page
+  ensure
+    position.destroy!
   end
 
   def test_accepted_different_person
-    skip
+    applicant = Applicant.create
+    get "/placements/#{@placement.uuid}/accept",
+      applicant_id: applicant.uuid,
+      position_id:  @placement.position.uuid
+    assert_redirect_to_error_page
+  ensure
+    applicant.destroy!
   end
 
+  def test_accepted_already_accepted
+    stub_already_accepted
+    accept
+    assert_redirect_to_error_page
+  end
+
+  def test_declined_already_accepted
+    stub_already_accepted
+    decline
+    assert_redirect_to_error_page
+  end
+
+  def test_declined_already_declined
+    stub_already_declined
+    decline
+    assert_redirect_to_error_page
+  end
+
+  def test_accepted_already_declined
+    stub_already_declined
+    accept
+    assert_redirect_to_error_page
+  end
+
+  def test_expired_locally
+    @placement.update_attributes(expires_at: 1.day.ago)
+    accept
+    assert_redirect_to_expiration_page
+    decline
+    assert_redirect_to_expiration_page
+  end
+
+  def test_opt_out
+    stub_get_workflow
+    stub_decline_workflow
+    opt_out
+    assert_redirect_to_optout_page
+    assert_equal 'declined', @placement.reload.status
+    assert_equal 'opted_out', @placement.applicant.status
+  end
+
+  def test_already_hired
+    skip 'check ICIMS API during response, check to make sure unhired'
+    # And mark person as hired.
+  end
+
+
+
+
   def test_accepted_person_not_in_placements
-    skip
+    skip 'maybe irrelevant'
   end
 
   def test_accepted_icims_error
     skip 'retry 3 times, 1s wait, Airbrake because ICIMS may be down'
   end
 
-  def test_accepted_already_accepted
-    skip 'to error page'
-    # stub_already_accepted
-    # Need to check that they're not already accepted or declined
-    # because that means someone on the phone already took this action.
-    # This case should go to the error page
-  end
 
-  def test_declined_already_declined
-    skip 'to error page'
-    # stub_already_declined
-    # Same as above
-  end
-
-  def test_accepted_already_declined
-    skip 'same as above'
-  end
-
-  def test_declined_already_accepted
-    skip 'same as above'
-  end
-
-  def test_already_hired
-    skip 'check ICIMS API during response, check to make sure unhired'
-  end
-
-  def test_expired
-    skip 'to expiration page'
-  end
-
-  def test_opt_out
-    skip 'to opt out page'
-  end
 
   # If we move accept/decline to :action, test against wrong actions
+  private
+
+  def stub_retries_accepted
+    skip 'fill in rest of stub'
+    stub_request(:get, "www.example.com").
+      to_timeout.then.
+      to_timeout.then.
+      to_return(
+        status: 200,
+        body: File.read('.'),
+        headers: { 'Content-Type' => 'application/json' }
+      )
+  end
+
+  def stub_already_accepted
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+      with(:headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+      to_return(
+        :status => 200,
+        :body => File.read('./test/fixtures/icims/workflow-accepted.json'),
+        :headers => {'Content-Type' => 'application/json'}
+      )
+  end
+
+  def stub_already_declined
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+      with(:headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+      to_return(
+        :status => 200,
+        :body => File.read('./test/fixtures/icims/workflow-declined.json'),
+        :headers => {'Content-Type' => 'application/json'}
+      )
+  end
+
+  def accept
+    get "/placements/#{@placement.uuid}/accept",
+      applicant_id: @placement.applicant.uuid,
+      position_id:  @placement.position.uuid
+  end
+
+  def decline
+    get "/placements/#{@placement.uuid}/decline",
+      applicant_id: @placement.applicant.uuid,
+      position_id:  @placement.position.uuid
+  end
+
+  def opt_out
+    get "/placements/#{@placement.uuid}/opt-out",
+      applicant_id: @placement.applicant.uuid,
+      position_id:  @placement.position.uuid
+  end
+
+  def stub_get_workflow
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+      with(:headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+      to_return(
+        :status => 200,
+        :body => File.read('./test/fixtures/icims/workflow-19288-placed.json'),
+        :headers => {'Content-Type' => 'application/json'}
+      )
+  end
+
+  def stub_accept_workflow
+    stub_request(:patch, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+    with(:body => "{\"status\":{\"id\":\"C36951\"}}",
+         :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+    to_return(:status => 204, :body => "", :headers => {'Content-Type'=>'application/json'})
+  end
+
+  def stub_decline_workflow
+    stub_request(:patch, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+    with(:body => "{\"status\":{\"id\":\"C14661\"}}",
+         :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+    to_return(:status => 204, :body => "", :headers => {'Content-Type'=>'application/json'})
+  end
+
+  def assert_redirect_to_error_page
+    assert last_response.redirect?, last_response.inspect
+    follow_redirect!
+    assert_includes last_request.url, 'error'
+  end
+
+  def assert_redirect_to_expiration_page
+    assert last_response.redirect?, last_response.inspect
+    follow_redirect!
+    assert_includes last_request.url, 'expir'
+  end
+
+  def assert_redirect_to_accepted
+    assert last_response.redirect?, last_response.errors
+    follow_redirect!
+    assert_includes last_request.url, 'lottery-accepted'
+  end
+
+  def assert_redirect_to_declined
+    assert last_response.redirect?, last_response.errors
+    follow_redirect!
+    assert_includes last_request.url, 'lottery-declined'
+  end
+
+  def assert_redirect_to_optout_page
+    assert last_response.redirect?, last_response.errors
+    follow_redirect!
+    assert_includes last_request.url, 'opt-out'
+  end
 
 end
