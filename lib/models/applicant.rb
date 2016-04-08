@@ -11,7 +11,7 @@ class Applicant < ActiveRecord::Base
   before_validation :compute_grid_id
   before_save :assign_mode
 
-  validates :grid_id, presence: true
+  validates :grid_id, presence: true, if: 'location.present?'
 
   enumerize :status, in: [:pending, :activated, :onboarded, :opted_out],
     default: :pending, predicates: true

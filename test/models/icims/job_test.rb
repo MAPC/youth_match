@@ -42,6 +42,7 @@ class ICIMS::JobTest < Minitest::Test
     stub_eligible
     100.times { |i| stub_job(id: i+1) }
     assert_equal 100, ICIMS::Job.eligible.count
+    assert_equal 90, ICIMS::Job.eligible(offset: 10).count
     assert_equal 10, ICIMS::Job.eligible(limit: 10).count
   end
 

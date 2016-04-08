@@ -67,6 +67,10 @@ class CategorySplitterTest < Minitest::Test
       split: ['Media', 'Communications', 'Film']
     },
     {
+      text: "Media, Communications, or Film",
+      split: ['Media', 'Communications', 'Film']
+    },
+    {
       text: "Manufacturing, Science, Technology, Engineering and/or Math",
       split: ['Manufacturing', 'Science', 'Technology', 'Engineering', 'Math']
     },

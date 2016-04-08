@@ -100,12 +100,18 @@ class ICIMS::Workflow < ICIMS::Resource
     end
   end
 
-  def self.eligible(limit: nil)
+  def self.eligible(limit: nil, offset: 0, &block)
     response = retry_post '/search/applicantworkflows',
       { body: eligible_filter.to_json, headers: headers }
-    handle response do |r|
-      limit_results(r, limit).map { |res| find res['id'] }
+    results = handle(response) { |r| limit_results(r, limit, offset) }
+    if block_given?
+      results.each do |res|
+        yield find(res['id'])
+      end
+    else
+      results.map { |res| find res['id'] }
     end
+
   end
 
   def self.null

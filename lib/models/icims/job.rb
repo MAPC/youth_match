@@ -25,11 +25,11 @@ class ICIMS::Job < ICIMS::Resource
     company.address
   end
 
-  def self.eligible(limit: nil)
+  def self.eligible(limit: nil, offset: 0)
     response = retry_post '/search/jobs',
       { body: eligible_filter.to_json, headers: headers }
     handle response do |r|
-      limit_results(r, limit).map { |res| find res['id'] }
+      limit_results(r, limit, offset).map { |res| find res['id'] }
     end
   end
 

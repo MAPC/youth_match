@@ -59,8 +59,6 @@ class ICIMS::PersonTest < Minitest::Test
     assert_equal :hired, oppposite_person.status
   end
 
-  private
-
   def stub_person(id: 1)
     stub_request(:get, "https://api.icims.com/customers/6405/people/#{id}?fields=field29946,field23848,field36999,addresses").
       to_return(status: 200,

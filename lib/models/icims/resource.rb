@@ -57,8 +57,9 @@ class ICIMS::Resource
     }
   end
 
-  def self.limit_results(results, limit)
+  def self.limit_results(results, limit, offset)
     base_results = Array(results['searchResults'])
+    base_results.shift(offset) if offset > 0
     results = if limit
       base_results.first(limit.to_i)
     else
