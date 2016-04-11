@@ -22,7 +22,7 @@ namespace :db do
     rescue StandardError => e
       puts "----> ERROR CREATING DATABASE: #{e.message}"
     end
-    puts "----> Created database #{config['database']}"
+    puts "----> Created database #{config[:database]}"
   end
 
   def template(file_name)

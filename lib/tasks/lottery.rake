@@ -6,9 +6,30 @@ namespace :lottery do
     MIGRATIONS_DIR = ENV['MIGRATIONS_DIR'] || 'db/migrate'
   end
 
+  desc 'Prepared the matching process, assigning tickets and calculating pool.'
+  task :prepare, [:seed] => :environment do |t, args|
+    pre_message(t)
+    run = AssignTicketsJob.new(seed: args[:seed]).perform!
+    PrecalculatePoolJob.new(run_id: run.id).perform!
+  end
+
+  desc 'Runs the matching process, in batches.'
+  task :run_batch, [:run_id, :limit] => :environment do |t, args|
+    pre_message(t)
+    LotteryRunJob.new(run_id: args[:run_id], limit: args[:limit]).perform!
+  end
+
+  desc 'Prepares for a second round those applicants who declined.'
+  task :refresh_declines, [:run_id] => :environment do |t, args|
+    pre_message(t)
+    RefreshDeclinedJob.new(run_id: args[:run_id]).perform!
+  end
+
+
+
   desc 'Runs the matching process.'
   task :run, [:limit, :seed] => :environment do |t, args|
-    $logger.debug "----> Running task `lottery:run` in #{DATABASE_ENV} environment."
+    pre_message(t)
     $logger.info '----> Running checks first'
     Rake::Task['lottery:check'].invoke
     begin
@@ -50,25 +71,17 @@ namespace :lottery do
   end
 
   desc 'Exports placements from a given run'
-  # Run this as: `lottery:export[:id]`
   task :export, [:id] => [:environment] do |t, args|
-    $logger.debug "----> Running task `lottery:export` in #{DATABASE_ENV} environment."
+    pre_message(t)
     $logger.debug "----> Takes in an ID to export. (This run, id: #{args[:id]})"
     ExportJob.new(args[:id]).perform!
     $logger.info '----> DONE'
   end
 
-  desc 'List all of the runs, chronologically'
-  task list: :environment do
-    $logger.debug "----> Running task `lottery:list` in #{DATABASE_ENV} environment."
-    ListJob.new.perform!
-    $logger.info '----> DONE'
+  private
+
+  def pre_message(task)
+    $logger.debug "----> Running task `#{task.name}` in #{DATABASE_ENV} environment."
   end
 
-  desc 'Generate statistics for a given run.'
-  task :stats, [:id] => [:environment] do |t, args|
-    $logger.debug "----> Running task `lottery:stats` in #{DATABASE_ENV} environment."
-    $logger.debug "----> Takes in an ID to generate stats on. (This run, id: #{args[:id]})"
-    StatsJob.new(args[:id]).perform!
-  end
 end
