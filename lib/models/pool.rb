@@ -17,12 +17,9 @@ class Pool < ActiveRecord::Base
   end
 
   def best_fit
-    raise NotImplementedError
     return nil if positions.count == 0
-    # Order by score, select until one is available
-    positions.order_by { |p| p.score.total }.each do |position|
-      # TODO: Ensure position is available in run scope before selecting!
-      position
+    positions.order_by { |p| p.score.total }.detect do |position|
+      position.positions > placements_with(position)
     end
   end
 
@@ -50,5 +47,8 @@ class Pool < ActiveRecord::Base
     end
   end
 
+  def placements_with(position)
+    run.placements.where(position: position).count
+  end
 
 end
