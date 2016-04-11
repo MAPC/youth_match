@@ -8,6 +8,7 @@ module Initializers
 
     def self.load
       $config = Hash.to_ostructs(config_from_yaml)
+      $config.lottery = Hash.to_ostructs(lottery_config)
       coerce_config_types
     end
 
@@ -29,8 +30,16 @@ module Initializers
     end
 
     def self.config_from_yaml
-      config_file = File.read File.join(Dir.pwd, 'config', 'database.yml')
+      config_file = File.read config_file('database')
       YAML.load ERB.new(config_file).result
+    end
+
+    def self.lottery_config
+      YAML.load_file config_file('lottery')
+    end
+
+    def self.config_file(str)
+      File.join(Dir.pwd, 'config', "#{str}.yml")
     end
 
   end

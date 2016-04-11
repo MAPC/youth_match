@@ -4,35 +4,63 @@ class Compressor
 
   def initialize(pool)
     @pool = pool
-    @applicant = @pool.applicant
     @run = @pool.run
+    @applicant = @pool.applicant
     @pooled_positions = @pool.positions
   end
 
   def positions
-    Position.available(@run).where(reserve: true).
-      limit(gain).order('RANDOM()')
+    Position.compressible(@run).limit(position_gain)
   end
 
-  # TODO: At present, gain is proportion, not a count. To limit it by gain
-  # could be limiting it by 100, not 100% of positions, or 1, not 1% of
-  # positions.
+  def compress!
+    new_positions = positions.map do |position|
+      PooledPosition.new(compressed: true, position: position)
+    end
+    @pool.positions << new_positions
+    new_positions.count
+  end
+
+  def position_gain
+    (gain.to_f / 100) * max_pool_position_count
+  end
+
   def gain
-    return 0 if @pool.base_proportion > config.balancer_threshhold
-    equation
+    if signal < threshhold
+      expected_output - signal
+    else
+      0
+    end
+  end
+
+  def expected_output
+    if signal < threshhold
+      threshhold + ((signal - threshhold) / ratio)
+    else
+      signal
+    end
+  end
+
+  def signal
+    @signal ||= @pooled_positions.count.to_f / max_pool_position_count * 100
   end
 
   private
 
+  def threshhold
+    config.fetch(:threshhold)
+  end
+
+  def ratio
+    config.fetch(:ratio)
+  end
+
   def config
-    $config.lottery
+    @run.config.fetch(:compressor)
   end
 
-  def equation
-    (coefficient ** (60 - @pool.base_proportion)) - 1
+  def max_pool_position_count
+    @max ||= Pool.maximum :position_count
   end
 
-  def coefficient
-    1 + (config.balancer_coefficient * 0.0008)
-  end
 end
