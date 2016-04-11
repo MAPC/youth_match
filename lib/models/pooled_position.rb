@@ -6,7 +6,7 @@ class PooledPosition < ActiveRecord::Base
   belongs_to :position
 
   delegate :applicant, to: :pool
-  # delegate :run, to: :pool
+  delegate :run, to: :pool
 
   validates :pool, presence: true
   validates :position, presence: true

@@ -1,5 +1,6 @@
 require_relative './resource'
 require 'active_support/hash_with_indifferent_access'
+require 'active_support/core_ext/hash'
 require 'naught'
 
 class ICIMS::Workflow < ICIMS::Resource

@@ -19,12 +19,17 @@ class PoolTest < Minitest::Test
   end
 
   def test_positions
-    assert_respond_to pool, :positions
+    assert_respond_to pool, :pooled_positions
   end
 
   def test_allocates_positions
     assert_empty pool.positions
-    pool.save!
+    position = Position.create
+    Position.stub :base_pool_for, [position] do
+      TravelTime.stub :find_by, OpenStruct.new(time: 10.minutes) do
+        pool.save!
+      end
+    end
     refute_empty pool.reload.positions
   ensure
     pool.destroy
@@ -32,18 +37,20 @@ class PoolTest < Minitest::Test
 
   def test_sets_position_count
     refute pool.position_count
-    pool.save!
-    assert_equal 0, pool.reload.position_count
+    position = Position.create
+    Position.stub :base_pool_for, [position] do
+      TravelTime.stub :find_by, OpenStruct.new(time: 10.minutes) do
+        pool.save!
+      end
+    end
+    assert_equal 1, pool.reload.position_count
   ensure
-    pool.destroy
+    position.destroy!
+    pool.destroy!
   end
 
-  def test_sets_base_proportion
-    refute pool.base_proportion
-    pool.save!
-    assert_equal 0, pool.reload.base_proportion
-  ensure
-    pool.destroy
+  def test_best_fit
+    skip 'ensure jobs are removed from pool if not available'
   end
 
 end
