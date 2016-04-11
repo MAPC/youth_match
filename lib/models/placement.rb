@@ -5,10 +5,14 @@ class Placement < ActiveRecord::Base
   belongs_to :run
   belongs_to :applicant
   belongs_to :position
+  has_one :pool
 
   validates :run,       presence: true
   validates :applicant, presence: true
   validates :index,     presence: true
+  # Validates that a position is assigned only once in a run...
+  # ...but this is no longer true.
+  validates :position, uniqueness: { scope: [:run_id] }, if: 'position.present?'
 
   validate :expires_at_in_past, if: -> { status == 'expired' }
 
