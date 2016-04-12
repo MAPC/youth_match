@@ -30,7 +30,7 @@ class Position < ActiveRecord::Base
 
   def self.pool_for(applicant, run)
     available(run).
-    within(40.minutes, of: applicant, via: applicant.mode)
+      within(40.minutes, of: applicant, via: applicant.mode)
   end
 
   def self.available(run)

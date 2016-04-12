@@ -13,16 +13,16 @@ class Compressor
     @pooled_positions = @pool.positions.select { |p| p.available?(@run) }
   end
 
-  def positions
-    Position.compressible(@run).limit(position_gain)
-  end
-
   def compress!
     new_positions = positions.map do |position|
       PooledPosition.new(compressed: true, position: position)
     end
-    @pool.positions << new_positions
+    @pool.positions << new_positions # Shovel operator saves relationships
     new_positions.count
+  end
+
+  def positions
+    Position.compressible(@run).limit(position_gain)
   end
 
   def position_gain
