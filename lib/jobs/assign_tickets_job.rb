@@ -15,7 +15,7 @@ class AssignTicketsJob
         $logger.warn "#{e}"
       end
     end
-    $logger.debug "Finished setting up Run ##{@run.id}".
+    $logger.debug "Finished setting up Run ##{@run.id}"
     return @run
   end
 end

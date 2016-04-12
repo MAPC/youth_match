@@ -1,49 +1,42 @@
 namespace :lottery do
 
   task :environment do
-    require_relative '../../environment'
+    require './environment'
     DATABASE_ENV = ENV['DATABASE_ENV'] || 'development'
     MIGRATIONS_DIR = ENV['MIGRATIONS_DIR'] || 'db/migrate'
   end
 
-  desc 'Prepared the matching process, assigning tickets and calculating pool.'
+  desc 'Prepare the matching process'
   task :prepare, [:seed] => :environment do |t, args|
-    pre_message(t)
-    run = AssignTicketsJob.new(seed: args[:seed]).perform!
-    PrecalculatePoolJob.new(run_id: run.id).perform!
+    Rake::Task['prepare:all'].invoke(args[:seed])
   end
 
   desc 'Runs the matching process, in batches.'
   task :run_batch, [:run_id, :limit] => :environment do |t, args|
     pre_message(t)
+    Rake::Task['prepare:declines'].invoke(args[:run_id])
     LotteryRunJob.new(run_id: args[:run_id], limit: args[:limit]).perform!
   end
 
-  desc 'Prepares for a second round those applicants who declined.'
-  task :refresh_declines, [:run_id] => :environment do |t, args|
-    pre_message(t)
-    RefreshDeclinedJob.new(run_id: args[:run_id]).perform!
-  end
-
-  desc 'Runs the matching process.'
-  task :run, [:limit, :seed] => :environment do |t, args|
-    pre_message(t)
-    $logger.info '----> Running checks first'
-    Rake::Task['lottery:check'].invoke
-    begin
-      $logger.info '----> Starting match!'
-      id = MatchJob.new(limit: args[:limit], seed: args[:seed]).perform!
-      Rake::Task['lottery:stats'].invoke(id)
-      # TODO: Move to controller action
-      # Rake::Task['lottery:export'].invoke(id)
-      $logger.info '----> DONE!!!'
-    rescue StandardError => e
-      $logger.error '----> FAIL: Task errored out.'
-      $logger.error "----> #{e.message}"
-      $logger.error e.backtrace.join("\n")
-      exit 1
-    end
-  end
+  # desc 'Runs the matching process.'
+  # task :run, [:limit, :seed] => :environment do |t, args|
+  #   pre_message(t)
+  #   $logger.info '----> Running checks first'
+  #   Rake::Task['lottery:check'].invoke
+  #   begin
+  #     $logger.info '----> Starting match!'
+  #     id = MatchJob.new(limit: args[:limit], seed: args[:seed]).perform!
+  #     Rake::Task['lottery:stats'].invoke(id)
+  #     # TODO: Move to controller action
+  #     # Rake::Task['lottery:export'].invoke(id)
+  #     $logger.info '----> DONE!!!'
+  #   rescue StandardError => e
+  #     $logger.error '----> FAIL: Task errored out.'
+  #     $logger.error "----> #{e.message}"
+  #     $logger.error e.backtrace.join("\n")
+  #     exit 1
+  #   end
+  # end
 
   desc 'Ensure everything is in place before running the matching task.'
   task check: :environment do
