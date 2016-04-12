@@ -33,6 +33,18 @@ We created a program that tries to follow the same logic. The general process fo
 5. Combine the two scores to get the overall match score, with a range of -10 to 10.
 6. Select the best job for that applicant, with the highest score,8 and remove it from the pool.
 
+##### Opportunity Compressor
+
+We added an Opportunity Compressor that helps level the playing field by providing applicants who live in low-opportunity areas access to "reserve" jobs.
+
+Simply stated, if during the run of the lottery an applicant's job pool size falls below a certain amount, reserve jobs are added to their pool of available jobs, regardless of interest match or location.
+
+The opportunity threshhold below which positions are added ('threshhold'), and the degree to which positions are added to their pool ('ratio'), can be set in [lottery.yml]. These settings are stored with each run, so you can go back and see what the settings were for any given run of the lottery.
+
+The Opportunity Compressor takes its name and core concepts from [Dynamic Range Compression][wiki], an element of sound processing. Instead of compressing a sound signal here, we are treating opportunity as the signal, and we're doing exclusively upward compression, whereas most sound compression is downward.
+
+[wiki]: https://en.wikipedia.org/wiki/Dynamic_range_compression
+
 ##### After running the lottery.
 
 1. After running the lottery multiple times, we use statistics about the run to select the best overall outcome.
@@ -58,7 +70,7 @@ Not every young person seeking a job will have reliable internet access or  acce
 
 - __Youth Match will not eliminate the need to make phone calls to young people.__ In order to ensure that all applicants are contacted equitably, young people with limited internet and email access will need to be contacted by phone or other methods.
 
-- __Youth Match will not eliminate or even necessarily reduce the spatial inequity inherently present in a random lottery. At the present time, we recommend placing applicants in low-opportunity areas into jobs by phone.__ There is often a significant difference in quantities of meaningful job opportunities between neighborhoods in metropolitan regions. Regardless of whether a job lottery is automated or manual, applicants in low-opportunity areas are likely to see a lower placement rate, which is true regardless of whether this software is used. That is, this pattern emerges in phone-based placement approaches as well. We are presently working to building greater equity considerations into Youth Match, but until that time, it will not sufficiently address spatial inequity.
+- __Youth Match may not eliminate or even reduce the spatial inequity inherently present in a random lottery.__ There is often a significant difference in quantities of meaningful job opportunities between neighborhoods in metropolitan regions. Regardless of whether a job lottery is automated or manual, applicants in low-opportunity areas are likely to see a lower placement rate. (That is, this pattern emerges in phone-based placement approaches.) We have added an Opportunity Compressor into Youth Match, but until we thoroughly test it and have developed a guide for best practices / optimal configuration, we cannot confidently state that it will sufficiently address spatial inequity.
 
 - __Time "saved" from implementing Youth Match is not a valid reason to cut funding to a youth employment program.__ Youth Match is designed to divert staff time from making placement phone calls to doing outreach that provides more employment opportunities for young people. Until the youth employment rate is equal to the overall employment rate in an [MSA][msa], citing Youth Match as a reason for cutting funding to youth employment program budgets because it saves staff time directly contradicts the intent with which this software is developed.
 

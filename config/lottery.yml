@@ -19,20 +19,22 @@ score_multipliers:
   travel: 1
 
 compressor:
-  # :threshhold: ranges from 0 to 100.
+  # :threshhold: ranges from 0 to 100, indicating the opportunity percentile
+  # an applicant must fall below for compression to be applied and reserve
+  # jobs added to that applicant's pool.
   # A threshhold of 60 means that someone with access to a pool of jobs that is
-  # 60% or less of the maximum base job pool size -- at runtime -- has some
-  # access to reserve jobs. Anyone with a base job pool of 61-100% the size of
-  # the maximum job pool is not given access
+  # 60% or less of the maximum precalculated base job pool size -- at
+  # runtime -- has some access to reserve jobs. Anyone with a base job pool
+  # of 61-100% the size of the maximum job pool is not given additional jobs.
   threshhold: 40
 
   # :ratio: ranges from 1 to 20.
   # The ratio helps set the minimum amount of opportunity boost given to
   # an applicant who would otherwise have no job access.
   #
-  # A ratio of 20 is, for our purposes, functionally equivalent to infinity.
-  # That means that, setting a ratio of 20 means that opportunity for everyone
-  # below the threshhold is boosted to an almost equal level.
+  # A ratio of 20 is, for our purposes, functionally equivalent to a ratio of
+  # Infinity. This means that setting a ratio of 20 means that opportunity for
+  # everyone below the threshhold is boosted to an almost equal level.
   #
   # Divide the threshhold by the ratio to get the minimum adjusted pool size
   # (i.e. number of accessible jobs). For example, a threshhold of 40 and a
@@ -41,8 +43,9 @@ compressor:
   # of the maximum base pool size of any applicant.
   ratio: 2
 
-  # :direction: should only be set to upward, but is included for the sake of
-  # being an explicit reminder.
+  # :direction: should only be set to upward -- and setting it to downward,
+  # presently does nothing -- but this is included as an explicit reminder.
+  #
   # Upward compression means that those applicants who have opportunity less
   # than the threshhold are given a boost upward. Nobody in the high range
   # of opportunity is clipped downward.
