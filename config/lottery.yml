@@ -1,0 +1,52 @@
+# Lottery Configuration Settings
+#
+# These will be stored with every run of the lottery, to keep track of
+# the parameters.
+
+# :score_multipliers: have no stated range, apart from the database integer
+# range of -2^31 to (2^31) - 1.
+#
+# Setting :travel: to 10 and interest to 1 would mean that travel score is
+# given 10 times the weight it would otherwise be given, for all applicants.
+# (This is multiplied by the weight of the applicant's preference, so an
+# applicant who prefers a nearby job would have their preference weight
+# multiplied by this global weight configuration.)
+#
+# Setting both to 0 means that neither score has any significance, and jobs are
+# chosen randomly, with no thought to location or interest in weighting jobs.
+score_multipliers:
+  interest: 1
+  travel: 1
+
+compressor:
+  # :threshhold: ranges from 0 to 100, indicating the opportunity percentile
+  # an applicant must fall below for compression to be applied and reserve
+  # jobs added to that applicant's pool.
+  # A threshhold of 60 means that someone with access to a pool of jobs that is
+  # 60% or less of the maximum precalculated base job pool size -- at
+  # runtime -- has some access to reserve jobs. Anyone with a base job pool
+  # of 61-100% the size of the maximum job pool is not given additional jobs.
+  threshhold: 40
+
+  # :ratio: ranges from 1 to 20.
+  # The ratio helps set the minimum amount of opportunity boost given to
+  # an applicant who would otherwise have no job access.
+  #
+  # A ratio of 20 is, for our purposes, functionally equivalent to a ratio of
+  # Infinity. This means that setting a ratio of 20 means that opportunity for
+  # everyone below the threshhold is boosted to an almost equal level.
+  #
+  # Divide the threshhold by the ratio to get the minimum adjusted pool size
+  # (i.e. number of accessible jobs). For example, a threshhold of 40 and a
+  # ratio of 2 means would give a minimum job access of (40 / 2), or 20.
+  # The applicant would then have access to a number reserve jobs equal to 20%
+  # of the maximum base pool size of any applicant.
+  ratio: 2
+
+  # :direction: should only be set to upward -- and setting it to downward,
+  # presently does nothing -- but this is included as an explicit reminder.
+  #
+  # Upward compression means that those applicants who have opportunity less
+  # than the threshhold are given a boost upward. Nobody in the high range
+  # of opportunity is clipped downward.
+  direction: upward

@@ -1,4 +1,8 @@
 class Run < ActiveRecord::Base
+
+  after_initialize :set_seed
+  after_initialize :set_config
+
   extend Enumerize
 
   default_scope { order(:id) }
@@ -8,16 +12,17 @@ class Run < ActiveRecord::Base
   enumerize :status, in: [:fresh, :running, :failed, :succeeded],
     predicates: true, default: :fresh
 
-  def successful_placements
-    placements.where.not(position: nil)
-  end
+  validates :seed, presence: true, numericality: {
+    greater_than_or_equal_to: 1000,
+    less_than_or_equal_to:    9999
+  }
 
-  def failed_placements
-    placements.where(position: nil)
+  def config
+    read_attribute(:config).with_indifferent_access
   end
 
   def sql_seed
-    seed / 10_000.to_f
+    seed.to_i / 10_000.to_f
   end
 
   def running!
@@ -32,9 +37,29 @@ class Run < ActiveRecord::Base
     self.update_attribute(:status, :succeeded)
   end
 
-  # private
+  def successful_placements
+    placements.where.not(position: nil)
+  end
 
-  # def calculate_statistics
-  #   # Do work to create a JSON blob analyzing what happened.
-  # end
+  def failed_placements
+    placements.where(position: nil)
+  end
+
+  private
+
+  def set_config
+    if self.new_record?
+      self.config = YAML.load_file('./config/lottery.yml').
+        with_indifferent_access
+    end
+  end
+
+  def set_seed
+    self.seed ||= random_seed if self.new_record?
+  end
+
+  def random_seed
+    rand(1000..9999)
+  end
+
 end
