@@ -10,6 +10,7 @@ class LotteryRunJob
       pool = placement.pool
       pool.compress! # Add compressed positions before selecting best fit.
       placement.update_attribute(:position, pool.best_fit)
+      log_placement(placement)
     end
   end
 
@@ -21,6 +22,14 @@ class LotteryRunJob
       where(status: :pending)
       order(:id).
       limit(@limit)
+  end
+
+  def log_placement(placement)
+    if placement.position
+      print '.'
+    else
+      print 'F'
+    end
   end
 
 end

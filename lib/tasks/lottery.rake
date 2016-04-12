@@ -25,8 +25,6 @@ namespace :lottery do
     RefreshDeclinedJob.new(run_id: args[:run_id]).perform!
   end
 
-
-
   desc 'Runs the matching process.'
   task :run, [:limit, :seed] => :environment do |t, args|
     pre_message(t)
