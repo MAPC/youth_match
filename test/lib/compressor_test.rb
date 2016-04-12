@@ -24,7 +24,7 @@ class CompressorTest < Minitest::Test
   end
 
   def test_signal_max_positions
-    @pool.expect(:positions, [1, 2, 3])
+    @pool.expect(:positions, mock_positions)
     Pool.stub :maximum, 3 do
       assert_equal 100, compressor.signal
     end
@@ -38,7 +38,7 @@ class CompressorTest < Minitest::Test
   end
 
   def test_expected_output_max_positions
-    @pool.expect(:positions, [1, 2, 3])
+    @pool.expect(:positions, mock_positions)
     Pool.stub :maximum, 3 do
       assert_equal 100, compressor.expected_output
     end
@@ -59,14 +59,14 @@ class CompressorTest < Minitest::Test
   end
 
   def test_gain_max_positions
-    @pool.expect(:positions, [1, 2, 3])
+    @pool.expect(:positions, mock_positions)
     Pool.stub :maximum, 3 do
       assert_equal 0, compressor.gain
     end
   end
 
   def test_position_gain_max_positions
-    @pool.expect(:positions, [1, 2, 3])
+    @pool.expect(:positions, mock_positions)
     Pool.stub :maximum, 3 do
       assert_equal 0, compressor.position_gain
     end
@@ -75,19 +75,19 @@ class CompressorTest < Minitest::Test
   def test_compress_no_positions
     @pool.expect(:positions, [])
     @pool.expect(:positions, [])
-    posns = 20.times.map { Position.create }
-    Position.stub :compressible, TestRelation.new(posns) do
+    positions = 20.times.map { Position.create }
+    Position.stub :compressible, TestRelation.new(positions) do
       Pool.stub :maximum, 90 do
         assert_equal 18, compressor.compress!
       end
     end
   ensure
-    posns.each(&:destroy!)
+    positions.each(&:destroy!)
   end
 
   def test_compress_max_positions
-    @pool.expect(:positions, [1, 2, 3])
-    @pool.expect(:positions, [1, 2, 3])
+    @pool.expect(:positions, mock_positions)
+    @pool.expect(:positions, mock_positions)
     Pool.stub :maximum, 3 do
       assert_equal 0, compressor.compress!
     end
@@ -95,8 +95,18 @@ class CompressorTest < Minitest::Test
 
   private
 
+  def mock_positions
+    3.times.map do
+      m = Minitest::Mock.new
+      m.expect(:available?, true, [Run])
+    end
+  end
+
   def stubbed_yaml
-    {"score_multipliers"=>{"interest"=>1, "travel"=>1}, "compressor"=>{"threshhold"=>40, "ratio"=>2, "direction"=>"upward"}}
+    {
+      "score_multipliers" => { "interest"=>1, "travel"=>1 },
+      "compressor" => { "threshhold"=>40, "ratio"=>2, "direction"=>"upward" }
+    }
   end
 
   class TestRelation

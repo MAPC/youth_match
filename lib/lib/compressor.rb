@@ -6,7 +6,11 @@ class Compressor
     @pool = pool
     @run = @pool.run
     @applicant = @pool.applicant
-    @pooled_positions = @pool.positions
+    # Only select those pooled positions that are still available for
+    # placement, since we are doing the compression at runtime and need to
+    # base the compression off of the available positions at the time the
+    # applicant is addressed.
+    @pooled_positions = @pool.positions.select { |p| p.available?(@run) }
   end
 
   def positions

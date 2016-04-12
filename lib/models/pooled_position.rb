@@ -8,6 +8,8 @@ class PooledPosition < ActiveRecord::Base
   delegate :applicant, to: :pool
   delegate :run, to: :pool
 
+  delegate :available?, to: :position
+
   validates :pool, presence: true
   validates :position, presence: true
 

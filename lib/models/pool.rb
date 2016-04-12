@@ -18,9 +18,7 @@ class Pool < ActiveRecord::Base
 
   def best_fit
     return nil if positions.count == 0
-    positions.order_by { |p| p.score.total }.detect do |position|
-      position.positions > placements_with(position)
-    end
+    positions.order_by { |p| p.score.total }.detect { |p| p.available?(run) }
   end
 
   # This would add the compression too early, because we're precalculating

@@ -9,6 +9,10 @@ class Position < ActiveRecord::Base
   before_validation :compute_grid_id
   validates :grid_id, presence: true, if: 'location.present?'
 
+  def available?(run)
+    positions > run.placements.where(position: self).count
+  end
+
   def self.compressible(run)
     # May want to order by applicant distance in the future
     available(run).where(reserve: true).order('RANDOM()')
