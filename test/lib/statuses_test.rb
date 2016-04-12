@@ -7,7 +7,7 @@ class StatusesTest < Minitest::Test
   end
 
   def test_icims_placed
-    assert_equal 'PLACED', ICIMS::Status.placed
+    assert_equal 'C38356', ICIMS::Status.placed
   end
 
   def test_icims_accepted

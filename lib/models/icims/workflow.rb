@@ -64,12 +64,16 @@ class ICIMS::Workflow < ICIMS::Resource
 
   def declined
     return false unless updatable?
-    update(status: ICIMS::Status.declined)
+    update status: ICIMS::Status.declined
   end
 
   def placed
     return false unless placeable?
-    update(status: ICIMS::Status.placed)
+    update status: ICIMS::Status.placed
+  end
+
+  def expired
+    update status: ICIMS::Status.expired
   end
 
   def updatable?

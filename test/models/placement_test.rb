@@ -137,7 +137,7 @@ class PlacementTest < Minitest::Test
 
   def stub_finalize(job_id: 2305, person_id: 2587)
     stub_request(:post, "https://api.icims.com/customers/6405/applicantworkflows").
-    with(:body => "{\"baseprofile\":#{job_id},\"associatedprofile\":#{person_id},\"status\":{\"id\":\"PLACED\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
+    with(:body => "{\"baseprofile\":#{job_id},\"associatedprofile\":#{person_id},\"status\":{\"id\":\"C38356\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
        :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
     to_return(
       status: 201,

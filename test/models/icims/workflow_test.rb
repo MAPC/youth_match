@@ -67,7 +67,7 @@ class ICIMS::WorkflowTest < Minitest::Test
 
   def test_save_from_new
     stub_create
-    new_workflow = ICIMS::Workflow.new(id: nil, job_id: 1, person_id: 2, status: 'PLACED')
+    new_workflow = ICIMS::Workflow.new(id: nil, job_id: 1, person_id: 2, status: 'C38356')
     assert new_workflow.save
     assert_equal 21282, new_workflow.id
   end
@@ -166,7 +166,7 @@ class ICIMS::WorkflowTest < Minitest::Test
 
   def stub_create
     stub_request(:post, "https://api.icims.com/customers/6405/applicantworkflows").
-    with(:body => "{\"baseprofile\":1,\"associatedprofile\":2,\"status\":{\"id\":\"PLACED\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
+    with(:body => "{\"baseprofile\":1,\"associatedprofile\":2,\"status\":{\"id\":\"C38356\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
          :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
     to_return(
       status: 201,
