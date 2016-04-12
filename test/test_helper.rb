@@ -4,6 +4,7 @@ if ENV['CODECLIMATE_REPO_TOKEN']
 end
 
 ENV['DATABASE_ENV'] = 'test'
+ENV['RACK_ENV'] = 'test'
 ENV['ICIMS_API_KEY'] = ''
 
 require 'minitest/autorun'
@@ -29,7 +30,7 @@ MiniTest.after_run do
   WebMock.disable_net_connect!(allow: %w{codeclimate.com})
 end
 
-require_relative '../environment'
+require './environment'
 
 # Silence the logger during tests.
 $logger = Logger.new('/dev/null')

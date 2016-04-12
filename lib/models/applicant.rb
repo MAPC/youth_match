@@ -11,7 +11,7 @@ class Applicant < ActiveRecord::Base
   before_validation :compute_grid_id
   before_save :assign_mode
 
-  validates :grid_id, presence: true
+  validates :grid_id, presence: true, if: 'location.present?'
 
   enumerize :status, in: [:pending, :activated, :onboarded, :opted_out],
     default: :pending, predicates: true
@@ -36,19 +36,6 @@ class Applicant < ActiveRecord::Base
     !prefers_nearby
   end
   alias_method :prefers_interest?, :prefers_interest
-
-  # Requires a lot of collaborators and information to test.
-  # This may not be the best architecture, but it works for now.
-  # At its best, from a critical code perspective, it reflects
-  # the autonomy and agency of the job-seeker.
-  def get_a_job!(run, index)
-    # TODO
-    # run.placements.create position: Pool.new(self).best_job, applicant: self
-    best_job, opps = JobFinder.new(applicant: self, run: run).best_job_and_opportunities
-    params = { applicant: self, index: index, position: best_job,
-      opportunities: opps }
-    run.placements.create! params
-  end
 
   private
 

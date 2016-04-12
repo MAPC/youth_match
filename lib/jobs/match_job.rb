@@ -1,7 +1,7 @@
 class MatchJob
 
   def initialize(limit: nil, seed: nil)
-    params = { limit: limit, seed: seed || random_seed }
+    params = { limit: limit, seed: seed }
     @run = Run.create!(params)
   end
 
@@ -31,10 +31,6 @@ class MatchJob
   def applicants
     set_seed(@run.sql_seed)
     Applicant.random.limit(@run.limit).pluck(:id)
-  end
-
-  def random_seed
-    rand(1000..9999)
   end
 
   def set_seed(seed)

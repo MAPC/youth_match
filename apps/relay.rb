@@ -1,6 +1,6 @@
-require './environment'
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require './environment'
 
 # Airbrake.configure do |c|
 #   c.project_id = ENV['AIRBRAKE_ID']

@@ -36,6 +36,7 @@ class ImportJob
       Applicant.create! params
     end
   rescue ActiveRecord::RecordInvalid
+    $logger.error "Invalid record: #{params}"
   end
 
   def load_positions

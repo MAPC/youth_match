@@ -76,7 +76,7 @@ class PositionTest < Minitest::Test
     assert_equal expected, new_position
   end
 
-  def test_new_from_icims
+  def test_create_from_icims
     stub_job(id: 1123)
     stub_company
     created = Position.create_from_icims(ICIMS::Job.find(1123))

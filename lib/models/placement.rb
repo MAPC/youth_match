@@ -5,6 +5,7 @@ class Placement < ActiveRecord::Base
   belongs_to :run
   belongs_to :applicant
   belongs_to :position
+  has_one :pool
 
   validates :run,       presence: true
   validates :applicant, presence: true
