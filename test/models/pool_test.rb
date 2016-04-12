@@ -3,15 +3,11 @@ require 'test_helper'
 class PoolTest < Minitest::Test
 
   def pool
-    @_pool ||= Pool.new(applicant: applicant, run: lottery_run)
+    @_pool ||= Pool.new(placement: placement)
   end
 
-  def applicant
-    @_applicant ||= Applicant.new
-  end
-
-  def lottery_run
-    @_run ||= Run.new
+  def placement
+    @_placement ||= Placement.new(applicant: Applicant.new, run: Run.new)
   end
 
   def test_pool

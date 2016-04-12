@@ -3,19 +3,20 @@ require 'test_helper'
 class PooledPositionTest < Minitest::Test
 
   def setup
-    @applicant = Applicant.create!
+    placement = mock_placement
     @position = Position.create!
-    @run = Run.create!
-    @pool = Pool.create!(applicant: @applicant, run: @run)
+    @pool = Pool.create!(placement: placement)
     @pooled_position = PooledPosition.new(pool: @pool, position: @position)
   end
 
   def teardown
-    @applicant.destroy!
     @position.destroy!
-    @run.destroy!
     @pool.destroy!
     @pooled_position.destroy!
+  end
+
+  def test_valid
+    assert @pooled_position.valid?, @pooled_position.errors.full_messages
   end
 
   def test_score
@@ -25,6 +26,15 @@ class PooledPositionTest < Minitest::Test
     assert @pooled_position.reload.score
   ensure
     @pooled_position.destroy!
+  end
+
+  private
+
+  def mock_placement
+    Placement.new(
+      applicant: Applicant.new,
+      position: Position.new,
+      run: Run.new)
   end
 
 end
