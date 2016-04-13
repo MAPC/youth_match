@@ -12,7 +12,7 @@ class ICIMS::Workflow < ICIMS::Resource
     @id = id
     @job_id = job_id
     @person_id = person_id
-    @status = status || ICIMS::Status.placed
+    @status = status
   end
 
   def job
@@ -77,8 +77,15 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def updatable?
-    # TODO: AND NOT EXPIRED
+    placed? && !expired?
+  end
+
+  def placed?
     @status.to_s == ICIMS::Status.placed
+  end
+
+  def expired?
+    @status.to_s == ICIMS::Status.expired
   end
 
   def placeable?
@@ -92,8 +99,11 @@ class ICIMS::Workflow < ICIMS::Resource
   def self.find(id)
     response = retry_get("/applicantworkflows/#{id}", headers: headers)
     handle response do |r|
-      new(id: id, job_id: r['baseprofile']['id'], status: r['status']['id'],
-        person_id: r['associatedprofile']['id'])
+      job_id    = r.fetch('baseprofile', {}).fetch('id')
+      person_id = r.fetch('associatedprofile', {}).fetch('id')
+      status    = r.fetch('status', {}).fetch('id', nil)
+      params = { id: id, job_id: job_id, status: status, person_id: person_id }
+      new(params)
     end
   end
 
@@ -116,7 +126,6 @@ class ICIMS::Workflow < ICIMS::Resource
     else
       results.map { |res| find res['id'] }
     end
-
   end
 
   def self.null

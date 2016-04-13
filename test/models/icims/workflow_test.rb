@@ -88,6 +88,15 @@ class ICIMS::WorkflowTest < Minitest::Test
     refute workflow.updatable?
   end
 
+  def test_expired
+    stub_expired_workflow
+    assert workflow.expired?
+  end
+
+  def test_not_updatable_after_expiring
+    skip
+  end
+
   def test_accepted
     stub_update(status: ICIMS::Status.placed)
     stub_update(status: ICIMS::Status.accepted)
@@ -124,12 +133,24 @@ class ICIMS::WorkflowTest < Minitest::Test
     assert workflow
   end
 
+  def test_no_status
+    stub_workflow_no_status
+    assert_equal nil, ICIMS::Workflow.find(1000).status
+  end
+
   private
 
   def stub_workflow(id: 19288)
     stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/#{id}").
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/workflow-19288.json'),
+        headers: { 'Content-Type' => 'application/json' })
+  end
+
+  def stub_workflow_no_status(id: 1000)
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/#{id}").
+      to_return(status: 200,
+        body: File.read('./test/fixtures/icims/workflow-1000.json'),
         headers: { 'Content-Type' => 'application/json' })
   end
 
@@ -192,6 +213,13 @@ class ICIMS::WorkflowTest < Minitest::Test
       to_timeout.then.
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/workflow-19288.json'),
+        headers: { 'Content-Type' => 'application/json' })
+  end
+
+  def stub_expired_workflow(id: 19288)
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/#{id}").
+      to_return(status: 200,
+        body: File.read('./test/fixtures/icims/workflow-expired.json'),
         headers: { 'Content-Type' => 'application/json' })
   end
 

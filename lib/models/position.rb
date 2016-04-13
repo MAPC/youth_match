@@ -6,7 +6,7 @@ class Position < ActiveRecord::Base
   include Locatable
   include CreatableFromICIMS
 
-  before_validation :compute_grid_id
+  before_validation :compute_grid_id, if: 'location.present?'
   validates :grid_id, presence: true, if: 'location.present?'
 
   def available?(run)

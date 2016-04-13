@@ -28,6 +28,10 @@ class PositionTest < Minitest::Test
     assert @position.reload.uuid
   end
 
+  def test_category
+    assert_respond_to position, :category
+  end
+
   def test_categories
     assert_respond_to position, :categories
   end
@@ -71,7 +75,7 @@ class PositionTest < Minitest::Test
   def test_new_from_icims
     stub_job(id: 1123)
     stub_company
-    expected = Position.new(id: 1123, categories: ['Education', 'Tutoring'])
+    expected = Position.new(id: 1123, categories: ['Education', 'Tutoring'], category: 'Education or Tutoring')
     new_position = Position.new_from_icims(ICIMS::Job.find(1123))
     assert_equal expected, new_position
   end

@@ -133,6 +133,13 @@ class PlacementTest < Minitest::Test
     refute placement.expired?
   end
 
+  def test_expired_placement_opts_out_applicant
+    placement.expires_at = 4.days.ago
+    refute placement.applicant.opted_out?
+    placement.expired?
+    assert placement.applicant.opted_out?
+  end
+
   private
 
   def stub_finalize(job_id: 2305, person_id: 2587)

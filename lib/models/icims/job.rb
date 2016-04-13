@@ -2,7 +2,7 @@ require_relative './resource'
 
 class ICIMS::Job < ICIMS::Resource
 
-  attr_reader :id, :title, :address, :positions, :categories
+  attr_reader :id, :title, :address, :positions, :category, :categories
 
   def initialize(attributes={})
     @id    = attributes[:id]
@@ -28,8 +28,13 @@ class ICIMS::Job < ICIMS::Resource
   def self.eligible(limit: nil, offset: 0)
     response = retry_post '/search/jobs',
       { body: eligible_filter.to_json, headers: headers }
-    handle response do |r|
-      limit_results(r, limit, offset).map { |res| find res['id'] }
+    results = handle(response) { |r| limit_results(r, limit, offset) }
+    if block_given?
+      results.each do |res|
+        yield find(res['id'])
+      end
+    else
+      results.map { |res| find res['id'] }
     end
   end
 
