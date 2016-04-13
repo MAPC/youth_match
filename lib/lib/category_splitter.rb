@@ -6,6 +6,6 @@ module CategorySplitter
       reject(&:empty?)
   end
 
-  REGEX = /\s?or\s|\s?and\s|,|\/|&amp;|\sand\/or\s/i
+  REGEX = /\s?or\s|\s?and\s|,|\/|&amp;|&|\sand\/or\s/i
 
 end

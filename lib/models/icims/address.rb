@@ -3,7 +3,7 @@ require_relative './resource'
 class ICIMS::Address
 
   def initialize(addresses)
-    @addresses = addresses
+    @addresses = Array(addresses)
     @address = @addresses.first
   end
 
@@ -18,7 +18,9 @@ class ICIMS::Address
   end
 
   def state
-    @address['addressstate']['abbrev']
+    @address.
+      fetch('addressstate', {}).
+      fetch('abbrev', 'MA')
   end
 
   def zip
@@ -26,6 +28,7 @@ class ICIMS::Address
   end
 
   def to_s
+    return "" if @addresses.empty?
     "#{street}, #{city} #{state} #{zip}"
   end
 

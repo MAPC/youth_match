@@ -18,4 +18,9 @@ class StatusesTest < Minitest::Test
     assert_equal 'C14661', ICIMS::Status.declined
   end
 
+  def test_icims_from_code
+    assert_equal 'accepted', ICIMS::Status.from_code('C36951')
+    assert_equal 'declined', ICIMS::Status.from_code('C14661')
+  end
+
 end

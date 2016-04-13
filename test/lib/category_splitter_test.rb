@@ -44,6 +44,7 @@ class CategorySplitterTest < Minitest::Test
     { text: "Government, or Public Service", split: ['Government', 'Public Service'] },
     { text: "Health Care", split: ['Health Care'] },
     { text: "Hospitality &amp; Tourism", split: ['Hospitality', 'Tourism'] },
+    { text: "Hospitality & Tourism", split: ['Hospitality', 'Tourism'] },
     { text: "Information Technology", split: ['Information Technology'] },
     { text: "Law", split: ['Law'] },
     { text: "Maintenance/Landscaping", split: ['Maintenance', 'Landscaping'] },
