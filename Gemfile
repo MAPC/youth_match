@@ -16,6 +16,7 @@ gem 'descriptive_statistics', '~> 2.4.0',
 gem 'logger'
 gem 'rounding'
 gem 'naught'
+gem 'wannabe_bool'
 
 gem 'foreman'
 gem 'dotenv'

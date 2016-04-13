@@ -21,9 +21,10 @@ class ApplicantImporterTest < Minitest::Test
     Applicant.destroy_all
     assert_equal 0, Applicant.count
     stub_eligible
-    stub_workflow(id: 1)
-    stub_person(id: 1)
-
+    100.times do |i|
+      stub_workflow(id: i+1)
+      stub_person(id: i+1)
+    end
     assert_respond_to importer, :perform!
     before = Applicant.count
     assert importer.perform!
