@@ -89,6 +89,7 @@ class Placement < ActiveRecord::Base
   def check_expired
     if expires_at && Time.now > expires_at
       update_attribute(:status, :expired)
+      applicant.update_attribute(:status, :opted_out)
     end
   end
 

@@ -27,6 +27,11 @@ class ApplicantTest < Minitest::Test
     assert_instance_of Array, applicant.interests
   end
 
+  def test_status
+    assert_respond_to applicant, :status
+    assert_equal 'pending', applicant.status
+  end
+
   def test_booleans
     assert_respond_to applicant, :prefers_nearby
     assert_respond_to applicant, :prefers_interest
@@ -65,11 +70,12 @@ class ApplicantTest < Minitest::Test
     expected = Applicant.new(
       id: 2,
       interests: ["Child Care", "Teacher's Assistant", "Community Organizing", "Construction", "Building Trades"],
-      prefers_nearby: true,
-      has_transit_pass: false
+      prefers_nearby: false,
+      has_transit_pass: true,
+      address: "60 Temple Place, Boston MA 02111"
     )
     actual = Applicant.new_from_icims(ICIMS::Person.find(2))
-    assert_equal expected, actual
+    assert_equal expected.attributes, actual.attributes
   end
 
   private

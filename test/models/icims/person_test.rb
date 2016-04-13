@@ -42,8 +42,8 @@ class ICIMS::PersonTest < Minitest::Test
   end
 
   def test_has_transit_pass
-    assert person.transit_pass?
-    refute opposite_person.transit_pass?
+    refute person.has_transit_pass?
+    assert opposite_person.has_transit_pass?
   end
 
   def test_interests

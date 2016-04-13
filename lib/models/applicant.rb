@@ -8,7 +8,7 @@ class Applicant < ActiveRecord::Base
 
   extend Enumerize
 
-  before_validation :compute_grid_id
+  before_validation :compute_grid_id, if: 'location.present?'
   before_save :assign_mode
 
   validates :grid_id, presence: true, if: 'location.present?'
