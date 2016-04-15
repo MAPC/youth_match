@@ -48,7 +48,10 @@ class ICIMS::PersonTest < Minitest::Test
 
   def test_interests
     refute_empty person.interests
-    ["Child Care", "Building Trades", "Law", "Government", "Public Service"].each do |interest|
+    [
+      "Child Care or Teacher's Assistant",
+      "Manufacturing, Science, Technology, Engineering and/or Math",
+    ].each do |interest|
       assert_includes person.interests, interest
     end
   end

@@ -52,7 +52,7 @@ class ICIMS::Person < ICIMS::Resource
   private
 
   def process_interests(interests)
-    Array(interests).flat_map { |i| CategorySplitter.split(i['formattedvalue']) }
+    Array(interests).map { |i| CategoryConverter.convert(i['formattedvalue']) }
   end
 
   def self.fields

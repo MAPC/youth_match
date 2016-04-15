@@ -27,7 +27,12 @@ class ICIMS::JobTest < Minitest::Test
 
   def test_address
     stub_company
-    assert_equal job.address, job.company.address
+    assert_equal job.address.to_h, job.company.address.to_h
+    assert_equal '3035 Washington St', job.street
+    assert_equal 'Roxbury', job.city
+    assert_equal 'MA', job.state
+    assert_equal '02119-1227', job.zip
+    assert_includes job.attributes, :addresses
   end
 
   def test_categories
