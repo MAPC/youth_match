@@ -15,7 +15,7 @@ class Position < ActiveRecord::Base
   validates :manual,    presence: true, numericality: true, if: 'automatic.present?'
 
   def available?(run)
-    positions > run.placements.where(position: self).count
+    automatic > run.placements.where(position: self).count
   end
 
   def self.compressible(run)

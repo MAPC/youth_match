@@ -1,24 +1,21 @@
 class Pool < ActiveRecord::Base
 
-  before_save :count_positions # Awkward ordering, but gets it done.
-  after_save :allocate_positions
+  after_create :allocate_and_count_positions
 
   belongs_to :placement
   has_and_belongs_to_many :pooled_positions, join_table: :pooled_positions,
-    class_name: 'PooledPosition', association_foreign_key: :position_id
+    class_name: 'PooledPosition', association_foreign_key: :id
 
   validates :placement, presence: true
 
   delegate :applicant, to: :placement
   delegate :run,       to: :placement
 
-  def positions
-    pooled_positions
-  end
-
   def best_fit
-    return nil if positions.count == 0
-    positions.order_by { |p| p.score.total }.detect { |p| p.available?(run) }
+    return nil if pooled_positions.count == 0
+    pooled_positions.to_a.sort_by { |p| p.score["total"] }.
+      detect { |p| p.available?(run) }.
+      position
   end
 
   # This would add the compression too early, because we're precalculating
@@ -27,22 +24,20 @@ class Pool < ActiveRecord::Base
   # at runtime to balance out the effects of the randomness on removing jobs
   # from the base pools.
   def compress!
-    c = Compressor.new(self).positions.map do |position|
-      PooledPosition.create(pool: self, position: position, compressed: true)
-    end
-    $logger.debug "Added #{c.count} positions to pool ##{id}."
+    compressor.compress!
+  end
+
+  def compressor
+    @compressor = Compressor.new(self)
   end
 
   private
 
-  def count_positions
-    self.position_count = Position.base_pool_for(applicant, run).count
-  end
-
-  def allocate_positions
-    Position.base_pool_for(applicant, run).each do |position|
-      self.pooled_positions.create!(position: position, pool: self)
+  def allocate_and_count_positions
+    Position.base_pool_for(applicant, run).map do |position|
+      PooledPosition.create!(position: position, pool: self)
     end
+    update_attribute :position_count, self.pooled_positions.count
   end
 
   def placements_with(position)
