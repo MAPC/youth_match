@@ -11,7 +11,8 @@ class PlacementTest < Minitest::Test
       run:       @run,
       applicant: @applicant,
       position:  @position,
-      index: 1
+      index: 1,
+      market: :automatic
     )
   end
 
@@ -45,6 +46,15 @@ class PlacementTest < Minitest::Test
     assert placement.valid?
   end
 
+  def test_market
+    placement.market = :automatic
+    assert placement.valid?
+    placement.market = :manual
+    assert placement.valid?
+    placement.market = :automaGic
+    refute placement.valid?
+  end
+
   def test_requires_run_index
     placement.index = nil
     refute placement.valid?
@@ -52,10 +62,6 @@ class PlacementTest < Minitest::Test
 
   def test_opportunities
     assert_respond_to placement, :opportunities
-  end
-
-  def test_percentile
-    skip "for the moment, but we'll want this"
   end
 
   def test_uuid

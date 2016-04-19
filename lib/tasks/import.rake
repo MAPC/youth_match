@@ -16,4 +16,10 @@ namespace :import do
     PositionImporter.new(args).perform!
   end
 
+  desc 'Import market allocations for positions'
+  task markets: :environment do |t, args|
+    pre_message(t)
+    AllocatePositionsJob.new.perform!
+  end
+
 end

@@ -10,11 +10,14 @@ class Placement < ActiveRecord::Base
   validates :run,       presence: true
   validates :applicant, presence: true
   validates :index,     presence: true
+  validates :market,    presence: true
 
   validate :expires_at_in_past, if: -> { status == 'expired' }
 
   enumerize :status, in: [:pending, :placed, :accepted, :declined, :expired],
     default: :pending, predicates: { except: [:expired] }
+
+  enumerize :market, in: [:automatic, :manual], predicates: false
 
   def finalize!
     placed(workflow: create_workflow)

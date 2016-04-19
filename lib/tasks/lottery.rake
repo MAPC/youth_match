@@ -39,10 +39,11 @@ namespace :lottery do
   # end
 
   desc 'Ensure everything is in place before running the matching task.'
-  task check: :environment do
-    $logger.debug "----> Running task `lottery:check` in #{DATABASE_ENV} environment."
+  task :check, [:run_id] => :environment do |t, args|
+    pre_message(t)
+    run_id = args.fetch(:run_id, Run.last.id)
     begin
-      CheckJob.new.perform!
+      CheckJob.new(run_id: run_id).perform!
       $logger.info "----> Checks all clear. Preparing for run."
     rescue StandardError => e
       $logger.error "----> Checks errored with error:\n\t#{e.message}"
@@ -50,8 +51,8 @@ namespace :lottery do
   end
 
   desc 'Import applicants and positions CSV, which must be geocoded'
-  task import: :environment do
-    $logger.debug "----> Running task `lottery:import` in #{DATABASE_ENV} environment."
+  task import: :environment do |t, args|
+    pre_message(t)
     begin
       ImportJob.new.perform!
     rescue ActiveRecord::RecordInvalid => e
