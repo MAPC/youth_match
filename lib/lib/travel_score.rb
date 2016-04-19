@@ -19,7 +19,11 @@ class TravelScore < Score
       input_id:     @applicant.grid_id,
       target_id:    @position.grid_id,
       travel_mode:  @applicant.mode
-    ).time
+    )
+    @travel_time.time
+  rescue NoMethodError
+    log_no_time
+    40.minutes
   end
 
   def care(x)
@@ -42,6 +46,13 @@ class TravelScore < Score
     if num.to_f < 0
       raise ArgumentError, 'travel time must be > 0'
     end
+  end
+
+  def log_no_time
+    $logger.warn "A Travel Time could not be found for:"
+    $logger.warn "\tApplicant #{@applicant.id}, grid: #{@applicant.grid_id},"
+    $logger.warn "\t\tmode: #{@applicant.mode}"
+    $logger.warn "\tPosition #{@position.id}, grid: #{@position.grid_id}"
   end
 
 end
