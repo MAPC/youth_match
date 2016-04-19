@@ -24,14 +24,15 @@ class LotteryRunJob
 
   def actionable_placements
     @run.placements.
-      where(position: nil).
+      where(market: :automatic).
       where(status: :pending).
-      order(:id).
-      limit(@limit)
+      where(position: nil).
+      limit(@limit).
+      order(:id)
   end
 
   def log_placement(placement)
-    print(placement.position ? '.' : 'F')
+    print(placement.position ? '.' : "F(#{placement.id})")
   end
 
   def log_start
