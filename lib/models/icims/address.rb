@@ -23,6 +23,9 @@ class ICIMS::Address
       str << ' ' + street2
     end
     str
+  rescue KeyError => e
+    $logger.error "Missing street address."
+    raise
   end
 
   def city

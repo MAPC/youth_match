@@ -16,6 +16,8 @@ class Applicant < ActiveRecord::Base
   enumerize :status, in: [:pending, :activated, :onboarded, :opted_out],
     default: :pending, predicates: true
 
+  enumerize :market, in: [:automatic, :manual], predicates: false
+
   def opted_out
     update_attribute(:status, :opted_out)
   end

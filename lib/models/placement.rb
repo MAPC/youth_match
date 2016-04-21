@@ -19,6 +19,8 @@ class Placement < ActiveRecord::Base
 
   enumerize :market, in: [:automatic, :manual], predicates: false
 
+  default_scope { order(:index) }
+
   def finalize!
     placed(workflow: create_workflow)
   end
@@ -38,11 +40,8 @@ class Placement < ActiveRecord::Base
   end
 
   def placed(workflow: )
-    update_attributes(
-      status: :placed,
-      expires_at: expiration_date,
-      workflow_id: workflow.id
-    )
+    update_attributes(status: :placed, expires_at: expiration_date,
+      workflow_id: workflow.id)
   end
 
   def expired?
@@ -59,11 +58,8 @@ class Placement < ActiveRecord::Base
 
   def travel_time
     return nil if position.nil? # May have introduced a stats bug
-    TravelTime.where(
-      target_id: position.grid_id,
-      input_id: applicant.grid_id,
-      travel_mode: applicant.mode
-    ).first.time
+    TravelTime.find_by(input_id: applicant.grid_id,
+      target_id: position.grid_id, travel_mode: applicant.mode).time
   end
 
   def already_decided?

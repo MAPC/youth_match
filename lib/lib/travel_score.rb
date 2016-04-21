@@ -19,11 +19,10 @@ class TravelScore < Score
       input_id:     @applicant.grid_id,
       target_id:    @position.grid_id,
       travel_mode:  @applicant.mode
-    )
-    @travel_time.time
+    ).time
   rescue NoMethodError
-    log_no_time
-    40.minutes
+    # log_no_time_found
+    return default_travel_time
   end
 
   def care(x)
@@ -48,11 +47,15 @@ class TravelScore < Score
     end
   end
 
-  def log_no_time
-    $logger.warn "A Travel Time could not be found for:"
-    $logger.warn "\tApplicant #{@applicant.id}, grid: #{@applicant.grid_id},"
-    $logger.warn "\t\tmode: #{@applicant.mode}"
-    $logger.warn "\tPosition #{@position.id}, grid: #{@position.grid_id}"
+  def default_travel_time
+    ($config.lottery.default_travel_time || 40.minutes).to_i
+  end
+
+  def log_no_time_found
+    msg = "No travel time found between"
+    msg << " applicant #{@applicant.id} and position #{@position.id}."
+    msg << "\nDefaulting to #{default_travel_time / 60} minutes."
+    $logger.debug msg
   end
 
 end
