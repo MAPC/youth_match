@@ -75,10 +75,10 @@ class ApplicantTest < Minitest::Test
     stub_person(id: 2)
     expected = Applicant.new(
       id: 2,
-      interests: ["Child Care", "Teacher's Assistant", "Community Organizing", "Construction", "Building Trades"],
+      interests: ["Child Care or Teacher's Assistant", "Community Organizing", "Construction or Building Trades"],
       prefers_nearby: false,
       has_transit_pass: true,
-      addresses: {}
+      addresses: [{"addresscity"=>"Boston", "entry"=>1001, "addresszip"=>"02111", "addressstate"=>{"id"=>"D41001024", "abbrev"=>"MA", "value"=>"Massachusetts"}, "addresscountry"=>{"id"=>"D41001", "abbrev"=>"US", "value"=>"United States"}, "addresstype"=>{"id"=>"D84002", "formattedvalue"=>"Home", "value"=>"Home"}, "addressstreet1"=>"60 Temple Place"}]
     )
     actual = Applicant.new_from_icims(ICIMS::Person.find(2))
     assert_equal expected.attributes, actual.attributes

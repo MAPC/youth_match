@@ -166,7 +166,16 @@ class ICIMS::WorkflowTest < Minitest::Test
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/job-1123.json'),
         headers: { 'Content-Type' => 'application/json' })
+    stub_company
   end
+
+  def stub_company
+    stub_request(:get, "https://api.icims.com/customers/6405/companies/1800").
+      to_return(status: 200,
+        body: File.read('./test/fixtures/icims/company-1800.json'),
+        headers: { 'Content-Type' => 'application/json' })
+  end
+
 
   def stub_search
     stub_request(:post, "https://api.icims.com/customers/6405/search/applicantworkflows").

@@ -36,6 +36,7 @@ class ICIMS::JobTest < Minitest::Test
   end
 
   def test_categories
+    skip 'Removed from interface.'
     assert_equal ["Education", "Tutoring"], job.categories
   end
 
@@ -63,6 +64,7 @@ class ICIMS::JobTest < Minitest::Test
         status: 200,
         body: File.read("./test/fixtures/icims/job-1123.json"),
         headers: { 'Content-Type' => 'application/json' })
+    stub_company
   end
 
   def stub_company

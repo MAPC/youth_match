@@ -59,11 +59,16 @@ class RunTest < Minitest::Test
   def test_run_config
     expected_config = {
       'score_multipliers' => { 'interest' => 1, 'travel' => 1 },
+      'default_travel_time' => 2400,
       'compressor' => { 'threshhold' => 40, 'ratio' => 2, 'direction' => 'upward' }
     }
-    assert_equal expected_config, Run.new.config
-    assert_equal 40, Run.new.config[:compressor][:threshhold]
-    assert_equal 40, @run.config[:compressor][:threshhold]
+    data = YAML.load_file('./test/fixtures/files/lottery-config.yml')
+    actual_config = YAML.stub :load_file, data do
+      Run.new.config
+    end
+    assert_equal expected_config, actual_config
+    assert_equal 40, actual_config[:compressor][:threshhold]
+    assert @run.config[:compressor][:threshhold].is_a? Integer
   end
 
 end

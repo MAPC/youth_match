@@ -14,7 +14,7 @@ class RelayTest < Minitest::Test
     @applicant = Applicant.create!(grid_id: 1)
     @placement = Placement.create!(
       applicant: @applicant, position: @position, run: @run, index: 1,
-      workflow_id: 19288)
+      workflow_id: 19288, market: :automatic)
     @placement.reload
   end
 

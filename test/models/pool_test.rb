@@ -19,14 +19,14 @@ class PoolTest < Minitest::Test
   end
 
   def test_allocates_positions
-    assert_empty pool.positions
+    assert_empty pool.pooled_positions
     position = Position.create
     Position.stub :base_pool_for, [position] do
       TravelTime.stub :find_by, OpenStruct.new(time: 10.minutes) do
         pool.save!
       end
     end
-    refute_empty pool.reload.positions
+    refute_empty pool.reload.pooled_positions
   ensure
     pool.destroy
   end

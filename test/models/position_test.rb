@@ -102,7 +102,12 @@ class PositionTest < Minitest::Test
 
   def test_available
     before = Position.available(@run).count
-    @p = @run.placements.create!(position: @position, applicant: @applicant, index: 1)
+    @p = @run.placements.create!(
+      position: @position,
+      applicant: @applicant,
+      index: 1,
+      market: :manual
+    )
     after = Position.available(@run).count
     assert_equal 1, (before - after)
   ensure
@@ -120,8 +125,9 @@ class PositionTest < Minitest::Test
   def test_create_from_icims
     stub_job(id: 1123)
     stub_company
-    created = Position.create_from_icims(ICIMS::Job.find(1123))
-    assert_equal ['Education or Tutoring'], created.categories
+    job = ICIMS::Job.find(1123)
+    created = Position.create_from_icims(job)
+    assert_equal 'Education or Tutoring', created.category
     assert created.uuid
   ensure
     created.destroy! if created
