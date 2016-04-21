@@ -6,14 +6,14 @@ class PrecalculatePoolJob
 
   def perform!
     msg = "Expected time to completion: "
-    msg << "#{(@run.placements.count * 0.62 / 60).round(2)} minutes."
+    msg << "#{(auto_placements.count * 0.62 / 60).round(2)} minutes."
     $logger.warn msg
-    @run.placements.find_each do |placement|
+    auto_placements.find_each do |placement|
       pool = placement.create_pool!
       log_pool(pool)
     end
-    msg =  "Finished precalculating pools for #{@run.placements.count}"
-    msg << " placements for Run #{@run.id}."
+    msg =  "\nFinished precalculating pools for #{auto_placements.count}"
+    msg << " automatic placements for Run #{@run.id}."
     $logger.info msg
   rescue StandardError => e
     $logger.error "#{e}\n#{e.backtrace}"
@@ -21,6 +21,10 @@ class PrecalculatePoolJob
   end
 
   private
+
+  def auto_placements
+    @run.placements.where(market: :automatic)
+  end
 
   def log_pool(pool)
     print(pool.pooled_positions.count > 0 ? '.' : 'F')

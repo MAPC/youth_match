@@ -12,7 +12,7 @@ class AssignTicketsJob
         @run.placements.create(
           applicant_id: id,
           index: (index + 1),
-          market: markets.sample
+          market: Applicant.find(id).market
         )
       rescue => e
         $logger.warn "Cannot find Applicant #{id}, skipping."
@@ -25,15 +25,18 @@ class AssignTicketsJob
 
   private
 
-  def markets
-    Placement.market.values
-  end
+  # def markets
+  #   Placement.market.values
+  # end
 
   def log_stats
     denom = @run.placements.count.to_f
-    automatic = (@run.placements.where(market: 'automatic') / denom) * 100
-    manual = (@run.placements.where(market: 'manual') / denom) * 100
-    stats = "Automatic: #{automatic.round(2)} %\nManual: #{manual.round(2)} %"
+    auto_num = @run.placements.where(market: 'automatic').count
+    man_num = @run.placements.where(market: 'manual').count
+    automatic = (auto_num / denom) * 100
+    manual =  (man_num / denom) * 100
+    stats = "\nAutomatic: #{automatic.round(2)} %\t(#{auto_num})"
+    stats << "\nManual: #{manual.round(2)} %\t(#{man_num})"
     fin = "Finished setting up assigning tickets and markets for run #{@run.id}"
     $logger.info stats
     $logger.debug fin

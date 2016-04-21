@@ -44,7 +44,8 @@ namespace :lottery do
     run_id = args.fetch(:run_id, Run.last.id)
     begin
       CheckJob.new(run_id: run_id).perform!
-      $logger.info "----> Checks all clear. Preparing for run."
+      $logger.info ""
+      $logger.info "----> Checks all clear. Ready for run."
     rescue StandardError => e
       $logger.error "----> Checks errored with error:\n\t#{e.message}"
     end
@@ -60,14 +61,6 @@ namespace :lottery do
       $logger.error '----> FAIL'
       exit 1
     end
-  end
-
-  desc 'Exports placements from a given run'
-  task :export, [:id] => [:environment] do |t, args|
-    pre_message(t)
-    $logger.debug "----> Takes in an ID to export. (This run, id: #{args[:id]})"
-    ExportJob.new(args[:id]).perform!
-    $logger.info '----> DONE'
   end
 
   private

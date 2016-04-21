@@ -8,11 +8,13 @@ namespace :import do
 
   desc 'Import applicants: initial import'
   task :applicants, [:limit, :offset, :continue] => :environment do |t, args|
+    pre_message(t)
     ApplicantImporter.new(args).perform!
   end
 
   desc 'Import positions: initial import'
   task :positions, [:limit, :offset, :continue] => :environment do |t, args|
+    pre_message(t)
     PositionImporter.new(args).perform!
   end
 
@@ -20,6 +22,23 @@ namespace :import do
   task markets: :environment do |t, args|
     pre_message(t)
     AllocatePositionsJob.new.perform!
+  end
+
+  desc 'Import applicants, initial, from Linda\'s spreadsheet'
+  task csvapp: :environment do |t, args|
+    pre_message(t)
+    CSV.foreach('./db/import/eligible_ids.csv', headers: true) do |row|
+      id = row.fetch('id')
+      next if Applicant.find_by(id: id)
+      begin
+        person = ICIMS::Person.find(id)
+        if app = Applicant.create_from_icims(person)
+          $logger.info "Created Applicant #{app.id}"
+        end
+      rescue KeyError => e
+        $logger.error "Skipping #{id} because missing address."
+      end
+    end
   end
 
 end
