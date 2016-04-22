@@ -1,1 +1,4 @@
 db/import/*
+log/*
+*.log
+tmp/*
