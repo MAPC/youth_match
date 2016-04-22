@@ -3,11 +3,11 @@ require 'test_helper'
 class GridTest < Minitest::Test
 
   def setup
-    @grid = Grid.create!(geom: 'POLYGON((-1 1, 1 1, 1 -1, -1 -1, -1 1))')
+    @grid = Grid.create!(geom: 'MULTIPOLYGON(((-1 1, 1 1, 1 -1, -1 -1, -1 1)))')
   end
 
   def teardown
-    @grid.destroy!
+    @grid.destroy! if @grid
   end
 
   def applicant

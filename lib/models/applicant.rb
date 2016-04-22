@@ -8,13 +8,15 @@ class Applicant < ActiveRecord::Base
 
   extend Enumerize
 
-  before_validation :compute_grid_id
+  before_validation :compute_grid_id, if: 'location.present?'
   before_save :assign_mode
 
   validates :grid_id, presence: true, if: 'location.present?'
 
   enumerize :status, in: [:pending, :activated, :onboarded, :opted_out],
     default: :pending, predicates: true
+
+  enumerize :market, in: [:automatic, :manual], predicates: false
 
   def opted_out
     update_attribute(:status, :opted_out)

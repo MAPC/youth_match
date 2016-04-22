@@ -27,11 +27,21 @@ class ICIMS::JobTest < Minitest::Test
 
   def test_address
     stub_company
-    assert_equal job.address, job.company.address
+    assert_equal job.address.to_h, job.company.address.to_h
+    assert_equal '3035 Washington St', job.street
+    assert_equal 'Roxbury', job.city
+    assert_equal 'MA', job.state
+    assert_equal '02119-1227', job.zip
+    assert_includes job.attributes, :addresses
   end
 
   def test_categories
+    skip 'Removed from interface.'
     assert_equal ["Education", "Tutoring"], job.categories
+  end
+
+  def test_original_category
+    assert_equal "Education or Tutoring", job.category
   end
 
   def test_positions
@@ -42,6 +52,7 @@ class ICIMS::JobTest < Minitest::Test
     stub_eligible
     100.times { |i| stub_job(id: i+1) }
     assert_equal 100, ICIMS::Job.eligible.count
+    assert_equal 90, ICIMS::Job.eligible(offset: 10).count
     assert_equal 10, ICIMS::Job.eligible(limit: 10).count
   end
 
@@ -53,6 +64,7 @@ class ICIMS::JobTest < Minitest::Test
         status: 200,
         body: File.read("./test/fixtures/icims/job-1123.json"),
         headers: { 'Content-Type' => 'application/json' })
+    stub_company
   end
 
   def stub_company

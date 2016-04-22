@@ -6,6 +6,7 @@ require 'erb'
 require 'logger'
 require 'yaml'
 require 'dotenv'
+require 'wannabe_bool'
 require './config/initializers.rb'
 
 Dotenv.load

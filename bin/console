@@ -4,4 +4,8 @@ puts '----> Starting frameworkless console'
 require './environment'
 require 'irb'
 ARGV.clear
+def clear # Clear IRB like a terminal window
+  system 'clear'
+end
+
 IRB.start

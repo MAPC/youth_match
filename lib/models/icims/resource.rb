@@ -19,26 +19,19 @@ class ICIMS::Resource
 
   base_uri 'https://api.icims.com/customers/6405'
 
-  # First, add resource test with chained timeouts
-  # Then, add default tries: keyword.
-  # Try rescuing at method level first, but may need something else
-  # if the StandardError is raised instead.
-  def self.handle response, &block
+  def self.handle(response, &block)
     if response.success?
       yield response
     else
-      raise StandardError, response.response
+      raise ResponseError, response.response
     end
-  rescue
+  rescue => e
+    $logger.error e.message
+    raise
   end
 
-  def handle response, &block
-    if response.success?
-      yield response
-    else
-      raise StandardError, response.response.inspect
-    end
-  rescue
+  def handle(response, &block)
+    self.class.handle response, &block
   end
 
   def attributes
@@ -57,8 +50,9 @@ class ICIMS::Resource
     }
   end
 
-  def self.limit_results(results, limit)
+  def self.limit_results(results, limit, offset)
     base_results = Array(results['searchResults'])
+    base_results.shift(offset) if offset > 0
     results = if limit
       base_results.first(limit.to_i)
     else
@@ -70,4 +64,11 @@ class ICIMS::Resource
     self.attributes == other.attributes
   end
 
+end
+
+
+class ICIMS::Resource::ResponseError < StandardError
+  def initialize(msg="An error occurred when parsing the ICIMS response.")
+    super
+  end
 end

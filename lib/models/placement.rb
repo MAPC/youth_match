@@ -10,11 +10,16 @@ class Placement < ActiveRecord::Base
   validates :run,       presence: true
   validates :applicant, presence: true
   validates :index,     presence: true
+  validates :market,    presence: true
 
   validate :expires_at_in_past, if: -> { status == 'expired' }
 
   enumerize :status, in: [:pending, :placed, :accepted, :declined, :expired],
     default: :pending, predicates: { except: [:expired] }
+
+  enumerize :market, in: [:automatic, :manual], predicates: false
+
+  default_scope { order(:index) }
 
   def finalize!
     placed(workflow: create_workflow)
@@ -35,11 +40,8 @@ class Placement < ActiveRecord::Base
   end
 
   def placed(workflow: )
-    update_attributes(
-      status: :placed,
-      expires_at: expiration_date,
-      workflow_id: workflow.id
-    )
+    update_attributes(status: :placed, expires_at: expiration_date,
+      workflow_id: workflow.id)
   end
 
   def expired?
@@ -56,11 +58,8 @@ class Placement < ActiveRecord::Base
 
   def travel_time
     return nil if position.nil? # May have introduced a stats bug
-    TravelTime.where(
-      target_id: position.grid_id,
-      input_id: applicant.grid_id,
-      travel_mode: applicant.mode
-    ).first.time
+    TravelTime.find_by(input_id: applicant.grid_id,
+      target_id: position.grid_id, travel_mode: applicant.mode).time
   end
 
   def already_decided?
@@ -89,6 +88,7 @@ class Placement < ActiveRecord::Base
   def check_expired
     if expires_at && Time.now > expires_at
       update_attribute(:status, :expired)
+      applicant.update_attribute(:status, :opted_out)
     end
   end
 

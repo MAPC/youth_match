@@ -6,11 +6,16 @@ class Position < ActiveRecord::Base
   include Locatable
   include CreatableFromICIMS
 
-  before_validation :compute_grid_id
+  before_validation :compute_grid_id, if: 'location.present?'
   validates :grid_id, presence: true, if: 'location.present?'
 
+  validate :position_counts, if: 'manual? || automatic?'
+
+  validates :automatic, presence: true, numericality: true, if: 'manual.present?'
+  validates :manual,    presence: true, numericality: true, if: 'automatic.present?'
+
   def available?(run)
-    positions > run.placements.where(position: self).count
+    automatic > run.placements.where(position: self).count
   end
 
   def self.compressible(run)
@@ -36,5 +41,19 @@ class Position < ActiveRecord::Base
   def self.available(run)
     where.not(id: run.placements.pluck(:position_id))
   end
+
+  private
+
+  def position_counts
+    if manual? && automatic?
+      unless manual + automatic == positions
+        msg =  "must be equal to the sum of automatic (#{automatic.inspect})"
+        msg << " and manual (#{manual.inspect}) positions,"
+        msg << " but was #{positions}"
+        errors.add(:positions, msg)
+      end
+    end
+  end
+
 
 end

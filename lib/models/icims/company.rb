@@ -11,13 +11,13 @@ class ICIMS::Company < ICIMS::Resource
   end
 
   def address
-    ICIMS::Address.new(@addresses).to_s
+    @address ||= ICIMS::Address.new(@addresses)
   end
 
   def self.find(id)
     response = retry_get("/companies/#{id}", headers: headers)
     handle response do |r|
-      self.new(id: id, name: r['name'], addresses: r['addresses'])
+      self.new(id: id, name: r['name'], addresses: r.fetch('addresses'))
     end
   end
 end

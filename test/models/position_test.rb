@@ -28,8 +28,19 @@ class PositionTest < Minitest::Test
     assert @position.reload.uuid
   end
 
-  def test_categories
-    assert_respond_to position, :categories
+  def test_category
+    assert_respond_to position, :category
+  end
+
+  def test_addresses
+    assert_respond_to position, :addresses
+    assert_equal 'Hash', position.addresses.class.name
+  end
+
+  def test_address_components
+    [:address, :state, :city, :street, :zip, :zip_5].each do |method|
+      assert_respond_to position, method
+    end
   end
 
   def test_grid_id
@@ -40,10 +51,40 @@ class PositionTest < Minitest::Test
     assert_respond_to position, :travel_times
   end
 
+  def test_positions
+    %i( positions manual automatic ).each do |method|
+      assert_respond_to position, method
+    end
+  end
+
+  def test_unallocated_positions_can_be_whatever
+    unallocated = Position.new(positions: 10, manual: nil, automatic: nil)
+    assert unallocated.valid?, unallocated.errors.full_messages
+    unallocated = Position.new(positions: 10, manual: 0, automatic: nil)
+    refute unallocated.valid?
+  end
+
+  def test_allocated_positions_must_equal_total
+    allocated = Position.new(positions: 10, manual: 5, automatic: 5)
+    assert allocated.valid?, allocated.errors.full_messages
+    allocated.positions = 9
+    refute allocated.valid?
+    allocated.positions = 11
+    refute allocated.valid?
+  end
+
+  def test_allocations_must_both_be_present
+    half = Position.new(positions: 10, manual: 10, automatic: nil)
+    refute half.valid?
+    half.automatic = 0
+    assert half.valid?
+  end
+
   def test_within
     @applicant.update_attribute(:grid_id, 1)
     @position.update_attribute(:grid_id, 2)
-    @time = TravelTime.create!(input_id: 1, target_id: 2, travel_mode: :walking, time: 10.minutes)
+    @time = TravelTime.create!(input_id: 1, target_id: 2,
+       travel_mode: :walking, time: 10.minutes, pair_id: 1)
     refute_empty within_10min_walk
     assert_includes within_10min_walk, @position
     assert_empty within_10min_transit
@@ -61,7 +102,12 @@ class PositionTest < Minitest::Test
 
   def test_available
     before = Position.available(@run).count
-    @p = @run.placements.create!(position: @position, applicant: @applicant, index: 1)
+    @p = @run.placements.create!(
+      position: @position,
+      applicant: @applicant,
+      index: 1,
+      market: :manual
+    )
     after = Position.available(@run).count
     assert_equal 1, (before - after)
   ensure
@@ -71,7 +117,7 @@ class PositionTest < Minitest::Test
   def test_new_from_icims
     stub_job(id: 1123)
     stub_company
-    expected = Position.new(id: 1123, categories: ['Education', 'Tutoring'])
+    expected = Position.new(id: 1123, categories: ['Education or Tutoring'], category: 'Education or Tutoring')
     new_position = Position.new_from_icims(ICIMS::Job.find(1123))
     assert_equal expected, new_position
   end
@@ -79,8 +125,9 @@ class PositionTest < Minitest::Test
   def test_create_from_icims
     stub_job(id: 1123)
     stub_company
-    created = Position.create_from_icims(ICIMS::Job.find(1123))
-    assert_equal ['Education', 'Tutoring'], created.categories
+    job = ICIMS::Job.find(1123)
+    created = Position.create_from_icims(job)
+    assert_equal 'Education or Tutoring', created.category
     assert created.uuid
   ensure
     created.destroy! if created

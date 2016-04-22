@@ -27,6 +27,17 @@ class ApplicantTest < Minitest::Test
     assert_instance_of Array, applicant.interests
   end
 
+  def test_address_components
+    [:address, :state, :city, :street, :zip, :zip_5].each do |method|
+      assert_respond_to applicant, method
+    end
+  end
+
+  def test_status
+    assert_respond_to applicant, :status
+    assert_equal 'pending', applicant.status
+  end
+
   def test_booleans
     assert_respond_to applicant, :prefers_nearby
     assert_respond_to applicant, :prefers_interest
@@ -64,12 +75,13 @@ class ApplicantTest < Minitest::Test
     stub_person(id: 2)
     expected = Applicant.new(
       id: 2,
-      interests: ["Child Care", "Teacher's Assistant", "Community Organizing", "Construction", "Building Trades"],
-      prefers_nearby: true,
-      has_transit_pass: false
+      interests: ["Child Care or Teacher's Assistant", "Community Organizing", "Construction or Building Trades"],
+      prefers_nearby: false,
+      has_transit_pass: true,
+      addresses: [{"addresscity"=>"Boston", "entry"=>1001, "addresszip"=>"02111", "addressstate"=>{"id"=>"D41001024", "abbrev"=>"MA", "value"=>"Massachusetts"}, "addresscountry"=>{"id"=>"D41001", "abbrev"=>"US", "value"=>"United States"}, "addresstype"=>{"id"=>"D84002", "formattedvalue"=>"Home", "value"=>"Home"}, "addressstreet1"=>"60 Temple Place"}]
     )
     actual = Applicant.new_from_icims(ICIMS::Person.find(2))
-    assert_equal expected, actual
+    assert_equal expected.attributes, actual.attributes
   end
 
   private

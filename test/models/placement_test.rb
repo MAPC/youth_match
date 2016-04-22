@@ -11,7 +11,8 @@ class PlacementTest < Minitest::Test
       run:       @run,
       applicant: @applicant,
       position:  @position,
-      index: 1
+      index: 1,
+      market: :automatic
     )
   end
 
@@ -45,6 +46,15 @@ class PlacementTest < Minitest::Test
     assert placement.valid?
   end
 
+  def test_market
+    placement.market = :automatic
+    assert placement.valid?
+    placement.market = :manual
+    assert placement.valid?
+    placement.market = :automaGic
+    refute placement.valid?
+  end
+
   def test_requires_run_index
     placement.index = nil
     refute placement.valid?
@@ -52,10 +62,6 @@ class PlacementTest < Minitest::Test
 
   def test_opportunities
     assert_respond_to placement, :opportunities
-  end
-
-  def test_percentile
-    skip "for the moment, but we'll want this"
   end
 
   def test_uuid
@@ -133,11 +139,18 @@ class PlacementTest < Minitest::Test
     refute placement.expired?
   end
 
+  def test_expired_placement_opts_out_applicant
+    placement.expires_at = 4.days.ago
+    refute placement.applicant.opted_out?
+    placement.expired?
+    assert placement.applicant.opted_out?
+  end
+
   private
 
   def stub_finalize(job_id: 2305, person_id: 2587)
     stub_request(:post, "https://api.icims.com/customers/6405/applicantworkflows").
-    with(:body => "{\"baseprofile\":#{job_id},\"associatedprofile\":#{person_id},\"status\":{\"id\":\"PLACED\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
+    with(:body => "{\"baseprofile\":#{job_id},\"associatedprofile\":#{person_id},\"status\":{\"id\":\"C38356\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
        :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
     to_return(
       status: 201,

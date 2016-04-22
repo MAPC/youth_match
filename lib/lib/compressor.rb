@@ -10,14 +10,16 @@ class Compressor
     # placement, since we are doing the compression at runtime and need to
     # base the compression off of the available positions at the time the
     # applicant is addressed.
-    @pooled_positions = @pool.positions.select { |p| p.available?(@run) }
+    @pooled_positions = @pool.pooled_positions.select { |p| p.available?(@run) }
   end
 
   def compress!
+    $logger.debug "Started with #{@pool.pooled_positions.count} pooled positions"
     new_positions = positions.map do |position|
-      PooledPosition.new(compressed: true, position: position)
+      PooledPosition.create(compressed: true, position: position, pool: @pool)
     end
-    @pool.positions << new_positions # Shovel operator saves relationships
+    $logger.debug "Added #{new_positions.count} positions to pool #{@pool.id}."
+    $logger.debug "Ended with #{@pool.pooled_positions.count} pooled positions"
     new_positions.count
   end
 

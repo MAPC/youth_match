@@ -42,13 +42,16 @@ class ICIMS::PersonTest < Minitest::Test
   end
 
   def test_has_transit_pass
-    assert person.transit_pass?
-    refute opposite_person.transit_pass?
+    refute person.has_transit_pass?
+    assert opposite_person.has_transit_pass?
   end
 
   def test_interests
     refute_empty person.interests
-    ["Child Care", "Building Trades", "Law", "Government", "Public Service"].each do |interest|
+    [
+      "Child Care or Teacher's Assistant",
+      "Manufacturing, Science, Technology, Engineering and/or Math",
+    ].each do |interest|
       assert_includes person.interests, interest
     end
   end
@@ -58,8 +61,6 @@ class ICIMS::PersonTest < Minitest::Test
     assert_equal :available, person.status
     assert_equal :hired, oppposite_person.status
   end
-
-  private
 
   def stub_person(id: 1)
     stub_request(:get, "https://api.icims.com/customers/6405/people/#{id}?fields=field29946,field23848,field36999,addresses").

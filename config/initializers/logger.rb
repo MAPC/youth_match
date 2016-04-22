@@ -6,6 +6,7 @@ module Initializers
     def self.configure
       $logger = ::Logger.new(location).tap do |log|
         log.progname = progname
+        log.level = ENV['LOG_LEVEL'].to_i
       end
     end
 

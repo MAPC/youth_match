@@ -67,7 +67,7 @@ class ICIMS::WorkflowTest < Minitest::Test
 
   def test_save_from_new
     stub_create
-    new_workflow = ICIMS::Workflow.new(id: nil, job_id: 1, person_id: 2, status: 'PLACED')
+    new_workflow = ICIMS::Workflow.new(id: nil, job_id: 1, person_id: 2, status: 'C38356')
     assert new_workflow.save
     assert_equal 21282, new_workflow.id
   end
@@ -86,6 +86,15 @@ class ICIMS::WorkflowTest < Minitest::Test
     workflow.placed
     workflow.accepted
     refute workflow.updatable?
+  end
+
+  def test_expired
+    stub_expired_workflow
+    assert workflow.expired?
+  end
+
+  def test_not_updatable_after_expiring
+    skip
   end
 
   def test_accepted
@@ -124,12 +133,24 @@ class ICIMS::WorkflowTest < Minitest::Test
     assert workflow
   end
 
+  def test_no_status
+    stub_workflow_no_status
+    assert_equal nil, ICIMS::Workflow.find(1000).status
+  end
+
   private
 
   def stub_workflow(id: 19288)
     stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/#{id}").
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/workflow-19288.json'),
+        headers: { 'Content-Type' => 'application/json' })
+  end
+
+  def stub_workflow_no_status(id: 1000)
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/#{id}").
+      to_return(status: 200,
+        body: File.read('./test/fixtures/icims/workflow-1000.json'),
         headers: { 'Content-Type' => 'application/json' })
   end
 
@@ -145,7 +166,16 @@ class ICIMS::WorkflowTest < Minitest::Test
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/job-1123.json'),
         headers: { 'Content-Type' => 'application/json' })
+    stub_company
   end
+
+  def stub_company
+    stub_request(:get, "https://api.icims.com/customers/6405/companies/1800").
+      to_return(status: 200,
+        body: File.read('./test/fixtures/icims/company-1800.json'),
+        headers: { 'Content-Type' => 'application/json' })
+  end
+
 
   def stub_search
     stub_request(:post, "https://api.icims.com/customers/6405/search/applicantworkflows").
@@ -166,7 +196,7 @@ class ICIMS::WorkflowTest < Minitest::Test
 
   def stub_create
     stub_request(:post, "https://api.icims.com/customers/6405/applicantworkflows").
-    with(:body => "{\"baseprofile\":1,\"associatedprofile\":2,\"status\":{\"id\":\"PLACED\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
+    with(:body => "{\"baseprofile\":1,\"associatedprofile\":2,\"status\":{\"id\":\"C38356\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
          :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
     to_return(
       status: 201,
@@ -192,6 +222,13 @@ class ICIMS::WorkflowTest < Minitest::Test
       to_timeout.then.
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/workflow-19288.json'),
+        headers: { 'Content-Type' => 'application/json' })
+  end
+
+  def stub_expired_workflow(id: 19288)
+    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/#{id}").
+      to_return(status: 200,
+        body: File.read('./test/fixtures/icims/workflow-expired.json'),
         headers: { 'Content-Type' => 'application/json' })
   end
 

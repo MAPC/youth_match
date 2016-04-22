@@ -1,0 +1,10 @@
+# Stubbed Lottery Configuration Settings
+
+score_multipliers:
+  interest: 1
+  travel: 1
+default_travel_time: 2400
+compressor:
+  threshhold: 40
+  ratio: 2
+  direction: upward

@@ -11,7 +11,7 @@ class PooledPosition < ActiveRecord::Base
   delegate :available?, to: :position
 
   validates :pool, presence: true
-  validates :position, presence: true
+  validates :position, presence: true, uniqueness: { scope: :pool }
 
   private
 

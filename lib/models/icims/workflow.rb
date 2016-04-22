@@ -12,7 +12,7 @@ class ICIMS::Workflow < ICIMS::Resource
     @id = id
     @job_id = job_id
     @person_id = person_id
-    @status = status || ICIMS::Status.placed
+    @status = status
   end
 
   def job
@@ -64,17 +64,28 @@ class ICIMS::Workflow < ICIMS::Resource
 
   def declined
     return false unless updatable?
-    update(status: ICIMS::Status.declined)
+    update status: ICIMS::Status.declined
   end
 
   def placed
     return false unless placeable?
-    update(status: ICIMS::Status.placed)
+    update status: ICIMS::Status.placed
+  end
+
+  def expired
+    update status: ICIMS::Status.expired
   end
 
   def updatable?
-    # TODO: AND NOT EXPIRED
+    placed? && !expired?
+  end
+
+  def placed?
     @status.to_s == ICIMS::Status.placed
+  end
+
+  def expired?
+    @status.to_s == ICIMS::Status.expired
   end
 
   def placeable?
@@ -88,8 +99,11 @@ class ICIMS::Workflow < ICIMS::Resource
   def self.find(id)
     response = retry_get("/applicantworkflows/#{id}", headers: headers)
     handle response do |r|
-      new(id: id, job_id: r['baseprofile']['id'], status: r['status']['id'],
-        person_id: r['associatedprofile']['id'])
+      job_id    = r.fetch('baseprofile', {}).fetch('id')
+      person_id = r.fetch('associatedprofile', {}).fetch('id')
+      status    = r.fetch('status', {}).fetch('id', nil)
+      params = { id: id, job_id: job_id, status: status, person_id: person_id }
+      new(params)
     end
   end
 
@@ -101,11 +115,16 @@ class ICIMS::Workflow < ICIMS::Resource
     end
   end
 
-  def self.eligible(limit: nil)
+  def self.eligible(limit: nil, offset: 0, &block)
     response = retry_post '/search/applicantworkflows',
       { body: eligible_filter.to_json, headers: headers }
-    handle response do |r|
-      limit_results(r, limit).map { |res| find res['id'] }
+    results = handle(response) { |r| limit_results(r, limit, offset) }
+    if block_given?
+      results.each do |res|
+        yield find(res['id'])
+      end
+    else
+      results.map { |res| find res['id'] }
     end
   end
 

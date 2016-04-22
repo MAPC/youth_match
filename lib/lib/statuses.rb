@@ -26,16 +26,25 @@ end
 module ICIMS
   module Status
 
-    def self.placed
-      'PLACED'
+    CODES = {
+      activated: 'C38354',
+      placed:    'C38356',
+      accepted:  'C36951',
+      declined:  'C14661',
+      expired:   'C38355',
+      hired:     'C2040',
+      send_to_onboard: 'C23504',
+      processing_appointment: 'C23505'
+    }.with_indifferent_access
+
+    CODES.each_pair do |key, code|
+      define_singleton_method key do
+        CODES[key]
+      end
     end
 
-    def self.accepted
-      'C36951'
-    end
-
-    def self.declined
-      'C14661'
+    def self.from_code(code)
+      CODES.invert[code]
     end
 
   end

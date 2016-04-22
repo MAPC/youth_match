@@ -18,7 +18,10 @@ module CreatableFromICIMS
     end
 
     def assert_icims(obj)
-      raise ArgumentError unless obj.class.name.include? 'ICIMS'
+      class_name = obj.class.name
+      unless class_name.include? 'ICIMS'
+        raise ArgumentError, "must be an ICIMS resource, but was #{class_name}"
+      end
     end
 
     def usable_attributes(obj)

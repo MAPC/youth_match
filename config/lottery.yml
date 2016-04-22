@@ -18,6 +18,14 @@ score_multipliers:
   interest: 1
   travel: 1
 
+
+# Travel time, in seconds, to use when calculating the travel score, assuming
+# there is no travel time in the database between two grid cells. This happens
+# most often during compression, when positions outside the applicant's normal
+# transit-shed are added.
+# Default is 40 minutes (40 * 60 = 2400 seconds).
+default_travel_time: 2400
+
 compressor:
   # :threshhold: ranges from 0 to 100, indicating the opportunity percentile
   # an applicant must fall below for compression to be applied and reserve
@@ -26,7 +34,7 @@ compressor:
   # 60% or less of the maximum precalculated base job pool size -- at
   # runtime -- has some access to reserve jobs. Anyone with a base job pool
   # of 61-100% the size of the maximum job pool is not given additional jobs.
-  threshhold: 40
+  threshhold: 10
 
   # :ratio: ranges from 1 to 20.
   # The ratio helps set the minimum amount of opportunity boost given to
@@ -41,7 +49,7 @@ compressor:
   # ratio of 2 means would give a minimum job access of (40 / 2), or 20.
   # The applicant would then have access to a number reserve jobs equal to 20%
   # of the maximum base pool size of any applicant.
-  ratio: 2
+  ratio: 20
 
   # :direction: should only be set to upward -- and setting it to downward,
   # presently does nothing -- but this is included as an explicit reminder.

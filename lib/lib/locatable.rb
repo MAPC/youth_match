@@ -34,6 +34,12 @@ module Locatable
                 .exists?(target_id: destination.grid_id)
   end
 
+  def address
+    ICIMS::Address.new(addresses)
+  end
+
+  delegate :street, :city, :state, :zip, :zip_5, to: :address
+
   private
 
   def compute_grid_id
