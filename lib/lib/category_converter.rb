@@ -16,6 +16,9 @@ module CategoryConverter
     "Law"        => "Law, Government, or Public Service",
     "Science"    => "Manufacturing, Science, Technology, Engineering and/or Math",
     "Technology" => "Manufacturing, Science, Technology, Engineering and/or Math",
+    # Because this change doesn't take effect until everyone who selects it
+    #   updates their profiles.
+    "Digital Media, Communications or Film" => "Media, Communications or Film",
     "Human Services" => "Law, Government, or Public Service",
     "Art or Graphic Design"         => "Visual or Performing Arts",
     "Engineering and/or Math"       => "Manufacturing, Science, Technology, Engineering and/or Math",
