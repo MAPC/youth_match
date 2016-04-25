@@ -4,7 +4,8 @@ class Pool < ActiveRecord::Base
 
   belongs_to :placement
   has_and_belongs_to_many :pooled_positions, join_table: :pooled_positions,
-    class_name: 'PooledPosition', association_foreign_key: :id
+    class_name: 'PooledPosition', association_foreign_key: :id,
+    dependent: :destroy
 
   validates :placement, presence: true
 

@@ -8,8 +8,8 @@ class CheckJob
     $logger.info '----> Running checks'
     assert_present :applicants
     assert_present :positions
-    assert_grid_ids :applicants
-    assert_grid_ids :positions
+    check_grid_ids :applicants
+    check_grid_ids :positions
     assert_position_markets
     assert_placement_markets
   end
@@ -26,15 +26,14 @@ class CheckJob
     end
   end
 
-  def assert_grid_ids(plural_name)
+  def check_grid_ids(plural_name)
     klass = plural_name.to_s.classify.constantize
     if (count = klass.where(grid_id: nil).count) == 0
       $logger.info "----> #{checkmark} No #{plural_name} missing grid IDs."
     else
-      msg = "----> FAIL: #{count} #{plural_name} missing grid IDs."
-      msg << " Rerun the pool precalculation task after adding grid IDs."
+      msg = "----> X #{count} #{plural_name} missing grid IDs."
+      msg << " They will not be included in the run."
       $logger.error msg
-      exit 1
     end
   end
 

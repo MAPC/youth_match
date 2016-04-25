@@ -5,9 +5,6 @@ class PrecalculatePoolJob
   end
 
   def perform!
-    msg = "Expected time to completion: "
-    msg << "#{(auto_placements.count * 0.62 / 60).round(2)} minutes."
-    $logger.warn msg
     auto_placements.find_each do |placement|
       pool = placement.create_pool!
       log_pool(pool)
@@ -23,7 +20,7 @@ class PrecalculatePoolJob
   private
 
   def auto_placements
-    @run.placements.where(market: :automatic)
+    @run.placements.order(:index).where(market: :automatic)
   end
 
   def log_pool(pool)

@@ -5,7 +5,7 @@ class Placement < ActiveRecord::Base
   belongs_to :run
   belongs_to :applicant
   belongs_to :position
-  has_one :pool
+  has_one :pool, dependent: :destroy
 
   validates :run,       presence: true
   validates :applicant, presence: true
@@ -14,15 +14,32 @@ class Placement < ActiveRecord::Base
 
   validate :expires_at_in_past, if: -> { status == 'expired' }
 
-  enumerize :status, in: [:pending, :placed, :accepted, :declined, :expired],
-    default: :pending, predicates: { except: [:expired] }
+  enumerize :status, in: [
+    :pending,  # A new placement, that hasn't been given a position.
+    :placed,   # Assigned a position, but not synced with the hiring system.
+    :synced,   # Assigned a position and synced with the hiring system.
+    :accepted, # Applicant received an email and clicked 'Accept' for this offer.
+    :declined, # Applicant received an email and clicked 'Decline' for this offer.
+    :expired   # Applicant received an email but did not respond in time.
+  ],
+  default: :pending, predicates: { except: [:expired] }
 
   enumerize :market, in: [:automatic, :manual], predicates: false
 
   default_scope { order(:index) }
 
-  def finalize!
-    placed(workflow: create_workflow)
+  def place!
+    pool.compress! # Add compressed positions before selecting best fit.
+    pool.reload    # Not sure we need this, but it seemed like it at the time.
+    if best_job = pool.best_fit
+      update_attributes(position: best_job, status: :placed)
+    end
+    return self
+  end
+
+  def sync!
+    update_attributes(status: :synced, expires_at: expiration_date,
+      workflow_id: create_workflow.id)
   end
 
   def updatable?
@@ -37,11 +54,6 @@ class Placement < ActiveRecord::Base
 
   def declined
     update_attribute(:status, :declined) if workflow.declined
-  end
-
-  def placed(workflow: )
-    update_attributes(status: :placed, expires_at: expiration_date,
-      workflow_id: workflow.id)
   end
 
   def expired?
@@ -99,6 +111,12 @@ class Placement < ActiveRecord::Base
   def create_workflow
     ICIMS::Workflow.create({ job_id: position.id, person_id: applicant.id,
       status: ICIMS::Status.placed })
+  end
+
+  def log_no_best_fit
+    $logger.error "Could not find a best_fit for #{self.inspect}"
+    $logger.error "Pool: #{pool.inspect}"
+    $logger.error "Pooled positions: #{pool.pooled_positions.inspect}"
   end
 
 end

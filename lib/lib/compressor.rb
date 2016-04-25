@@ -14,13 +14,15 @@ class Compressor
   end
 
   def compress!
-    $logger.debug "Started with #{@pool.pooled_positions.count} pooled positions"
     new_positions = positions.map do |position|
       PooledPosition.create(compressed: true, position: position, pool: @pool)
     end
-    $logger.debug "Added #{new_positions.count} positions to pool #{@pool.id}."
-    $logger.debug "Ended with #{@pool.pooled_positions.count} pooled positions"
-    new_positions.count
+    if new_positions.any?
+      $logger.debug "Compressor: Started with #{@pool.position_count} pooled positions"
+      $logger.debug "Compressor: Added #{new_positions.count} positions to pool
+        #{@pool.id} for #{@pool.pooled_positions.count} pooled positions."
+    end
+    return new_positions.count
   end
 
   def positions
@@ -66,7 +68,8 @@ class Compressor
   end
 
   def max_pool_position_count
-    @max ||= Pool.maximum :position_count
+    $max_pool_size ||= @run.placements.
+      where(market: :automatic).map {|pl| pl.pool.position_count }.max
   end
 
 end
