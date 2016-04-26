@@ -12,64 +12,60 @@ class CompressorTest < Minitest::Test
     end
   end
 
+  def teardown
+    $max_pool_size = 0
+  end
+
   def compressor
     compressor ||= Compressor.new(@pool)
   end
 
   def test_signal_no_positions
     @pool.expect(:pooled_positions, [])
-    Pool.stub :maximum, 90 do
-      assert_equal 0, compressor.signal
-    end
+    $max_pool_size = 90
+    assert_equal 0, compressor.signal
   end
 
   def test_signal_max_positions
     @pool.expect(:pooled_positions, mock_positions)
-    Pool.stub :maximum, 3 do
-      assert_equal 100, compressor.signal
-    end
+    $max_pool_size = 3
+    assert_equal 100, compressor.signal
   end
 
   def test_expected_output_no_positions
     @pool.expect(:pooled_positions, [])
-    Pool.stub :maximum, 90 do
-      assert_equal 20, compressor.expected_output
-    end
+    $max_pool_size = 90
+    assert_equal 20, compressor.expected_output
   end
 
   def test_expected_output_max_positions
     @pool.expect(:pooled_positions, mock_positions)
-    Pool.stub :maximum, 3 do
-      assert_equal 100, compressor.expected_output
-    end
+    $max_pool_size = 3
+    assert_equal 100, compressor.expected_output
   end
 
   def test_gain_no_positions
     @pool.expect(:pooled_positions, [])
-    Pool.stub :maximum, 90 do
-      assert_equal 20, compressor.gain
-    end
+    $max_pool_size = 90
+    assert_equal 20, compressor.gain
   end
 
   def test_position_gain_no_positions
     @pool.expect(:pooled_positions, [])
-    Pool.stub :maximum, 90 do
-      assert_equal 18, compressor.position_gain
-    end
+    $max_pool_size = 90
+    assert_equal 18, compressor.position_gain
   end
 
   def test_gain_max_positions
     @pool.expect(:pooled_positions, mock_positions)
-    Pool.stub :maximum, 3 do
-      assert_equal 0, compressor.gain
-    end
+    $max_pool_size = 3
+    assert_equal 0, compressor.gain
   end
 
   def test_position_gain_max_positions
     @pool.expect(:pooled_positions, mock_positions)
-    Pool.stub :maximum, 3 do
-      assert_equal 0, compressor.position_gain
-    end
+    $max_pool_size = 3
+    assert_equal 0, compressor.position_gain
   end
 
   def test_compress_no_positions
@@ -81,9 +77,8 @@ class CompressorTest < Minitest::Test
     @pool.expect(:is_a?, true, [Pool])
     positions = 20.times.map { Position.create }
     Position.stub :compressible, TestRelation.new(positions) do
-      Pool.stub :maximum, 90 do
-        assert_equal 18, compressor.compress!
-      end
+      $max_pool_size = 90
+      assert_equal 18, compressor.compress!
     end
   ensure
     Array(positions).each(&:destroy!)
@@ -92,9 +87,8 @@ class CompressorTest < Minitest::Test
   def test_compress_max_positions
     3.times { @pool.expect(:pooled_positions, mock_positions) }
     @pool.expect(:id, 1)
-    Pool.stub :maximum, 3 do
-      assert_equal 0, compressor.compress!
-    end
+    $max_pool_size = 3
+    assert_equal 0, compressor.compress!
   end
 
   private

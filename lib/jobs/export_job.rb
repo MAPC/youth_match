@@ -5,31 +5,51 @@ class ExportJob
   end
 
   def perform!
-    file = "./tmp/exports/mail-merge-#{@run.id}-#{Time.now.to_i}.csv"
+    first = @run.exportable_placements.first.index
+    last  = @run.exportable_placements.last.index
+    file = "./tmp/exports/mail-merge-run-#{@run.id}-from-#{first}-to-#{last}-#{Time.now.to_i}.csv"
     CSV.open(file, 'wb') do |csv|
       csv << header
-      relevant_placements.each { |placement| csv << values_for(placement) }
+      @run.exportable_placements.each { |placement| csv << values_for(placement) }
     end
   end
 
   private
 
-  def relevant_placements
-    @run.placements.includes(:applicant, :position).
-      order(:index). # Redundant with Placement.default_scope
-      where(status: [:pending, :placed])
-  end
-
   def header
-    %w( placement_uuid applicant_id position_id applicant_uuid position_uuid )
+    %w( applicant_id position_id accept_url decline_url opt_out_url contact_method last_chance )
   end
 
   def values_for(placement)
-    [placement.uuid,
-     placement.applicant_id,
-     placement.position_id,
-     placement.applicant.uuid,
-     placement.position.try(:uuid)]
+    [
+      placement.applicant.id,
+      placement.position.id,
+      accept_url(placement),
+      decline_url(placement),
+      opt_out_url(placement),
+      placement.applicant.contact,
+      placement.last_chance?
+    ]
+  end
+
+  def accept_url(placement)
+    response_url placement, :accept
+  end
+
+  def decline_url(placement)
+    response_url placement, :decline
+  end
+
+  def opt_out_url(placement)
+    response_url placement, :opt_out
+  end
+
+  def response_url(placement, action)
+    url = $config.lottery.placement_link.site.dup
+    url << "/placements/#{placement.uuid}/#{action.to_s.dasherize}/?"
+    url << "applicant_uuid=#{placement.applicant.uuid}&"
+    url << "position_uuid=#{placement.position.uuid}"
+    url
   end
 
 end

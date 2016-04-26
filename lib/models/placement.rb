@@ -78,6 +78,14 @@ class Placement < ActiveRecord::Base
     decided? || workflow.decided?
   end
 
+  def last_chance?
+    self.class.where(
+      applicant_id: self.applicant_id,
+      run_id: self.run_id,
+      status: :declined
+    ).any? # Not super precise?
+  end
+
   def expiration_date
     # The next Friday we assign people to must be 4 days from now.
     # If it's Monday, the next Friday should be that week.

@@ -129,9 +129,6 @@ class RelayTest < Minitest::Test
     # And mark person as hired.
   end
 
-
-
-
   def test_accepted_person_not_in_placements
     skip 'maybe irrelevant'
   end
@@ -139,8 +136,6 @@ class RelayTest < Minitest::Test
   def test_accepted_icims_error
     skip 'retry 3 times, 1s wait, Airbrake because ICIMS may be down'
   end
-
-
 
   # If we move accept/decline to :action, test against wrong actions
   private
