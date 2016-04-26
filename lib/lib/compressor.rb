@@ -69,7 +69,7 @@ class Compressor
 
   def max_pool_position_count
     $max_pool_size ||= @run.placements.
-      where(market: :automatic).map {|pl| pl.pool.position_count }.max
+      where(market: :automatic).map {|pl| pl.pool.position_count }.max.to_i
   end
 
 end
