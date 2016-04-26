@@ -8,6 +8,10 @@ module Status
     'placed'
   end
 
+  def self.synced
+    'synced'
+  end
+
   def self.accepted
     'accepted'
   end
@@ -30,7 +34,7 @@ module ICIMS
       activated: 'C38354',
       placed:    'C38356',
       accepted:  'C36951',
-      declined:  'C14661',
+      declined:  'C38469',
       expired:   'C38355',
       hired:     'C2040',
       send_to_onboard: 'C23504',

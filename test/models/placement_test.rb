@@ -79,10 +79,10 @@ class PlacementTest < Minitest::Test
     stub_finalize(job_id: placement.position.id, person_id: placement.applicant.id)
     stub_workflow
     assert_equal Status.pending, placement.status
-    placement.finalize!
+    placement.sync!
     assert_equal 21282, placement.workflow_id
     assert placement.workflow
-    assert_equal Status.placed, placement.status
+    assert_equal Status.synced, placement.status
     assert placement.expires_at
   end
 
