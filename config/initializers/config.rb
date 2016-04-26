@@ -10,6 +10,7 @@ module Initializers
       $config = Hash.to_ostructs(config_from_yaml)
       $config.lottery = Hash.to_ostructs(lottery_config)
       coerce_config_types
+      $config.freeze
     end
 
     private
