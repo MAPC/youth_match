@@ -24,6 +24,12 @@ namespace :import do
     AllocatePositionsJob.new.perform!
   end
 
+  desc 'Import market allocations and contact methods for applicants'
+  task allocate: :environment do |t, args|
+    pre_message(t)
+    ApplicantAllocatorJob.new.perform!
+  end
+
   desc 'Import applicants, initial, from Linda\'s spreadsheet'
   task csvapp: :environment do |t, args|
     pre_message(t)
