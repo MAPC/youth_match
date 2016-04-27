@@ -20,7 +20,7 @@ class PrecalculatePoolJob
   private
 
   def auto_placements
-    @run.placements.order(:index).where(market: :automatic)
+    @run.placements.order(index: :asc).where(market: :automatic)
   end
 
   def log_pool(pool)

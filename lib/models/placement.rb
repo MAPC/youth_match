@@ -26,7 +26,7 @@ class Placement < ActiveRecord::Base
 
   enumerize :market, in: [:automatic, :manual], predicates: false
 
-  default_scope { order(:index) }
+  default_scope { order(index: :asc) }
 
   def place!
     pool.compress! # Add compressed positions before selecting best fit.
