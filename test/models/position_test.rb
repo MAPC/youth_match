@@ -136,7 +136,7 @@ class PositionTest < Minitest::Test
   private
 
   def stub_job(id: 1123)
-    stub_request(:get, "https://api.icims.com/customers/6405/jobs/#{id}?fields=joblocation,jobtitle,numberofpositions,positioncategory").
+    stub_request(:get, "https://api.icims.com/customers/1234/jobs/#{id}?fields=joblocation,jobtitle,numberofpositions,positioncategory").
       to_return(
         status: 200,
         body: File.read("./test/fixtures/icims/job-1123.json"),
@@ -144,7 +144,7 @@ class PositionTest < Minitest::Test
   end
 
   def stub_company
-    stub_request(:get, "https://api.icims.com/customers/6405/companies/1800").
+    stub_request(:get, "https://api.icims.com/customers/1234/companies/1800").
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/company-1800.json'),
         headers: { 'Content-Type' => 'application/json' })

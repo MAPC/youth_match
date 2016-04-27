@@ -87,7 +87,7 @@ class ApplicantTest < Minitest::Test
   private
 
   def stub_person(id: 1)
-    stub_request(:get, "https://api.icims.com/customers/6405/people/#{id}?fields=field29946,field23848,field36999,addresses").
+    stub_request(:get, "https://api.icims.com/customers/1234/people/#{id}?fields=field29946,field23848,field36999,addresses").
         to_return(status: 200,
           body: File.read("./test/fixtures/icims/person-#{id}.json"),
           headers: { 'Content-Type' => 'application/json' })

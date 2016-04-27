@@ -3,7 +3,7 @@ sudo: false
 rvm:
   - 2.1.5
 env:
-  - DATABASE_ENV=test
+  - DATABASE_ENV=test RACK_ENV=test AIRBRAKE_ID=test AIRBRAKE_KEY=test
 before_script:
   - bundle exec rake db:create
   - bundle exec rake db:migrate

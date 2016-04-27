@@ -3,7 +3,7 @@
         {
             "rel": "self",
             "title": "The current profile being viewed.",
-            "url": "https://api.icims.com/customers/6405/jobs/1123"
+            "url": "https://api.icims.com/customers/1234/jobs/1123"
         }
     ],
     "numberofpositions": 5

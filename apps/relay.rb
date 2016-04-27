@@ -1,13 +1,15 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
 require './environment'
+require 'airbrake'
 
-# Airbrake.configure do |c|
-#   c.project_id = ENV['AIRBRAKE_ID']
-#   c.project_key = ENV['AIRBRAKE_KEY']
-#   c.ignore_environments = [:development, :test]
-#   c.logger.level = Logger::DEBUG
-# end
+Airbrake.configure do |c|
+  c.project_id  = ENV['AIRBRAKE_ID']
+  c.project_key = ENV['AIRBRAKE_KEY']
+  c.environment = ENV['DATABASE_ENV']
+  c.ignore_environments = %w( development test )
+  c.logger.level = Logger::DEBUG
+end
 
 class Apps::Relay < Sinatra::Base
 
@@ -38,22 +40,22 @@ class Apps::Relay < Sinatra::Base
   end
 
   error ActiveRecord::RecordNotFound do
-    # Airbrake.notify('Record Not Found', params: params)
+    Airbrake.notify('Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 404 do
-    # Airbrake.notify('Record Not Found', params: params)
+    Airbrake.notify('404 / Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 422 do
-    # Airbrake.notify('Unprocessable Entity', params: params)
+    Airbrake.notify('Unprocessable Entity', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 500 do
-    # Airbrake.notify('Internal Server Error', params: params)
+    Airbrake.notify('Internal Server Error', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
@@ -72,11 +74,19 @@ class Apps::Relay < Sinatra::Base
   end
 
   def applicant(params)
-    Applicant.find_by uuid: params[:applicant_uuid]
+    if applicant = Applicant.find_by(uuid: params[:applicant_uuid])
+      applicant
+    else
+      halt 404
+    end
   end
 
   def position(params)
-    Position.find_by uuid: params[:position_uuid]
+    if position = Position.find_by(uuid: params[:position_uuid])
+      position
+    else
+      halt 404
+    end
   end
 
   def assert_decidable(placement)

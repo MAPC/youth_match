@@ -67,7 +67,6 @@ class RelayTest < Minitest::Test
     assert_redirect_to('error')
   end
 
-
   def test_accepted_different_job
     position = Position.create!
     get "/placements/#{@placement.uuid}/accept",
@@ -158,7 +157,7 @@ class RelayTest < Minitest::Test
   end
 
   def stub_already_accepted
-    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/19288").
       with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
       to_return(
         :status => 200,
@@ -168,7 +167,7 @@ class RelayTest < Minitest::Test
   end
 
   def stub_already_declined
-    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/19288").
       with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
       to_return(
         :status => 200,
@@ -202,7 +201,7 @@ class RelayTest < Minitest::Test
   end
 
   def stub_get_workflow
-    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/19288").
       with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
       to_return(
         :status => 200,
@@ -212,14 +211,14 @@ class RelayTest < Minitest::Test
   end
 
   def stub_accept_workflow
-    stub_request(:patch, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+    stub_request(:patch, "https://api.icims.com/customers/1234/applicantworkflows/19288").
     with(:body => "{\"status\":{\"id\":\"C36951\"}}",
          :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
     to_return(:status => 204, :body => "", :headers => {'Content-Type'=>'application/json'})
   end
 
   def stub_decline_workflow
-    stub_request(:patch, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+    stub_request(:patch, "https://api.icims.com/customers/1234/applicantworkflows/19288").
     with(:body => "{\"status\":{\"id\":\"C38469\"}}",
          :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
     to_return(:status => 204, :body => "", :headers => {'Content-Type'=>'application/json'})
