@@ -1,24 +1,24 @@
 {
   "associatedprofile": {
-    "profile": "https://api.icims.com/customers/6405/people/445",
+    "profile": "https://api.icims.com/customers/1234/people/445",
     "id": 445,
     "value": "Definitely A Fake Name"
   },
   "links": [{
     "rel": "self",
     "title": "The current profile being viewed.",
-    "url": "https://api.icims.com/customers/6405/applicantworkflows/1002"
+    "url": "https://api.icims.com/customers/1234/applicantworkflows/1002"
   }, {
     "rel": "self",
     "title": "The base profile of this workflow.",
-    "url": "https://api.icims.com/customers/6405/jobs/1140"
+    "url": "https://api.icims.com/customers/1234/jobs/1140"
   }, {
     "rel": "self",
     "title": "The associated profile of this workflow.",
-    "url": "https://api.icims.com/customers/6405/people/445"
+    "url": "https://api.icims.com/customers/1234/people/445"
   }],
   "baseprofile": {
-    "profile": "https://api.icims.com/customers/6405/jobs/1140",
+    "profile": "https://api.icims.com/customers/1234/jobs/1140",
     "id": 1140,
     "value": "Probably A Fake Job Title"
   }

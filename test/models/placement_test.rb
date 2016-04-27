@@ -149,7 +149,7 @@ class PlacementTest < Minitest::Test
   private
 
   def stub_finalize(job_id: 2305, person_id: 2587)
-    stub_request(:post, "https://api.icims.com/customers/6405/applicantworkflows").
+    stub_request(:post, "https://api.icims.com/customers/1234/applicantworkflows").
     with(:body => "{\"baseprofile\":#{job_id},\"associatedprofile\":#{person_id},\"status\":{\"id\":\"C38356\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
        :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
     to_return(
@@ -160,13 +160,13 @@ class PlacementTest < Minitest::Test
   end
 
   def stub_workflow
-    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/21282").
+    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/21282").
       with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
       to_return(:status => 200, :body => File.read('./test/fixtures/icims/workflow-19288.json'), :headers => {'Content-Type' => 'application/json'})
   end
 
   def stub_get_accepted
-    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
+    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/19288").
       with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
       to_return(
         :status => 200,

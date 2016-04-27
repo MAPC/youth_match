@@ -19,7 +19,7 @@ class ICIMS::CompanyTest < Minitest::Test
   private
 
   def stub_company
-    stub_request(:get, "https://api.icims.com/customers/6405/companies/1800").
+    stub_request(:get, "https://api.icims.com/customers/1234/companies/1800").
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/company-1800.json'),
         headers: { 'Content-Type' => 'application/json' })

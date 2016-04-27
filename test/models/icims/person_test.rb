@@ -63,14 +63,14 @@ class ICIMS::PersonTest < Minitest::Test
   end
 
   def stub_person(id: 1)
-    stub_request(:get, "https://api.icims.com/customers/6405/people/#{id}?fields=field29946,field23848,field36999,addresses").
+    stub_request(:get, "https://api.icims.com/customers/1234/people/#{id}?fields=field29946,field23848,field36999,addresses").
       to_return(status: 200,
         body: File.read("./test/fixtures/icims/person-#{id}.json"),
         headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_workflows(id: 1)
-    stub_request(:post, "https://api.icims.com/customers/6405/search/applicantworkflows").
+    stub_request(:post, "https://api.icims.com/customers/1234/search/applicantworkflows").
     with(:body => "[{\"name\":\"applicantworkflow.person.id\",\"value\":[\"#{id}\"],\"operator\":\"=\"}]",
          :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
     to_return(status: 200,
@@ -79,7 +79,7 @@ class ICIMS::PersonTest < Minitest::Test
   end
 
   def stub_workflow(id: 19288)
-    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/#{id}").
+    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/#{id}").
       to_return(status: 200,
         body: File.read('./test/fixtures/icims/workflow-19288.json'),
         headers: { 'Content-Type' => 'application/json' })

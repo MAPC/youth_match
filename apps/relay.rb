@@ -4,7 +4,7 @@ require './environment'
 require 'airbrake'
 
 Airbrake.configure do |c|
-  c.project_id = ENV['AIRBRAKE_ID']
+  c.project_id  = ENV['AIRBRAKE_ID']
   c.project_key = ENV['AIRBRAKE_KEY']
   c.environment = ENV['DATABASE_ENV']
   c.ignore_environments = %w( development test )
@@ -74,11 +74,19 @@ class Apps::Relay < Sinatra::Base
   end
 
   def applicant(params)
-    Applicant.find_by uuid: params[:applicant_uuid]
+    if applicant = Applicant.find_by(uuid: params[:applicant_uuid])
+      applicant
+    else
+      halt 404
+    end
   end
 
   def position(params)
-    Position.find_by uuid: params[:position_uuid]
+    if position = Position.find_by(uuid: params[:position_uuid])
+      position
+    else
+      halt 404
+    end
   end
 
   def assert_decidable(placement)

@@ -3,7 +3,7 @@
     "content-language": "en-US,us",
     "content-security-policy": "frame-ancestors 'self'",
     "date": "Wed, 30 Mar 2016 21:25:01 GMT",
-    "location": "https://api.icims.com/customers/6405/applicantworkflows/21282",
+    "location": "https://api.icims.com/customers/1234/applicantworkflows/21282",
     "set-cookie": [
         "JSESSIONID=DFD279E7CD5A5578A93DEC437E1DAD87; Path=/; Secure; HttpOnly"
     ],
