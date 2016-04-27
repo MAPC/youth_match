@@ -29,7 +29,7 @@ class Minitest::Spec
 end
 
 MiniTest.after_run do
-  WebMock.disable_net_connect!(allow: %w{codeclimate.com})
+  WebMock.disable_net_connect!(allow: %w{ codeclimate.com })
 end
 
 require './environment'
