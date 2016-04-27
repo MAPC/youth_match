@@ -14,8 +14,15 @@ class Pool < ActiveRecord::Base
 
   def best_fit
     return nil if pooled_positions.count == 0
-    best_pooled = pooled_positions.to_a.sort_by { |p| p.score["total"] }.
-      detect { |p| p.available?(run) }
+    best_pooled = pooled_positions.to_a.
+      # Don't assign someone to a job they were placed at and declined before.
+      reject  { |p|
+        placement.applicant.declined_placements(run).
+          pluck(:position_id).
+          include?(p.position_id)
+      }.
+      sort_by { |p| p.score["total"]  }.
+      detect  { |p| p.available?(run) }
     best_pooled.position if best_pooled
   end
 

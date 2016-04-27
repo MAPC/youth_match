@@ -180,14 +180,14 @@ class ICIMS::WorkflowTest < Minitest::Test
   def stub_search
     stub_request(:post, "https://api.icims.com/customers/6405/search/applicantworkflows").
     with(:body => "[{\"name\":\"applicantworkflow.person.id\",\"value\":[\"1\"],\"operator\":\"=\"}]",
-         :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+         :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
     to_return(status: 200, body: File.read('./test/fixtures/icims/person-1-workflows.json'), headers: {'Content-Type'=>'application/json'})
   end
 
   def stub_eligible
     stub_request(:post, "https://api.icims.com/customers/6405/search/applicantworkflows").
     with(:body => "{\"filters\":[{\"name\":\"applicantworkflow.customfield4006.text\",\"value\":[],\"operator\":\"=\"},{\"name\":\"applicantworkflow.customfield4007.text\",\"value\":[],\"operator\":\"=\"},{\"name\":\"applicantworkflow.customfield3300.text\",\"value\":[\"135\"],\"operator\":\"=\"},{\"name\":\"applicantworkflow.person.createddate\",\"value\":[\"2013-03-25 4:00 AM\"],\"operator\":\"\\u003c\"}],\"operator\":\"\\u0026\"}",
-         :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+         :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
     to_return(
       status: 200,
       body: File.read('./test/fixtures/icims/eligible-workflows.json'),
@@ -197,7 +197,7 @@ class ICIMS::WorkflowTest < Minitest::Test
   def stub_create
     stub_request(:post, "https://api.icims.com/customers/6405/applicantworkflows").
     with(:body => "{\"baseprofile\":1,\"associatedprofile\":2,\"status\":{\"id\":\"C38356\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
-         :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+         :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
     to_return(
       status: 201,
       body: '',
@@ -208,7 +208,12 @@ class ICIMS::WorkflowTest < Minitest::Test
   def stub_update(status: ICIMS::Status.accepted)
     stub_request(:patch, "https://api.icims.com/customers/6405/applicantworkflows/19288").
     with(:body => "{\"status\":{\"id\":\"#{status}\"}}",
-         :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+         :headers => {
+          'Authorization'=>'Basic ',
+          'Content-Type'=>'application/json',
+          'User-Agent'=>'test'
+          }
+        ).
     to_return(
       status: 204,
       body: '',
@@ -217,12 +222,13 @@ class ICIMS::WorkflowTest < Minitest::Test
   end
 
   def stub_timeouts
-    stub_request(:get, "https://api.icims.com/customers/6405/applicantworkflows/19288").
-      to_timeout.then.
-      to_timeout.then.
-      to_return(status: 200,
-        body: File.read('./test/fixtures/icims/workflow-19288.json'),
-        headers: { 'Content-Type' => 'application/json' })
+    timeout = Typhoeus::Response.new(code: 408, body: '')
+    success = Typhoeus::Response.new(code: 200,
+      body: File.read('./test/fixtures/icims/workflow-19288.json'),
+      headers: { 'Content-Type' => 'application/json' }
+    )
+    Typhoeus.stub('https://api.icims.com/customers/6405/applicantworkflows/19288').
+      and_return([timeout, timeout, success])
   end
 
   def stub_expired_workflow(id: 19288)

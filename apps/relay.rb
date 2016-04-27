@@ -20,30 +20,21 @@ class Apps::Relay < Sinatra::Base
 
   get '/placements/:id/accept' do
     load_placement(params)
-    handle_error_cases(@placement)
-    if @placement.updatable?
-      @placement.accepted
-      redirect *DYEERedirect.to(:accept)
-    end
+    @placement.accepted
+    redirect *DYEERedirect.to(:accept)
   end
 
   get '/placements/:id/decline' do
     load_placement(params)
-    handle_error_cases(@placement)
-    if @placement.updatable?
-      @placement.declined
-      redirect *DYEERedirect.to(:decline)
-    end
+    @placement.declined
+    redirect *DYEERedirect.to(:decline)
   end
 
   get '/placements/:id/opt-out' do
     load_placement(params)
-    handle_error_cases(@placement)
-    if @placement.updatable?
-      @placement.declined
-      @placement.applicant.opted_out
-      redirect *DYEERedirect.to(:opt_out)
-    end
+    @placement.declined
+    @placement.applicant.opted_out
+    redirect *DYEERedirect.to(:opt_out)
   end
 
   error ActiveRecord::RecordNotFound do
@@ -69,19 +60,29 @@ class Apps::Relay < Sinatra::Base
   private
 
   def load_placement(params)
-    applicant = Applicant.find_by uuid: params[:applicant_id]
-    position  = Position.find_by  uuid: params[:position_id]
-    @placement = Placement.find_by(uuid: params[:id],
-      applicant: applicant, position: position)
-  rescue ActiveRecord::RecordNotFound # Not sure this does anything
+    @placement = Placement.find_by(
+      uuid: params[:id],
+      applicant_id: applicant(params).id,
+      position_id: position(params).id
+    )
+    assert_decidable(@placement)
+  rescue ActiveRecord::RecordNotFound
+    $logger.error 'RecordNotFound'
     halt 404
   end
 
-  def handle_error_cases(placement)
+  def applicant(params)
+    Applicant.find_by uuid: params[:applicant_uuid]
+  end
+
+  def position(params)
+    Position.find_by uuid: params[:position_uuid]
+  end
+
+  def assert_decidable(placement)
     halt 404 if placement.nil?
     redirect *DYEERedirect.to(:expired) if placement.expired?
-    redirect *DYEERedirect.to(:error)   if placement.already_decided?
-    false
+    halt 422 unless placement.updatable?
+    true
   end
 end
-

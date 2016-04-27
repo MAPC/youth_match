@@ -1,29 +1,41 @@
 require_relative '../icims'
-require 'httparty'
+require 'typhoeus'
 require 'retries'
 
 class ICIMS::Resource
-  include HTTParty
 
-  def self.retry_get(args, options={})
-    with_retries { get args, options }
+  BASE_URI  = "https://api.icims.com/customers/#{ENV.fetch('ICIMS_CUSTOMER_ID')}"
+  PROXY_URI = URI.parse ENV.fetch('PROXY_URL')
+
+  def self.retry_method(method, path, options={})
+    with_retries do
+      Typhoeus.send method, url_for(path), default_options.merge(options)
+    end
   end
 
-  def self.retry_post(args, options={})
-    with_retries { post args, options }
+  def self.retry_get(path, options={})
+    retry_method :get,   path, options
   end
 
-  def self.retry_patch(args, options={})
-    with_retries { patch args, options }
+  def self.retry_post(path, options={})
+    retry_method :post,  path, options
   end
 
-  base_uri 'https://api.icims.com/customers/6405'
+  def self.retry_patch(path, options={})
+    retry_method :patch, path, options
+  end
+
+  def self.url_for(path='/')
+    path = "/#{}" if path.first != '/' # Add a leading slash
+    "#{BASE_URI}#{path}"
+  end
 
   def self.handle(response, &block)
     if response.success?
-      yield response
+      body = response.body.present? ? response.body : '{}'
+      yield JSON.parse(body)
     else
-      raise ResponseError, response.response
+      raise ResponseError, response.inspect
     end
   rescue => e
     $logger.error e.message
@@ -37,7 +49,7 @@ class ICIMS::Resource
   def attributes
     attr_hash = HashWithIndifferentAccess.new
     self.instance_variable_names.inject(attr_hash) do |hash, name|
-      key = name.delete '@'
+      key = name.delete('@')
       hash[key] = self.instance_variable_get(name)
       hash
     end
@@ -48,6 +60,18 @@ class ICIMS::Resource
       'Authorization' => "Basic #{ENV['ICIMS_API_KEY']}",
       'Content-Type'  => 'application/json'
     }
+  end
+
+  def self.default_options
+    { proxy: proxy_url, proxyuserpwd: proxy_auth, headers: headers }
+  end
+
+  def self.proxy_url
+    "#{PROXY_URI.scheme}://#{PROXY_URI.host}:#{PROXY_URI.port || 80}"
+  end
+
+  def self.proxy_auth
+    "#{PROXY_URI.user}:#{PROXY_URI.password}"
   end
 
   def self.limit_results(results, limit, offset)

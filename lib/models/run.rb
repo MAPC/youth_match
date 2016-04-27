@@ -34,7 +34,7 @@ class Run < ActiveRecord::Base
   def exportable_placements
     placements.includes(:applicant, :position).
       where(status: [:placed, :synced]). # Nothing still pending.
-      order(:index) # Pleasantly redundant with Placement.default_scope
+      order(index: :asc) # Pleasantly redundant with Placement.default_scope
   end
 
   def reload_config!
