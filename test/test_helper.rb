@@ -6,6 +6,8 @@ end
 ENV['DATABASE_ENV'] = 'test'
 ENV['RACK_ENV'] = 'test'
 ENV['ICIMS_API_KEY'] = ''
+ENV['ICIMS_CUSTOMER_ID'] = '6405'
+ENV['PROXY_URL'] = 'https://user:pass@subdomain.proxy.net:80'
 
 require 'minitest/autorun'
 require 'minitest/hell'
@@ -35,3 +37,5 @@ require './environment'
 # Silence the logger during tests.
 $logger = Logger.new('/dev/null')
 ActiveRecord::Base.logger = $logger
+
+Typhoeus::Config.user_agent = 'test'

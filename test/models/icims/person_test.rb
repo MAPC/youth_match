@@ -72,7 +72,7 @@ class ICIMS::PersonTest < Minitest::Test
   def stub_workflows(id: 1)
     stub_request(:post, "https://api.icims.com/customers/6405/search/applicantworkflows").
     with(:body => "[{\"name\":\"applicantworkflow.person.id\",\"value\":[\"#{id}\"],\"operator\":\"=\"}]",
-         :headers => {'Authorization'=>'Basic', 'Content-Type'=>'application/json'}).
+         :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
     to_return(status: 200,
         body: File.read("./test/fixtures/icims/person-1-workflows.json"),
         headers: { 'Content-Type' => 'application/json' })

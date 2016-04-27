@@ -22,9 +22,6 @@ gem 'foreman'
 gem 'dotenv'
 
 # Working with APIs
-# TODO: Swap HTTParty for Typhoeus completely, because
-#       HTTParty cannot seem to handle proxying HTTPS.
-gem 'httparty'
 gem 'typhoeus'
 gem 'retries', git: 'https://github.com/ooyala/retries.git'
 
