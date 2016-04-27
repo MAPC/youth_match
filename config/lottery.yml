@@ -34,7 +34,7 @@ compressor:
   # 60% or less of the maximum precalculated base job pool size -- at
   # runtime -- has some access to reserve jobs. Anyone with a base job pool
   # of 61-100% the size of the maximum job pool is not given additional jobs.
-  threshhold: 10
+  threshhold: 3
 
   # :ratio: ranges from 1 to 20.
   # The ratio helps set the minimum amount of opportunity boost given to
@@ -49,7 +49,7 @@ compressor:
   # ratio of 2 means would give a minimum job access of (40 / 2), or 20.
   # The applicant would then have access to a number reserve jobs equal to 20%
   # of the maximum base pool size of any applicant.
-  ratio: 20
+  ratio: 10
 
   # :direction: should only be set to upward -- and setting it to downward,
   # presently does nothing -- but this is included as an explicit reminder.
@@ -58,3 +58,7 @@ compressor:
   # than the threshhold are given a boost upward. Nobody in the high range
   # of opportunity is clipped downward.
   direction: upward
+
+
+placement_link:
+  site: 'http://relay-youth-boston-gov.herokuapp.com'
