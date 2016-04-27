@@ -35,6 +35,10 @@ class Applicant < ActiveRecord::Base
     Array(read_attribute(:interests))
   end
 
+  def declined_placements(run)
+    run.placements.where(applicant_id: id).where(status: :declined)
+  end
+
   def prefers_interest
     !prefers_nearby
   end
