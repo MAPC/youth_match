@@ -28,7 +28,8 @@ gem 'retries', git: 'https://github.com/ooyala/retries.git'
 # Web app
 gem 'sinatra'
 gem 'sinatra-activerecord'
-gem 'haml'
+gem 'haml'     # Template for frontend
+gem 'airbrake' # Error notifications
 
 group :test do
   gem 'minitest'       # Test framework

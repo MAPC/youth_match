@@ -24,6 +24,9 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    airbrake (5.2.3)
+      airbrake-ruby (~> 1.2)
+    airbrake-ruby (1.2.3)
     arel (6.0.3)
     builder (3.2.2)
     codeclimate-test-reporter (0.5.0)
@@ -131,6 +134,7 @@ DEPENDENCIES
   activerecord
   activerecord-postgis-adapter
   activesupport
+  airbrake
   codeclimate-test-reporter
   database_cleaner
   descriptive_statistics (~> 2.4.0)
