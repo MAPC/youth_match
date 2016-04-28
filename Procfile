@@ -1,1 +1,1 @@
-web: ruby apps/relay.rb
+web: ruby apps/relay.rb -p $PORT
