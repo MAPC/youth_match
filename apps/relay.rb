@@ -20,7 +20,7 @@ class Apps::Relay < Sinatra::Base
     "Hello, Relay!"
   end
 
-  get '/placements/:id/accept' do
+  get '/placements/:id/accept/?' do
     puts "ACCEPT PARAMS: #{params.inspect}"
     puts "ACCEPT REQUEST: #{request.inspect}"
     load_placement(params)
@@ -28,13 +28,13 @@ class Apps::Relay < Sinatra::Base
     redirect *DYEERedirect.to(:accept)
   end
 
-  get '/placements/:id/decline' do
+  get '/placements/:id/decline/?' do
     load_placement(params)
     @placement.declined
     redirect *DYEERedirect.to(:decline)
   end
 
-  get '/placements/:id/opt-out' do
+  get '/placements/:id/opt-out/?' do
     load_placement(params)
     @placement.declined
     @placement.applicant.opted_out
