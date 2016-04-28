@@ -21,6 +21,8 @@ class Apps::Relay < Sinatra::Base
   end
 
   get '/placements/:id/accept' do
+    puts "ACCEPT PARAMS: #{params.inspect}"
+    puts "ACCEPT REQUEST: #{request.inspect}"
     load_placement(params)
     @placement.accepted
     redirect *DYEERedirect.to(:accept)
