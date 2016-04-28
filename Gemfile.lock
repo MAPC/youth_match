@@ -1,9 +1,3 @@
-GIT
-  remote: git://github.com/ooyala/retries.git
-  revision: 9622c684f32dae96bf181dafff344bd096df1217
-  specs:
-    retries (1.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -155,7 +149,6 @@ DEPENDENCIES
   rake
   rb-fsevent
   rerun
-  retries!
   rgeo
   rounding
   sinatra

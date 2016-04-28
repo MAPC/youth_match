@@ -24,7 +24,7 @@ gem 'dotenv'
 
 # Working with APIs
 gem 'typhoeus'
-gem 'retries', github: 'ooyala/retries'
+# gem 'retries', github: 'ooyala/retries'
 
 # Web app
 gem 'sinatra'
