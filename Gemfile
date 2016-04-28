@@ -17,13 +17,14 @@ gem 'logger'
 gem 'rounding'
 gem 'naught'
 gem 'wannabe_bool'
+gem 'geocoder'
 
 gem 'foreman'
 gem 'dotenv'
 
 # Working with APIs
 gem 'typhoeus'
-gem 'retries', git: 'https://github.com/ooyala/retries.git'
+gem 'retries', github: 'ooyala/retries'
 
 # Web app
 gem 'sinatra'
