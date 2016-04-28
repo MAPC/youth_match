@@ -41,21 +41,25 @@ class Apps::Relay < Sinatra::Base
 
   error ActiveRecord::RecordNotFound do
     # Airbrake.notify('Record Not Found', params: params)
+    puts "NotFound PARAMS: #{params.inspect}"
     redirect *DYEERedirect.to(:error)
   end
 
   error 404 do
     # Airbrake.notify('404 / Record Not Found', params: params)
+    puts "404 PARAMS: #{params.inspect}"
     redirect *DYEERedirect.to(:error)
   end
 
   error 422 do
     # Airbrake.notify('Unprocessable Entity', params: params)
+    puts "422 PARAMS: #{params.inspect}"
     redirect *DYEERedirect.to(:error)
   end
 
   error 500 do
     # Airbrake.notify('Internal Server Error', params: params)
+    puts "500 PARAMS: #{params.inspect}"
     redirect *DYEERedirect.to(:error)
   end
 
