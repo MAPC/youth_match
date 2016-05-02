@@ -1,17 +1,19 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
 require './environment'
-# require 'airbrake'
+require 'airbrake'
 
 class Apps::Relay < Sinatra::Base
 
-  # Airbrake.configure do |c|
-  #   c.project_id  = ENV['AIRBRAKE_ID']
-  #   c.project_key = ENV['AIRBRAKE_KEY']
-  #   c.environment = ENV['DATABASE_ENV']
-  #   c.ignore_environments = %w( development test )
-  #   c.logger.level = Logger::DEBUG
-  # end
+  if ENV['AIRBRAKE_ID']
+    Airbrake.configure do |c|
+      c.project_id  = ENV['AIRBRAKE_ID']
+      c.project_key = ENV['AIRBRAKE_KEY']
+      c.environment = ENV['DATABASE_ENV']
+      c.ignore_environments = %w( development test )
+      c.logger.level = Logger::DEBUG
+    end
+  end
 
   set :method_override, true
   set :logger, $stdout
@@ -21,8 +23,6 @@ class Apps::Relay < Sinatra::Base
   end
 
   get '/placements/:id/accept/?' do
-    puts "ACCEPT PARAMS: #{params.inspect}"
-    puts "ACCEPT REQUEST: #{request.inspect}"
     load_placement(params)
     @placement.accepted
     redirect *DYEERedirect.to(:accept)
@@ -42,26 +42,22 @@ class Apps::Relay < Sinatra::Base
   end
 
   error ActiveRecord::RecordNotFound do
-    # Airbrake.notify('Record Not Found', params: params)
-    puts "NotFound PARAMS: #{params.inspect}"
+    Airbrake.notify('Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 404 do
-    # Airbrake.notify('404 / Record Not Found', params: params)
-    puts "404 PARAMS: #{params.inspect}"
+    Airbrake.notify('404 / Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 422 do
-    # Airbrake.notify('Unprocessable Entity', params: params)
-    puts "422 PARAMS: #{params.inspect}"
+    Airbrake.notify('Unprocessable Entity', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 500 do
-    # Airbrake.notify('Internal Server Error', params: params)
-    puts "500 PARAMS: #{params.inspect}"
+    Airbrake.notify('Internal Server Error', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
