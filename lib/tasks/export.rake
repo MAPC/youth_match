@@ -53,7 +53,7 @@ namespace :export do
     pre_message(t)
     file = "./tmp/exports/applicants-#{Time.now.to_i}.csv"
     CSV.open(file, 'wb') do |csv|
-      fields = %w( uuid zip prefers_nearby has_transit_pass interests )
+      fields = %w( id uuid zip prefers_nearby has_transit_pass interests )
       csv << fields
       fields.pop # Remove interests
 
