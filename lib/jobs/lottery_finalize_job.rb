@@ -5,13 +5,12 @@ class LotteryFinalizeJob
   end
 
   def perform!
-    @run.placements.where(status: 'pending').each do |placement|
-      $logger.debug "Finalizing placement ##{placement}"
+    @run.placements.where(status: :placed).each do |placement|
+      $logger.debug "Syncing placement ##{placement.id} with hiring system."
       begin
-        placement.finalize!
+        placement.sync!
       rescue StandardError => e
-        $logger.error "Could not place #{placement.inspect} because"
-        $logger.error e
+        $logger.error "Could not place #{placement.inspect} because #{e.message}"
         $logger.error e.backtrace.join("\n")
       end
     end

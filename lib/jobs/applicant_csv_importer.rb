@@ -18,10 +18,12 @@ class ApplicantCSVImporter
 
   def files
     Dir.glob("#{csv_dir}/*.csv")
+    # Dir.glob("#{csv_dir}/last_minute.csv")
   end
 
   def csv_dir
     './db/import/query_results/csv'
+    # './db/import/'
   end
 
   def create_from_row(row)
@@ -88,7 +90,7 @@ class ApplicantCSVImporter
   end
 
   def geo_files
-    files = Dir.glob("#{geo_dir}/*.csv")
+    files = Dir.glob("#{geo_dir}/last_minute.csv")
     files.shift # get rid of first, duplicate CSV
     files
   end

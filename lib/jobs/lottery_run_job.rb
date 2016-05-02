@@ -15,8 +15,10 @@ class LotteryRunJob
   private
 
   def perform
+    total_positions = Position.sum(:automatic)
     @run.actionable_placement_ids(limit: @limit).each do |placement_id|
       log_placement Placement.find(placement_id).place!
+      break unless @run.exportable_placements.count < total_positions
     end
   end
 

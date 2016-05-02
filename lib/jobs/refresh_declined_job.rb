@@ -5,24 +5,14 @@ class RefreshDeclinedJob
   end
 
   def perform!
-    # Run through all the declined positions,
-    # duplicating them so the applicants have another chance.
-    declined_placements = @run.placements.where(status: :declined)
-    declined_placements.each do |p|
-      if decline_count(p.applicant) < 2
-        Placement.create! applicant: p.applicant, index: p.index
-      end
+    # Run through all the declined positions, duplicating them so the
+    # applicants have another chance.
+    @run.refreshable_declined_placements.each do |p|
+      placement = @run.placements.create!(applicant: p.applicant,
+        index: p.index, market: p.market )
+      placement.pool = p.pool.dup if p.pool
     end
-    $logger.info "Refreshed #{declined_placements.count} declined placements for Run ##{@run.id}"
-  end
-
-  private
-
-  def decline_count(applicant)
-    @run.placements.
-      where(applicant: applicant).
-      where(status: :declined).
-      count
+    $logger.info "Refreshed #{@run.refreshable_declined_placements.count} declined placements for Run ##{@run.id}"
   end
 
 end

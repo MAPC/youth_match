@@ -9,13 +9,16 @@ namespace :import do
   desc 'Import applicants: initial import'
   task :applicants, [:limit, :offset, :continue] => :environment do |t, args|
     pre_message(t)
-    ApplicantImporter.new(args).perform!
+    importer = ApplicantCSVImporter.new
+    importer.perform    # Load applicants from spreadsheet
+    importer.geo_perform # Set locations and add grid IDs
   end
 
   desc 'Import positions: initial import'
   task :positions, [:limit, :offset, :continue] => :environment do |t, args|
     pre_message(t)
     PositionImporter.new(args).perform!
+    PositionGeocoder.new.perform # Add locations for those not present
   end
 
   desc 'Import market allocations for positions'
@@ -27,7 +30,13 @@ namespace :import do
   desc 'Import market allocations and contact methods for applicants'
   task allocate: :environment do |t, args|
     pre_message(t)
-    ApplicantAllocatorJob.new.perform!
+    ApplicantAllocatorJob.new.perform
+  end
+
+  desc 'Import market allocations and contact methods for positions'
+  task allocate_pos: :environment do |t, args|
+    pre_message(t)
+    PositionAllocatorJob.new.perform
   end
 
   desc 'Import applicants, initial, from Linda\'s spreadsheet'
