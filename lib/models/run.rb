@@ -3,7 +3,7 @@ class Run < ActiveRecord::Base
   after_initialize :ensure_seed
   after_initialize :set_config
   after_initialize :prepopulate_positions
-  before_destroy :destroy_placements
+  before_destroy   :destroy_placements
 
   extend Enumerize
 
@@ -19,9 +19,28 @@ class Run < ActiveRecord::Base
     less_than_or_equal_to:    9999
   }
 
-  # Consider yielding the object
-  def applicant_ids
-    Applicant.random.where.not(grid_id: nil).pluck(:id)
+  def applicants
+    Applicant.eligible_for_lottery.each do |applicant|
+      yield applicant
+    end
+  end
+
+  def placeable_placements(limit: nil)
+    placements.placeable.limit(limit).each do |placement|
+      yield placement
+    end
+  end
+
+  def refreshable_declined_placements
+    placements.declined_refreshable(run: self)
+  end
+
+  def exportable_placements
+    placements.exportable
+  end
+
+  def unavailable_placements
+    placements.unavailable
   end
 
   def add_to_available(position)
@@ -33,32 +52,6 @@ class Run < ActiveRecord::Base
   def remove_from_available(position)
     available_positions.delete position.id
     save!
-  end
-
-  def actionable_placement_ids(limit: nil)
-    placements.where(market: :automatic).
-      where(status: :pending).
-      where(position: nil).
-      order(:index).
-      limit(limit).
-      pluck(:id)
-  end
-
-  def refreshable_declined_placements
-    placements.includes(:applicant).
-      where(status: :declined).
-      where.not(applicants: { status: :opted_out }).
-      select { |p| p.applicant.placements_for_run(self).count < 2 }
-  end
-
-  def exportable_placements
-    placements.includes(:applicant, :position).
-      where(status: [:placed, :synced]). # Nothing still pending.
-      order(index: :asc) # Pleasantly redundant with Placement.default_scope
-  end
-
-  def unavailable_placements
-    placements.where(status: [:placed, :synced, :accepted])
   end
 
   def reload_config!

@@ -18,7 +18,7 @@ class ICIMS::Address
   end
 
   def street
-    str = @address.fetch('addressstreet1')
+    str = @address.fetch('addressstreet1', '')
     if street2 = @address.fetch('addressstreet2', false)
       str << ' ' + street2
     end
@@ -29,17 +29,15 @@ class ICIMS::Address
   end
 
   def city
-    @address.fetch('addresscity')
+    @address.fetch('addresscity', '')
   end
 
   def state
-    @address.
-      fetch('addressstate', {}).
-      fetch('abbrev', 'MA')
+    @address.fetch('addressstate', {'abbrev' => 'MA'}).fetch('abbrev')
   end
 
   def zip
-    @address.fetch('addresszip')
+    @address.fetch('addresszip', '')
   end
 
   def to_s

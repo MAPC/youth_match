@@ -2,9 +2,10 @@ require 'test_helper'
 
 class StatusesTest < Minitest::Test
 
-  def test_placed
-    assert_equal 'placed', Status.placed
-    assert_equal 'synced', Status.synced
+  def test_normal_statuses
+    %w( pending accepted declined placed synced ).each do |status|
+      assert_equal status.to_s, Status.send(status)
+    end
   end
 
   def test_icims_placed

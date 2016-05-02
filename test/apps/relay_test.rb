@@ -10,12 +10,12 @@ class RelayTest < Minitest::Test
 
   def setup
     @run = Run.create!
-    @position  = Position.create!(uuid: "1c48f911-28ac-4e3b-86df-ace38e8092bd")
-    @applicant = Applicant.create!(uuid: "c4e12e70-52a5-4014-9990-7238627f37d7")
+    @position  = Position.create!(id: 7777,  uuid: "1c48f911-28ac-4e3b-86df-ace38e8092bd")
+    @applicant = Applicant.create!(id: 7777, uuid: "c4e12e70-52a5-4014-9990-7238627f37d7")
     @placement = @run.placements.create!(
       uuid: "f95bfae2-cfb3-4185-aeef-249792502e4d",
-      applicant: @applicant,
-      position: @position,
+      applicant_id: @applicant.id,
+      position_id: @position.id,
       run: @run, index: 1,
       workflow_id: 19288,
       market: :automatic

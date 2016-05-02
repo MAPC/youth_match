@@ -49,7 +49,7 @@ class Position < ActiveRecord::Base
   end
 
   def check_availability(run)
-    if automatic > taken_placements(run).count
+    if !automatic.nil? && automatic > taken_placements(run).count
       run.add_to_available self
     else
       run.remove_from_available self
