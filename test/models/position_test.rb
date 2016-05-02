@@ -101,17 +101,24 @@ class PositionTest < Minitest::Test
   end
 
   def test_available
-    before = Position.available(@run).count
-    @p = @run.placements.create!(
-      position: @position,
-      applicant: @applicant,
-      index: 1,
-      market: :manual
-    )
-    after = Position.available(@run).count
-    assert_equal 1, (before - after)
+    @run.placements = [] ; @run.save!
+    pos = Position.create!(automatic: 2, manual: 0, positions: 2)
+    2.times { @run.placements.create!(position: pos, status: :pending, applicant: Applicant.new, index: 1) }
+    [:pending, :declined, :expired].each do |available_status|
+      # Warning: may be an issue with update_attribute skipping hooks.
+      @run.placements.each { |p| p.update_attribute(:status, available_status) }
+      assert_includes Position.available(@run), pos
+    end
+    [:placed, :accepted, :synced].each do |unavailable_status|
+      # Warning: may be an issue with update_attribute skipping hooks.
+      @run.placements.each { |p| p.update_attribute(:status, unavailable_status) }
+      refute_includes Position.available(@run), pos
+    end
+    @run.placements.first.update_attribute(:status, :expired)
+    assert_includes Position.available(@run), pos
   ensure
-    @p.destroy! if @p
+    pos.destroy!
+    @run.placements.map(&:destroy!)
   end
 
   def test_new_from_icims

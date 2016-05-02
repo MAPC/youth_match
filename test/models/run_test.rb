@@ -18,6 +18,19 @@ class RunTest < Minitest::Test
     assert_equal 'fresh', Run.new.status
   end
 
+  def test_available_positions
+    r = Run.new
+    p = Position.create!
+    r.add_to_available p
+    assert_equal 1, r.available_positions.count
+    r.add_to_available p
+    assert_equal 1, r.available_positions.count
+    r.remove_from_available p
+    assert_equal 0, r.available_positions.count
+  ensure
+    p.destroy! if p
+  end
+
   def test_statuses
     @run.running!
     assert_equal 'running',   @run.status
