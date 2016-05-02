@@ -6,12 +6,23 @@ class Applicant < ActiveRecord::Base
   include Locatable
   include CreatableFromICIMS
 
+  # Hack for the moment. Should override locatable delegation.
+  def zip
+    if addresses.first
+      addresses.first.fetch('zip', '')
+    end
+  end
+
   extend Enumerize
 
   has_many :placements
 
   def placements_for_run(run)
     run.placements.where(applicant_id: id)
+  end
+
+  def self.eligible_for_lottery
+    random.where.not grid_id: nil
   end
 
   before_validation :compute_grid_id, if: 'location.present?'

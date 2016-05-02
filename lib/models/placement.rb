@@ -29,7 +29,9 @@ class Placement < ActiveRecord::Base
 
   enumerize :market, in: [:automatic, :manual], predicates: false
 
-  default_scope { order(index: :asc).where(market: :automatic) }
+  default_scope {
+    order(index: :asc).where(market: :automatic)
+  }
 
   def place!
     pool.compress! # Add compressed positions before selecting best fit.
@@ -41,8 +43,35 @@ class Placement < ActiveRecord::Base
   end
 
   def sync!
-    update_attributes(status: :synced, expires_at: expiration_date,
-      workflow_id: create_workflow.id)
+    update_attributes(
+      status:      :synced,
+      expires_at:  expiration_date,
+      workflow_id: create_workflow.id # Creates hiring system workflow
+    )
+  end
+
+  def self.placeable
+    where(market: :automatic, status: :pending, position: nil).
+      order(index: :asc)
+  end
+
+  def self.declined_refreshable(run: )
+    includes(:applicant).where(status: :declined).
+      where.not(applicants: { status: :opted_out }).
+      select do |p|
+        p.applicant.placements_for_run(run).count < 2
+      end
+  end
+
+  def self.exportable
+    includes(:applicant, :position).
+      where(status: [:placed, :synced]). # Disallow pending placements
+      where.not(position_id: nil).       # Redundant
+      order(index: :asc) # Redundant with default_scope
+  end
+
+  def self.unavailable
+    where status: [:placed, :synced, :accepted]
   end
 
   def updatable?
