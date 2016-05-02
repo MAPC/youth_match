@@ -48,6 +48,45 @@ namespace :export do
     end
   end
 
+  desc 'Export applicants for allocation'
+  task appall: :environment do |t, args|
+    pre_message(t)
+    file = "./tmp/exports/applicants-#{Time.now.to_i}.csv"
+    CSV.open(file, 'wb') do |csv|
+      fields = %w( uuid zip prefers_nearby has_transit_pass interests )
+      csv << fields
+      fields.pop # Remove interests
 
+      Applicant.find_each do |applicant|
+        begin
+          interests = applicant.interests.join(';')
+          attrs = fields.map { |field| applicant.send(field) }
+          attrs.push interests # Add interests to end
+          csv << attrs
+        rescue StandardError => e
+          puts "----> #{applicant.id}: #{e.message}"
+          next
+        end
+      end
+    end
+  end
+
+  desc 'Export applicants for allocation'
+  task posall: :environment do |t, args|
+    pre_message(t)
+    file = "./tmp/exports/positions-#{Time.now.to_i}.csv"
+    CSV.open(file, 'wb') do |csv|
+      fields = %w( uuid positions automatic manual zip_5 category reserve )
+      csv << fields
+      Position.find_each do |position|
+        begin
+          csv << fields.map { |field| position.send(field) }
+        rescue StandardError => e
+          puts "----> #{position.id}: #{e.message}"
+          next
+        end
+      end
+    end
+  end
 
 end
