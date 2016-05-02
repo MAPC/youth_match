@@ -6,17 +6,19 @@ class Position < ActiveRecord::Base
   include Locatable
   include CreatableFromICIMS
 
+  has_many :placements
+
   before_validation :compute_grid_id, if: 'location.present?'
   validates :grid_id, presence: true, if: 'location.present?'
 
-  validate :position_counts, if: 'manual? || automatic?'
-
-  validates :automatic, presence: true, numericality: true, if: 'manual.present?'
-  validates :manual,    presence: true, numericality: true, if: 'automatic.present?'
+  validates :positions, presence: true, numericality: { minimum: 0 }, if: 'manual? || automatic?'
+  validate  :position_counts, if: 'manual? || automatic?'
+  validates :automatic, presence: true, numericality: { minimum: 0 }, if: 'manual.present?'
+  validates :manual,    presence: true, numericality: { minimum: 0 }, if: 'automatic.present?'
 
   def available?(run)
-    automatic > run.placements.
-      where(position: self).
+    automatic > self.placements.
+      where(run: run).
       where(market: :automatic).
       where(status: [:accepted, :placed, :synced]).
       count
@@ -43,7 +45,19 @@ class Position < ActiveRecord::Base
   end
 
   def self.available(run)
-    where.not(id: run.placements.pluck(:position_id))
+    where(id: run.available_positions)
+  end
+
+  def check_availability(run)
+    if automatic > taken_placements(run).count
+      run.add_to_available self
+    else
+      run.remove_from_available self
+    end
+  end
+
+  def taken_placements(run)
+    run.unavailable_placements.where(position_id: self.id)
   end
 
   private
@@ -59,5 +73,18 @@ class Position < ActiveRecord::Base
     end
   end
 
+  # def self.available_query(run)
+  #   query = %Q{ , (
+  #     SELECT "placements"."position_id", COUNT("placements"."position_id")
+  #       FROM "placements"
+  #       WHERE "run_id" = #{run}
+  #       AND "status" IN ('placed', 'synced', 'accepted')
+  #       GROUP BY "placements"."position_id"
+  #     ) AS c
+  #     WHERE positions.id = c.position_id
+  #     AND   positions.automatic > c.count
+  #     ORDER BY positions.id
+  #   }
+  # end
 
 end

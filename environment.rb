@@ -7,6 +7,7 @@ require 'logger'
 require 'yaml'
 require 'dotenv'
 require 'wannabe_bool'
+# require 'retries' TODO
 require './config/initializers.rb'
 
 DATABASE_ENV = ENV['DATABASE_ENV'] || 'development'

@@ -31,6 +31,7 @@ namespace :prepare do
   desc 'Prepares for a second placement those applicants who declined.'
   task :declines, [:run_id] => :environment do |t, args|
     pre_message(t)
+    CheckExpirationJob.new(run_id: args[:run_id]).perform!
     RefreshDeclinedJob.new(run_id: args[:run_id]).perform!
   end
 

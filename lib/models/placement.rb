@@ -2,6 +2,9 @@ class Placement < ActiveRecord::Base
 
   extend Enumerize
 
+  after_save :opt_out_applicant
+  after_save :check_position_available
+
   belongs_to :run
   belongs_to :applicant
   belongs_to :position
@@ -26,7 +29,7 @@ class Placement < ActiveRecord::Base
 
   enumerize :market, in: [:automatic, :manual], predicates: false
 
-  default_scope { order(index: :asc) }
+  default_scope { order(index: :asc).where(market: :automatic) }
 
   def place!
     pool.compress! # Add compressed positions before selecting best fit.
@@ -53,7 +56,9 @@ class Placement < ActiveRecord::Base
   end
 
   def declined
-    update_attribute(:status, :declined) if workflow.declined
+    if workflow.declined
+      update_attribute(:status, :declined)
+    end
   end
 
   def expired?
@@ -98,6 +103,16 @@ class Placement < ActiveRecord::Base
   end
 
   private
+
+  def opt_out_applicant
+    if applicant.placements.where(status: :declined).count >= 2
+      applicant.update_attribute(:status, :opted_out)
+    end
+  end
+
+  def check_position_available
+    position.check_availability(run) if position
+  end
 
   def expires_at_in_past
     unless expires_at.past?

@@ -8,6 +8,12 @@ class Applicant < ActiveRecord::Base
 
   extend Enumerize
 
+  has_many :placements
+
+  def placements_for_run(run)
+    run.placements.where(applicant_id: id)
+  end
+
   before_validation :compute_grid_id, if: 'location.present?'
   before_save :assign_mode
 

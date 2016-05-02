@@ -22,7 +22,7 @@ module DYEERedirect
     accept:  'lottery-accepted',
     decline: 'lottery-declined',
     error:   'lottery-error',
-    opt_out: 'opt-out',
+    opt_out: 'lottery-opt-out',
     expired: 'lottery-expired-one',
     expired_opt_out: 'lottery-expired-two'
   }

@@ -1,17 +1,17 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
 require './environment'
-require 'airbrake'
-
-Airbrake.configure do |c|
-  c.project_id  = ENV['AIRBRAKE_ID']
-  c.project_key = ENV['AIRBRAKE_KEY']
-  c.environment = ENV['DATABASE_ENV']
-  c.ignore_environments = %w( development test )
-  c.logger.level = Logger::DEBUG
-end
+# require 'airbrake'
 
 class Apps::Relay < Sinatra::Base
+
+  # Airbrake.configure do |c|
+  #   c.project_id  = ENV['AIRBRAKE_ID']
+  #   c.project_key = ENV['AIRBRAKE_KEY']
+  #   c.environment = ENV['DATABASE_ENV']
+  #   c.ignore_environments = %w( development test )
+  #   c.logger.level = Logger::DEBUG
+  # end
 
   set :method_override, true
   set :logger, $stdout
@@ -20,19 +20,21 @@ class Apps::Relay < Sinatra::Base
     "Hello, Relay!"
   end
 
-  get '/placements/:id/accept' do
+  get '/placements/:id/accept/?' do
+    puts "ACCEPT PARAMS: #{params.inspect}"
+    puts "ACCEPT REQUEST: #{request.inspect}"
     load_placement(params)
     @placement.accepted
     redirect *DYEERedirect.to(:accept)
   end
 
-  get '/placements/:id/decline' do
+  get '/placements/:id/decline/?' do
     load_placement(params)
     @placement.declined
     redirect *DYEERedirect.to(:decline)
   end
 
-  get '/placements/:id/opt-out' do
+  get '/placements/:id/opt-out/?' do
     load_placement(params)
     @placement.declined
     @placement.applicant.opted_out
@@ -40,22 +42,26 @@ class Apps::Relay < Sinatra::Base
   end
 
   error ActiveRecord::RecordNotFound do
-    Airbrake.notify('Record Not Found', params: params)
+    # Airbrake.notify('Record Not Found', params: params)
+    puts "NotFound PARAMS: #{params.inspect}"
     redirect *DYEERedirect.to(:error)
   end
 
   error 404 do
-    Airbrake.notify('404 / Record Not Found', params: params)
+    # Airbrake.notify('404 / Record Not Found', params: params)
+    puts "404 PARAMS: #{params.inspect}"
     redirect *DYEERedirect.to(:error)
   end
 
   error 422 do
-    Airbrake.notify('Unprocessable Entity', params: params)
+    # Airbrake.notify('Unprocessable Entity', params: params)
+    puts "422 PARAMS: #{params.inspect}"
     redirect *DYEERedirect.to(:error)
   end
 
   error 500 do
-    Airbrake.notify('Internal Server Error', params: params)
+    # Airbrake.notify('Internal Server Error', params: params)
+    puts "500 PARAMS: #{params.inspect}"
     redirect *DYEERedirect.to(:error)
   end
 

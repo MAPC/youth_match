@@ -5,7 +5,7 @@ class PrecalculatePoolJob
   end
 
   def perform!
-    auto_placements.find_each do |placement|
+    auto_placements.each do |placement|
       pool = placement.create_pool!
       log_pool(pool)
     end
@@ -20,6 +20,7 @@ class PrecalculatePoolJob
   private
 
   def auto_placements
+    # TODO Delegate this to a scope on Run.
     @run.placements.order(index: :asc).where(market: :automatic)
   end
 

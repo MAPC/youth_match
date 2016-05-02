@@ -8,10 +8,13 @@ class CheckJob
     $logger.info '----> Running checks'
     assert_present :applicants
     assert_present :positions
+    puts "\twith #{Position.pluck(:positions).reduce(:+)} total positions"
     check_grid_ids :applicants
     check_grid_ids :positions
     assert_position_markets
     assert_placement_markets
+    query = Applicant.unscoped.where(index: nil, market: nil, contact: nil)
+    raise if Applicant.where(query.where_values.inject(:or)).count > 0
   end
 
   private

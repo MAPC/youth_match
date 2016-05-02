@@ -1,6 +1,6 @@
 require_relative '../icims'
 require 'typhoeus'
-require 'retries'
+# require 'retries' TODO
 
 class ICIMS::Resource
 
@@ -8,9 +8,9 @@ class ICIMS::Resource
   PROXY_URI = URI.parse ENV.fetch('PROXY_URL')
 
   def self.retry_method(method, path, options={})
-    with_retries do
-      Typhoeus.send method, url_for(path), default_options.merge(options)
-    end
+    # with_retries do
+    Typhoeus.send method, url_for(path), default_options.merge(options)
+    # end
   end
 
   def self.retry_get(path, options={})

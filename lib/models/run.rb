@@ -2,6 +2,8 @@ class Run < ActiveRecord::Base
 
   after_initialize :ensure_seed
   after_initialize :set_config
+  after_initialize :prepopulate_positions
+  before_destroy :destroy_placements
 
   extend Enumerize
 
@@ -22,6 +24,17 @@ class Run < ActiveRecord::Base
     Applicant.random.where.not(grid_id: nil).pluck(:id)
   end
 
+  def add_to_available(position)
+    available_positions << position.id
+    available_positions.uniq!
+    save!
+  end
+
+  def remove_from_available(position)
+    available_positions.delete position.id
+    save!
+  end
+
   def actionable_placement_ids(limit: nil)
     placements.where(market: :automatic).
       where(status: :pending).
@@ -31,10 +44,21 @@ class Run < ActiveRecord::Base
       pluck(:id)
   end
 
+  def refreshable_declined_placements
+    placements.includes(:applicant).
+      where(status: :declined).
+      where.not(applicants: { status: :opted_out }).
+      select { |p| p.applicant.placements_for_run(self).count < 2 }
+  end
+
   def exportable_placements
     placements.includes(:applicant, :position).
       where(status: [:placed, :synced]). # Nothing still pending.
       order(index: :asc) # Pleasantly redundant with Placement.default_scope
+  end
+
+  def unavailable_placements
+    placements.where(status: [:placed, :synced, :accepted])
   end
 
   def reload_config!
@@ -99,6 +123,17 @@ class Run < ActiveRecord::Base
 
   def random_seed
     rand(1000..9999)
+  end
+
+  def destroy_placements
+    # Run.destroy_all hangs while destroying placements, maybe because we run
+    #   out of RAM. This does each object at a time, which takes longer but
+    #   doesn't seem to error the same way.
+    placements.each(&:destroy!)
+  end
+
+  def prepopulate_positions
+    self.available_positions = Position.where('automatic > ?', 0).pluck(:id)
   end
 
 end
