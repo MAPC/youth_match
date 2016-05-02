@@ -19,6 +19,7 @@ class RunTest < Minitest::Test
   end
 
   def test_available_positions
+    Position.destroy_all
     r = Run.new
     p = Position.create!
     r.add_to_available p
