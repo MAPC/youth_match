@@ -17,7 +17,7 @@ class Position < ActiveRecord::Base
   validates :manual,    presence: true, numericality: { minimum: 0 }, if: 'automatic.present?'
 
   def available?(run)
-    automatic > self.placements.
+    automatic.to_i > self.placements.
       where(run: run).
       where(market: :automatic).
       where(status: [:accepted, :placed, :synced]).
@@ -49,7 +49,7 @@ class Position < ActiveRecord::Base
   end
 
   def check_availability(run)
-    if !automatic.nil? && automatic > taken_placements(run).count
+    if automatic.to_i > taken_placements(run).count
       run.add_to_available self
     else
       run.remove_from_available self
