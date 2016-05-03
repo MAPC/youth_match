@@ -5,12 +5,12 @@ class AssignTicketsJob
   end
 
   def perform!
-    # We use the pluck method instead of #find_each because #find_each
-    # orders by ID, removing the random ordering.
-    @run.applicant_ids.each_with_index do |id, index|
-      applicant = Applicant.find(id)
-      @run.placements.create!(applicant_id: id,
-        index: applicant.index, market: applicant.market)
+    @run.applicants.each do |applicant|
+      @run.placements.create!(
+        applicant_id: applicant.id,
+        index:        applicant.index,
+        market:       applicant.market
+      )
     end
     log_stats
     return @run
