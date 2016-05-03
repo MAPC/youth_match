@@ -2,7 +2,7 @@ class Run < ActiveRecord::Base
 
   after_initialize :ensure_seed
   after_initialize :set_config
-  after_initialize :prepopulate_positions
+  after_create     :prepopulate_positions
   before_destroy   :destroy_placements
 
   extend Enumerize
@@ -20,15 +20,11 @@ class Run < ActiveRecord::Base
   }
 
   def applicants
-    Applicant.eligible_for_lottery.each do |applicant|
-      yield applicant
-    end
+    Applicant.eligible_for_lottery
   end
 
   def placeable_placements(limit: nil)
-    placements.placeable.limit(limit).each do |placement|
-      yield placement
-    end
+    placements.placeable.limit(limit)
   end
 
   def refreshable_declined_placements
@@ -44,14 +40,16 @@ class Run < ActiveRecord::Base
   end
 
   def add_to_available(position)
-    available_positions << position.id
-    available_positions.uniq!
-    save!
+    self.available_positions_will_change!
+    self.available_positions << position.id
+    self.available_positions.uniq!
+    self.save!
   end
 
   def remove_from_available(position)
-    available_positions.delete position.id
-    save!
+    self.available_positions_will_change!
+    self.available_positions.delete position.id
+    self.save!
   end
 
   def reload_config!
@@ -126,7 +124,7 @@ class Run < ActiveRecord::Base
   end
 
   def prepopulate_positions
-    self.available_positions = Position.where('automatic > ?', 0).pluck(:id)
+    update_attribute :available_positions, Position.where('automatic > ?', 0).pluck(:id)
   end
 
 end
