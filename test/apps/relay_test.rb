@@ -20,7 +20,6 @@ class RelayTest < Minitest::Test
       workflow_id: 19288,
       market: :automatic
     )
-    @placement.reload
   end
 
   def teardown
