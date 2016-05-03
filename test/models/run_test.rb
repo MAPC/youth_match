@@ -20,7 +20,7 @@ class RunTest < Minitest::Test
 
   def test_available_positions
     Position.destroy_all
-    r = Run.new
+    r = Run.create!
     p = Position.create!
     r.add_to_available p
     assert_equal 1, r.available_positions.count
@@ -29,6 +29,7 @@ class RunTest < Minitest::Test
     r.remove_from_available p
     assert_equal 0, r.available_positions.count
   ensure
+    r.destroy! if r
     p.destroy! if p
   end
 
