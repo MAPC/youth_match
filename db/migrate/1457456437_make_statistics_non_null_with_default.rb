@@ -1,5 +1,6 @@
 require 'enumerize'
-require './environment'
+require './lib/models/run'
+require './lib/models/position'
 class MakeStatisticsNonNullWithDefault < ActiveRecord::Migration
 
   def up
