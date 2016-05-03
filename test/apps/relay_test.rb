@@ -10,6 +10,9 @@ class RelayTest < Minitest::Test
 
   def setup
     @run = Run.create!
+    Position.where(uuid: "1c48f911-28ac-4e3b-86df-ace38e8092bd").each &:destroy
+    Applicant.where(uuid: "c4e12e70-52a5-4014-9990-7238627f37d7").each &:destroy
+
     @position  = Position.create!(id: 7777,  uuid: "1c48f911-28ac-4e3b-86df-ace38e8092bd")
     @applicant = Applicant.create!(id: 7777, uuid: "c4e12e70-52a5-4014-9990-7238627f37d7")
     @placement = @run.placements.create!(
@@ -20,6 +23,7 @@ class RelayTest < Minitest::Test
       workflow_id: 19288,
       market: :automatic
     )
+    @placement.reload
   end
 
   def teardown

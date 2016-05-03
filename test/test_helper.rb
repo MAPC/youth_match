@@ -31,7 +31,7 @@ ENV['RACK_ENV'] = 'test'
 ENV['ICIMS_API_KEY'] = ''
 ENV['ICIMS_CUSTOMER_ID'] = '1234'
 ENV['PROXY_URL'] = 'https://user:pass@subdomain.proxy.net:80'
-ENV['AIRBRAKE_ID'] = 'test'
+ENV['AIRBRAKE_PROJECT_ID'] = 'test'
 ENV['AIRBRAKE_KEY'] = 'test'
 
 require './environment'

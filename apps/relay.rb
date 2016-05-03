@@ -41,25 +41,25 @@ class Apps::Relay < Sinatra::Base
     redirect *DYEERedirect.to(:opt_out)
   end
 
-  # error ActiveRecord::RecordNotFound do
-  #   Airbrake.notify('Record Not Found', params: params)
-  #   redirect *DYEERedirect.to(:error)
-  # end
+  error ActiveRecord::RecordNotFound do
+    Airbrake.notify('Record Not Found', params: params)
+    redirect *DYEERedirect.to(:error)
+  end
 
-  # error 404 do
-  #   Airbrake.notify('404 / Record Not Found', params: params)
-  #   redirect *DYEERedirect.to(:error)
-  # end
+  error 404 do
+    Airbrake.notify('404 / Record Not Found', params: params)
+    redirect *DYEERedirect.to(:error)
+  end
 
-  # error 422 do
-  #   Airbrake.notify('Unprocessable Entity', params: params)
-  #   redirect *DYEERedirect.to(:error)
-  # end
+  error 422 do
+    Airbrake.notify('Unprocessable Entity', params: params)
+    redirect *DYEERedirect.to(:error)
+  end
 
-  # error 500 do
-  #   Airbrake.notify('Internal Server Error', params: params)
-  #   redirect *DYEERedirect.to(:error)
-  # end
+  error 500 do
+    Airbrake.notify('Internal Server Error', params: params)
+    redirect *DYEERedirect.to(:error)
+  end
 
   private
 
