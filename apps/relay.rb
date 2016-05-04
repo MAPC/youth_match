@@ -41,6 +41,8 @@ class Apps::Relay < Sinatra::Base
     redirect *DYEERedirect.to(:opt_out)
   end
 
+  # When there are failing tests, comment these out.
+
   error ActiveRecord::RecordNotFound do
     Airbrake.notify('Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)

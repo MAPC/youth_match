@@ -4,31 +4,31 @@ module Stub
     include Stub::Common
 
     def stub_already_accepted
-      stub_request(:get, workflow_url).
+      stub_request(:get, workflow_url(19288)).
         with(headers: request_headers).
         to_return(ok_response_for('workflow-accepted'))
     end
 
     def stub_already_declined
-      stub_request(:get, workflow_url).
+      stub_request(:get, workflow_url(19288)).
         with(headers: request_headers).
         to_return(ok_response_for('workflow-declined'))
     end
 
     def stub_get_workflow
-      stub_request(:get, workflow_url).
+      stub_request(:get, workflow_url(19288)).
         with(headers: request_headers).
         to_return(ok_response_for('workflow-19288-placed'))
     end
 
     def stub_accept_workflow
-      stub_request(:patch, workflow_url).
+      stub_request(:patch, workflow_url(19288)).
         with(body: status('C36951').to_json, headers: request_headers).
         to_return(no_content_response)
     end
 
     def stub_decline_workflow
-      stub_request(:patch, workflow_url).
+      stub_request(:patch, workflow_url(19288)).
         with(body: status('C38469').to_json, headers: request_headers).
         to_return(no_content_response)
     end
