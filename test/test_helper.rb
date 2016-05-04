@@ -36,6 +36,9 @@ ENV['AIRBRAKE_KEY'] = 'test'
 
 require './environment'
 
+# Load test support
+Dir.glob('./test/support/**/*.rb').each { |f| require f }
+
 # Silence the logger during tests.
 $logger = Logger.new('/dev/null')
 ActiveRecord::Base.logger = $logger

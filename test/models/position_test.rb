@@ -2,6 +2,8 @@ require 'test_helper'
 
 class PositionTest < Minitest::Test
 
+  include Stub::Unit
+
   def setup
     @position = position.dup
     @position.save!
@@ -139,22 +141,4 @@ class PositionTest < Minitest::Test
   ensure
     created.destroy! if created
   end
-
-  private
-
-  def stub_job(id: 1123)
-    stub_request(:get, "https://api.icims.com/customers/1234/jobs/#{id}?fields=joblocation,jobtitle,numberofpositions,positioncategory").
-      to_return(
-        status: 200,
-        body: File.read("./test/fixtures/icims/job-1123.json"),
-        headers: { 'Content-Type' => 'application/json' })
-  end
-
-  def stub_company
-    stub_request(:get, "https://api.icims.com/customers/1234/companies/1800").
-      to_return(status: 200,
-        body: File.read('./test/fixtures/icims/company-1800.json'),
-        headers: { 'Content-Type' => 'application/json' })
-  end
-
 end

@@ -2,6 +2,8 @@ require 'test_helper'
 
 class ICIMS::CompanyTest < Minitest::Test
 
+  include Stub::Unit
+
   def company
     stub_company
     ICIMS::Company.find(1800)
@@ -14,15 +16,6 @@ class ICIMS::CompanyTest < Minitest::Test
   def test_address
     stub_company
     assert company.address
-  end
-
-  private
-
-  def stub_company
-    stub_request(:get, "https://api.icims.com/customers/1234/companies/1800").
-      to_return(status: 200,
-        body: File.read('./test/fixtures/icims/company-1800.json'),
-        headers: { 'Content-Type' => 'application/json' })
   end
 
 end

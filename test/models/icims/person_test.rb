@@ -2,6 +2,8 @@ require 'test_helper'
 
 class ICIMS::PersonTest < Minitest::Test
 
+  include Stub::Unit
+
   def setup
     stub_person(id: 1)
     stub_person(id: 2)
@@ -60,29 +62,6 @@ class ICIMS::PersonTest < Minitest::Test
     skip 'not clear how to assign status'
     assert_equal :available, person.status
     assert_equal :hired, oppposite_person.status
-  end
-
-  def stub_person(id: 1)
-    stub_request(:get, "https://api.icims.com/customers/1234/people/#{id}?fields=field29946,field23848,field36999,addresses").
-      to_return(status: 200,
-        body: File.read("./test/fixtures/icims/person-#{id}.json"),
-        headers: { 'Content-Type' => 'application/json' })
-  end
-
-  def stub_workflows(id: 1)
-    stub_request(:post, "https://api.icims.com/customers/1234/search/applicantworkflows").
-    with(:body => "[{\"name\":\"applicantworkflow.person.id\",\"value\":[\"#{id}\"],\"operator\":\"=\"}]",
-         :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
-    to_return(status: 200,
-        body: File.read("./test/fixtures/icims/person-1-workflows.json"),
-        headers: { 'Content-Type' => 'application/json' })
-  end
-
-  def stub_workflow(id: 19288)
-    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/#{id}").
-      to_return(status: 200,
-        body: File.read('./test/fixtures/icims/workflow-19288.json'),
-        headers: { 'Content-Type' => 'application/json' })
   end
 
 end

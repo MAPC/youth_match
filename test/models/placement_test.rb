@@ -2,6 +2,8 @@ require 'test_helper'
 
 class PlacementTest < Minitest::Test
 
+  include Stub::Unit
+
   def setup
     @run = Run.create!
     @applicant = Applicant.create!(grid_id: 1)
@@ -77,7 +79,7 @@ class PlacementTest < Minitest::Test
 
   def test_finalize
     stub_finalize(job_id: placement.position.id, person_id: placement.applicant.id)
-    stub_workflow
+    stub_workflow(id: 21282)
     assert_equal Status.pending, placement.status
     placement.sync!
     assert_equal 21282, placement.workflow_id
@@ -103,7 +105,7 @@ class PlacementTest < Minitest::Test
 
   def test_already_decided
     # Check placement first, update with workflow if false
-    stub_workflow
+    stub_workflow(id: 21282)
     p = Placement.new(workflow_id: 21282)
     refute p.already_decided?
     p.status = Status.declined
@@ -144,35 +146,6 @@ class PlacementTest < Minitest::Test
     refute placement.applicant.opted_out?
     placement.expired?
     assert placement.applicant.opted_out?
-  end
-
-  private
-
-  def stub_finalize(job_id: 2305, person_id: 2587)
-    stub_request(:post, "https://api.icims.com/customers/1234/applicantworkflows").
-    with(:body => "{\"baseprofile\":#{job_id},\"associatedprofile\":#{person_id},\"status\":{\"id\":\"C38356\"},\"source\":\"Other (Please Specify)\",\"sourcename\":\"org.mapc.youthjobs.lottery\"}",
-       :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
-    to_return(
-      status: 201,
-      body: '',
-      headers: JSON.parse(File.read('./test/fixtures/icims/create-workflow-headers.json'))
-    )
-  end
-
-  def stub_workflow
-    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/21282").
-      with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
-      to_return(:status => 200, :body => File.read('./test/fixtures/icims/workflow-19288.json'), :headers => {'Content-Type' => 'application/json'})
-  end
-
-  def stub_get_accepted
-    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/19288").
-      with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
-      to_return(
-        :status => 200,
-        :body => File.read('./test/fixtures/icims/workflow-accepted.json'),
-        :headers => {'Content-Type' => 'application/json'}
-      )
   end
 
 end

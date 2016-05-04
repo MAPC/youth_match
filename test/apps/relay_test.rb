@@ -3,6 +3,7 @@ require 'test_helper'
 class RelayTest < Minitest::Test
 
   include Rack::Test::Methods
+  include Stub::Integration
 
   def app
     Apps::Relay
@@ -147,38 +148,6 @@ class RelayTest < Minitest::Test
   # If we move accept/decline to :action, test against wrong actions
   private
 
-  def stub_retries_accepted
-    skip 'fill in rest of stub'
-    stub_request(:get, "www.example.com").
-      to_timeout.then.
-      to_timeout.then.
-      to_return(
-        status: 200,
-        body: File.read('.'),
-        headers: { 'Content-Type' => 'application/json' }
-      )
-  end
-
-  def stub_already_accepted
-    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/19288").
-      with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
-      to_return(
-        :status => 200,
-        :body => File.read('./test/fixtures/icims/workflow-accepted.json'),
-        :headers => {'Content-Type' => 'application/json'}
-      )
-  end
-
-  def stub_already_declined
-    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/19288").
-      with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
-      to_return(
-        :status => 200,
-        :body => File.read('./test/fixtures/icims/workflow-declined.json'),
-        :headers => {'Content-Type' => 'application/json'}
-      )
-  end
-
   def accept
     get "/placements/#{@placement.uuid}/accept",
       applicant_uuid: @placement.applicant.uuid,
@@ -201,30 +170,6 @@ class RelayTest < Minitest::Test
     assert last_response.redirect?, last_response.inspect
     follow_redirect!
     assert_includes last_request.url, place
-  end
-
-  def stub_get_workflow
-    stub_request(:get, "https://api.icims.com/customers/1234/applicantworkflows/19288").
-      with(:headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
-      to_return(
-        :status => 200,
-        :body => File.read('./test/fixtures/icims/workflow-19288-placed.json'),
-        :headers => { 'Content-Type' => 'application/json' }
-      )
-  end
-
-  def stub_accept_workflow
-    stub_request(:patch, "https://api.icims.com/customers/1234/applicantworkflows/19288").
-    with(:body => "{\"status\":{\"id\":\"C36951\"}}",
-         :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
-    to_return(:status => 204, :body => "", :headers => {'Content-Type'=>'application/json'})
-  end
-
-  def stub_decline_workflow
-    stub_request(:patch, "https://api.icims.com/customers/1234/applicantworkflows/19288").
-    with(:body => "{\"status\":{\"id\":\"C38469\"}}",
-         :headers => {'Authorization'=>'Basic ', 'Content-Type'=>'application/json'}).
-    to_return(:status => 204, :body => "", :headers => {'Content-Type'=>'application/json'})
   end
 
 end

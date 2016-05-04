@@ -2,6 +2,8 @@ require 'test_helper'
 
 class ApplicantTest < Minitest::Test
 
+  include Stub::Unit
+
   def setup
     @applicant = applicant.dup
     @applicant.save!
@@ -82,15 +84,6 @@ class ApplicantTest < Minitest::Test
     )
     actual = Applicant.new_from_icims(ICIMS::Person.find(2))
     assert_equal expected.attributes, actual.attributes
-  end
-
-  private
-
-  def stub_person(id: 1)
-    stub_request(:get, "https://api.icims.com/customers/1234/people/#{id}?fields=field29946,field23848,field36999,addresses").
-        to_return(status: 200,
-          body: File.read("./test/fixtures/icims/person-#{id}.json"),
-          headers: { 'Content-Type' => 'application/json' })
   end
 
 end

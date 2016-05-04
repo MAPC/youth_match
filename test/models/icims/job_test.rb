@@ -2,8 +2,11 @@ require 'test_helper'
 
 class ICIMS::JobTest < Minitest::Test
 
+  include Stub::Unit
+
   def setup
     stub_job
+    stub_company
   end
 
   def new_job
@@ -21,12 +24,10 @@ class ICIMS::JobTest < Minitest::Test
   end
 
   def test_company
-    stub_company
     assert_equal "826 Boston, Inc.", job.company.name
   end
 
   def test_address
-    stub_company
     assert_equal job.address.to_h, job.company.address.to_h
     assert_equal '3035 Washington St', job.street
     assert_equal 'Roxbury', job.city
@@ -49,37 +50,12 @@ class ICIMS::JobTest < Minitest::Test
   end
 
   def test_eligible
-    stub_eligible
+    stub_eligible_jobs
     100.times { |i| stub_job(id: i+1) }
     assert_equal 100, ICIMS::Job.eligible.count
     assert_equal 90, ICIMS::Job.eligible(offset: 10).count
     assert_equal 10, ICIMS::Job.eligible(limit: 10).count
   end
 
-  private
-
-  def stub_job(id: 1123)
-    stub_request(:get, "https://api.icims.com/customers/1234/jobs/#{id}?fields=joblocation,jobtitle,numberofpositions,positioncategory").
-      to_return(
-        status: 200,
-        body: File.read("./test/fixtures/icims/job-1123.json"),
-        headers: { 'Content-Type' => 'application/json' })
-    stub_company
-  end
-
-  def stub_company
-    stub_request(:get, "https://api.icims.com/customers/1234/companies/1800").
-      to_return(status: 200,
-        body: File.read('./test/fixtures/icims/company-1800.json'),
-        headers: { 'Content-Type' => 'application/json' })
-  end
-
-  def stub_eligible
-    stub_request(:post, "https://api.icims.com/customers/1234/search/jobs").
-    with(:body => "{\"filters\":[{\"name\":\"job.numberofpositions\",\"value\":[\"1\"],\"operator\":\"\\u003e=\"},{\"name\":\"job.postedto\",\"value\":[\"Successlink\"],\"operator\":\"=\"}],\"operator\":\"\\u0026\"}").
-    to_return(:status => 200,
-      :body => File.read('./test/fixtures/icims/eligible-jobs.json'),
-      :headers => { 'Content-Type'=>'application/json' })
-  end
 
 end
