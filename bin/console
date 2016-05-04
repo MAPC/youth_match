@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
-puts '----> Starting frameworkless console'
+print '----> Starting frameworkless console'
 require './environment'
-puts "----> in #{DATABASE_ENV} environment."
+print " in #{DATABASE_ENV} environment.\n"
 require 'irb'
 ARGV.clear
 def clear # Clear IRB like a terminal window
