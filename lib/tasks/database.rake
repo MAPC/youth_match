@@ -11,7 +11,7 @@ namespace :db do
   def create_database config
     create_db = lambda do |config|
       # Establish connection, but not to the database in use, by setting db: nil
-      ActiveRecord::Base.establish_connection config.merge(database: nil)
+      ActiveRecord::Base.establish_connection databaseless_config(config)
       ActiveRecord::Base.connection.create_database config[:database]
       # Then, establish the conection
       ActiveRecord::Base.establish_connection config
@@ -19,10 +19,20 @@ namespace :db do
 
     begin
       create_db.call config
+      puts "----> Created database #{config[:database]}"
     rescue StandardError => e
       puts "----> ERROR CREATING DATABASE: #{e.message}"
     end
-    puts "----> Created database #{config[:database]}"
+  end
+
+  def databaseless_config(config)
+    if config.is_a? String
+      uri = URI.parse(config)
+      uri.path = '' # Remove database
+      uri.to_s
+    else
+      config.dup.merge(database: nil)
+    end
   end
 
   def template(file_name)
