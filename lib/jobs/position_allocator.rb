@@ -1,4 +1,4 @@
-class PositionAllocatorJob
+class PositionAllocator
 
   def perform
     CSV.foreach('./db/import/jobs_randomization.csv', headers: true) do |row|

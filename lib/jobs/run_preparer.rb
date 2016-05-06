@@ -1,4 +1,4 @@
-class AssignTicketsJob
+class RunPreparer
 
   def initialize(seed: nil)
     @run = Run.create!(seed: seed)

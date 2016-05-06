@@ -1,4 +1,4 @@
-class LotteryRunJob
+class LotteryRunner
 
   def initialize(run_id: , limit: nil)
     @run = Run.find(run_id)

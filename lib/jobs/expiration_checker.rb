@@ -1,4 +1,4 @@
-class CheckExpirationJob
+class ExpirationChecker
 
   def initialize(run_id: )
     @run = Run.find(run_id)
