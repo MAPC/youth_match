@@ -26,7 +26,9 @@ class PoolBuilder
   end
 
   def message
-    msg =  "\nFinished precalculating pools for #{@run.pools.count}"
+    # TODO Turn this into a query. At the moment, running
+    # @run.placements.where.not(pool: nil) is throwing a relation-related error.
+    msg =  "\nFinished precalculating pools for #{@run.placements.select(&:pool).count}"
     msg << " automatic placements for Run #{@run.id}."
     msg
   end

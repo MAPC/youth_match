@@ -13,10 +13,10 @@ namespace :lottery do
   end
 
   desc 'Monitor the lottery as it runs'
-  task :monitor, [:run_id] => :environment do |task, args|
+  task :monitor, [:delay] => :environment do |task, args|
     pre_message task
-    run_id = args.fetch(:run_id, Run.last.id)
-    ContinuousMonitor.new(run_id: run_id).perform!
+    delay = args.fetch(:delay, 5)
+    ContinuousMonitor.new(run_id: Run.last.id, delay: delay).monitor
   end
 
   desc 'Runs the matching process, in batches.'

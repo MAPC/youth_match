@@ -1,6 +1,6 @@
 class ContinuousMonitor
 
-  def initialize(run_id: , delay: 2)
+  def initialize(run_id: , delay: 5)
     @run = Run.find(run_id)
     @delay = delay
   end
@@ -11,8 +11,9 @@ class ContinuousMonitor
       begin
         $logger.info stats
         $logger.info counts
+        $logger.info "#{Pool.count} pools"
         sleep @delay
-      rescue IRB::Abort => e
+      rescue StandardError => e
         log_finish
         break
       end
@@ -63,5 +64,10 @@ class ContinuousMonitor
     end
     data
   end
+
+  def count(status)
+    placements.unscope(where: :status).where(status: status).count
+  end
+
 
 end
