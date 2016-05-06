@@ -3,7 +3,7 @@ sudo: false
 rvm:
   - 2.1.5
 env:
-  - DATABASE_ENV=test RACK_ENV=test AIRBRAKE_PROJECT_ID=test AIRBRAKE_KEY=test ICIMS_CUSTOMER_ID=1234
+  - DATABASE_ENV=test RACK_ENV=test AIRBRAKE_PROJECT_ID=test AIRBRAKE_KEY=test ICIMS_CUSTOMER_ID=1234 PROXY_URL=https://user:pass@subdomain.proxy.net:80
 before_script:
   - bundle exec rake db:create
   - bundle exec rake db:migrate
