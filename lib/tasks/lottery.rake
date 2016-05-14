@@ -12,6 +12,19 @@ namespace :lottery do
     LotteryChecker.new(run_id: run_id).perform!
   end
 
+  desc 'Synchronize placements with ICIMS'
+  task :sync, [:run_id, :dry_run, :limit, :offset] => :environment do |task, args|
+    pre_message task
+
+    opts = {
+      run_id:  args.fetch(:run_id,  Run.last.id),
+      dry_run: args.fetch(:dry_run, false).to_b,
+      limit:   args.fetch(:limit,   nil),
+      offset:  args.fetch(:offset,  nil)
+    }
+    Synchronizer.new(opts).perform
+  end
+
   desc 'Monitor the lottery as it runs'
   task :monitor, [:delay] => :environment do |task, args|
     pre_message task

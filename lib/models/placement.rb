@@ -43,11 +43,20 @@ class Placement < ActiveRecord::Base
   end
 
   def sync!
+    return false unless syncable?
     update_attributes(
       status:      :synced,
       expires_at:  expiration_date,
       workflow_id: create_workflow.id # Creates hiring system workflow
     )
+  end
+
+  def syncable?
+    position_id.present?
+  end
+
+  def self.placed
+    where(status: :placed)
   end
 
   def self.placeable
@@ -161,8 +170,11 @@ class Placement < ActiveRecord::Base
   end
 
   def create_workflow
-    ICIMS::Workflow.create({ job_id: position.id, person_id: applicant.id,
-      status: ICIMS::Status.placed })
+    ICIMS::Workflow.create({
+      job_id:    position.id,
+      person_id: applicant.id,
+      status:    ICIMS::Status.placed
+    })
   end
 
   def log_no_best_fit
