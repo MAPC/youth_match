@@ -14,6 +14,7 @@ class ContinuousMonitor
         $logger.info "#{Pool.count} pools"
         sleep @delay
       rescue StandardError => e
+        puts e.message
         log_finish
         break
       end
