@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ExportJobTest < Minitest::Test
+class MailMergeExporterTest < Minitest::Test
 
   def setup
     @run ||= Minitest::Mock.new
@@ -9,12 +9,12 @@ class ExportJobTest < Minitest::Test
   end
 
   def test_perform
-    CSV.stub(:open, nil, mock_csv = StringIO.new) do
-      Run.stub :find, @run do
-        ExportJob.new(@run.id).perform!
-      end
+    Run.stub :find, @run do
+      assert_output(expected_string) {
+        MailMergeExporter.new(@run.id).perform!
+      }
     end
-    assert_equal expected_string.strip, mock_csv.string.strip
+
   end
 
   private
