@@ -22,6 +22,7 @@ namespace :lottery do
       limit:   args.fetch(:limit,   nil),
       offset:  args.fetch(:offset,  nil)
     }
+    puts "options: #{opts.inspect}"
     Synchronizer.new(opts).perform
   end
 
