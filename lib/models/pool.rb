@@ -12,7 +12,7 @@ class Pool < ActiveRecord::Base
   delegate :applicant, to: :placement
   delegate :run,       to: :placement
 
-  def best_fit
+  def best_pooled
     return nil if pooled_positions.count == 0
     best_pooled = pooled_positions.to_a.
       # Don't assign someone to a job they were placed at and declined before.
@@ -23,6 +23,9 @@ class Pool < ActiveRecord::Base
       }.
       sort_by { |p| p.score["total"]  }.
       detect  { |p| p.available?(run) }
+  end
+
+  def best_fit
     best_pooled.position if best_pooled
   end
 

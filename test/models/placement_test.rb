@@ -77,7 +77,7 @@ class PlacementTest < Minitest::Test
     refute placement.workflow.present?
   end
 
-  def test_finalize
+  def test_sync
     stub_finalize(job_id: placement.position.id, person_id: placement.applicant.id)
     stub_workflow(id: 21282)
     assert_equal Status.pending, placement.status
@@ -146,6 +146,13 @@ class PlacementTest < Minitest::Test
     refute placement.applicant.opted_out?
     placement.expired?
     assert placement.applicant.opted_out?
+  end
+
+  def test_syncable
+    placement.position_id = 1
+    assert placement.syncable?
+    placement.position_id = nil
+    refute placement.syncable?
   end
 
 end

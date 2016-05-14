@@ -60,5 +60,7 @@ compressor:
   direction: upward
 
 
+# :placement_link: is the link that will be included in the mail merge export.
+#   :site: is the base URL of the Relay site.
 placement_link:
   site: 'http://relay-youth-boston-gov.herokuapp.com'

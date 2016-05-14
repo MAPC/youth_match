@@ -1,4 +1,4 @@
-class ExportJob
+class MailMergeExporter
 
   def initialize(run_id)
     @run = run_id ? Run.find(run_id) : Run.last
@@ -8,10 +8,11 @@ class ExportJob
     first = @run.exportable_placements.first.index
     last  = @run.exportable_placements.last.index
     file = "./tmp/exports/mail-merge-run-#{@run.id}-from-#{first}-to-#{last}-#{Time.now.to_i}.csv"
-    CSV.open(file, 'wb') do |csv|
+    csv_string = CSV.generate do |csv|
       csv << header
       @run.exportable_placements.each { |placement| csv << values_for(placement) }
     end
+    $stdout << csv_string
   end
 
   private
