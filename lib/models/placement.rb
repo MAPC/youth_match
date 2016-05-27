@@ -67,7 +67,7 @@ class Placement < ActiveRecord::Base
     elsif workflow.placed?
       :placed
     else
-      raise ArgumentError, "workflow status is #{workflow.status}"
+      $logger.error "workflow status for #{id} is #{workflow.status}"
     end
     save!
   end
