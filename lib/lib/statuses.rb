@@ -38,7 +38,8 @@ module ICIMS
       expired:   'C38355',
       hired:     'C2040',
       send_to_onboard: 'C23504',
-      processing_appointment: 'C23505'
+      processing_appointment: 'C23505',
+      self_withdrew: 'D10108'
     }.with_indifferent_access
 
     CODES.each_pair do |key, code|
@@ -49,6 +50,18 @@ module ICIMS
 
     def self.from_code(code)
       CODES.invert[code]
+    end
+
+    def self.acceptable
+      [accepted, hired, send_to_onboard, processing_appointment]
+    end
+
+    def self.declinable
+      [declined]
+    end
+
+    def self.expirable
+      [expired, self_withdrew]
     end
 
   end

@@ -93,26 +93,30 @@ class RelayTest < Minitest::Test
 
   def test_accepted_already_accepted
     stub_already_accepted
+    @placement.update_attribute(:status, :accepted)
     accept
-    assert_redirect_to('error')
+    assert_redirect_to('lottery-previous-accept')
   end
 
   def test_declined_already_accepted
     stub_already_accepted
+    @placement.update_attribute(:status, :accepted)
     decline
-    assert_redirect_to('error')
+    assert_redirect_to('lottery-previous-accept')
   end
 
   def test_declined_already_declined
     stub_already_declined
+    @placement.update_attribute(:status, :declined)
     decline
-    assert_redirect_to('error')
+    assert_redirect_to('lottery-offer-rematch')
   end
 
   def test_accepted_already_declined
     stub_already_declined
+    @placement.update_attribute(:status, :declined)
     accept
-    assert_redirect_to('error')
+    assert_redirect_to('lottery-offer-rematch')
   end
 
   def test_expired_locally

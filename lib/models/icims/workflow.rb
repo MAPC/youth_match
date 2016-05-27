@@ -72,6 +72,7 @@ class ICIMS::Workflow < ICIMS::Resource
   end
 
   def expired
+    return false unless placeable?
     update status: ICIMS::Status.expired
   end
 
@@ -79,12 +80,20 @@ class ICIMS::Workflow < ICIMS::Resource
     placed? && !expired?
   end
 
-  def placed?
-    @status.to_s == ICIMS::Status.placed
+  def accepted?
+    ICIMS::Status.acceptable.include? @status.to_s
+  end
+
+  def declined?
+    ICIMS::Status.declinable.include? @status.to_s
   end
 
   def expired?
-    @status.to_s == ICIMS::Status.expired
+    ICIMS::Status.expirable.include? @status.to_s
+  end
+
+  def placed?
+    @status.to_s == ICIMS::Status.placed
   end
 
   def placeable?

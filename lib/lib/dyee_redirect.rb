@@ -24,7 +24,9 @@ module DYEERedirect
     error:   'lottery-error',
     opt_out: 'lottery-opt-out',
     expired: 'lottery-expired-one',
-    expired_opt_out: 'lottery-expired-two'
+    expired_opt_out: 'lottery-expired-two',
+    already_accepted: 'lottery-previous-accept',
+    already_declined: 'lottery-offer-rematch'
   }
 
 end

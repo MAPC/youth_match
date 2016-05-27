@@ -22,39 +22,39 @@ class Apps::Relay < Sinatra::Base
     "Hello, Relay!"
   end
 
+
   get '/placements/:id/accept/?' do
-    load_placement(params)
+    load_placement
     @placement.accepted
     redirect *DYEERedirect.to(:accept)
   end
 
   get '/placements/:id/decline/?' do
-    load_placement(params)
+    load_placement
     @placement.declined
     redirect *DYEERedirect.to(:decline)
   end
 
   get '/placements/:id/opt-out/?' do
-    load_placement(params)
-    @placement.declined
-    @placement.applicant.opted_out
+    load_placement
+    @placement.opted_out
     redirect *DYEERedirect.to(:opt_out)
   end
 
-  # When there are failing tests, comment these out.
 
   error ActiveRecord::RecordNotFound do
-    Airbrake.notify('Record Not Found', params: params)
+    Airbrake.notify('Active Record | Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 404 do
-    Airbrake.notify('404 / Record Not Found', params: params)
+    Airbrake.notify('404 | Record Not Found', params: params)
     redirect *DYEERedirect.to(:error)
   end
 
   error 422 do
-    Airbrake.notify('Unprocessable Entity', params: params)
+    Airbrake.notify('422 | Unprocessable Entity',
+      params: params.merge({ path: request.path_info }))
     redirect *DYEERedirect.to(:error)
   end
 
@@ -65,38 +65,36 @@ class Apps::Relay < Sinatra::Base
 
   private
 
-  def load_placement(params)
-    @placement = Placement.find_by(
-      uuid: params[:id],
-      applicant_id: applicant(params).id,
-      position_id: position(params).id
+  def load_placement
+    @placement = Placement.find_by!(
+      uuid:      params[:id],
+      applicant: Applicant.find_by!(uuid: params[:applicant_uuid]),
+      position:  Position.find_by!(uuid: params[:position_uuid])
     )
-    assert_decidable(@placement)
-  rescue ActiveRecord::RecordNotFound
-    $logger.error 'RecordNotFound'
-    halt 404
+    decidable? @placement
   end
 
-  def applicant(params)
-    if applicant = Applicant.find_by(uuid: params[:applicant_uuid])
-      applicant
-    else
-      halt 404
-    end
-  end
-
-  def position(params)
-    if position = Position.find_by(uuid: params[:position_uuid])
-      position
-    else
-      halt 404
-    end
-  end
-
-  def assert_decidable(placement)
-    halt 404 if placement.nil?
+  def decidable?(placement)
     redirect *DYEERedirect.to(:expired) if placement.expired?
-    halt 422 unless placement.updatable?
-    true
+    unless placement.updatable?
+      Airbrake.notify('Not Updatable', params: airbrake_payload(placement))
+      redirect *DYEERedirect.to("already_#{placement.status}")
+    end
+  end
+
+  def airbrake_payload(placement)
+    {
+      placement_id: placement.id,
+      applicant_id: placement.applicant_id,
+      position_id:  placement.position_id,
+      workflow_id:  placement.workflow_id,
+      placement_status: placement.status,
+      applicant_status: placement.applicant.status,
+      path: request.path_info,
+      message: """
+        It looks like applicant #{placement.applicant_id} was trying to
+        #{request.path_info.to_s.split('/')[3]} while already #{placement.status}.
+      """
+    }.merge(params)
   end
 end

@@ -42,13 +42,32 @@ class Placement < ActiveRecord::Base
     return self
   end
 
-  def sync!
+  def unplace!
+    update_attributes(
+      position_id: nil, workflow_id: nil, expires_at: nil, status: :pending
+    )
+  end
+
+  def push!
     return false unless syncable?
     update_attributes(
       status:      :synced,
       expires_at:  expiration_date,
       workflow_id: create_workflow.id # Creates hiring system workflow
     )
+  end
+
+  def pull!
+    self.status = if workflow.acceptable?
+      :accepted
+    elsif workflow.declinable?
+      :declined
+    elsif workflow.expirable?
+      :expired
+    else
+      raise ArgumentError, "status is #{status}"
+    end
+    save!
   end
 
   def syncable?
@@ -99,8 +118,19 @@ class Placement < ActiveRecord::Base
     end
   end
 
+  def opted_out
+    declined
+    applicant.opted_out
+  end
+
   def expired?
     status == 'expired' || check_expired
+  end
+
+  def expire!
+    if workflow.expired
+      update_attribute :status, :expired
+    end
   end
 
   def workflow

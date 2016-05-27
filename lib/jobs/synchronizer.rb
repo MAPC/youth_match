@@ -29,7 +29,7 @@ class Synchronizer
   # rewrite in Confident style after a few trials.
   def attempt_to_sync(placement)
     begin
-      unless placement.sync!
+      unless placement.push! # to ICIMS
         raise StandardError, unplaceable_message(placement)
       end
     rescue StandardError => e # Catches sync errors and the raise upon false
