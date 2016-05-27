@@ -58,11 +58,11 @@ class Placement < ActiveRecord::Base
   end
 
   def pull!
-    self.status = if workflow.acceptable?
+    self.status = if workflow.accepted?
       :accepted
-    elsif workflow.declinable?
+    elsif workflow.declined?
       :declined
-    elsif workflow.expirable?
+    elsif workflow.expired?
       :expired
     else
       raise ArgumentError, "status is #{status}"
