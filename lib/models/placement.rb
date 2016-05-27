@@ -64,8 +64,10 @@ class Placement < ActiveRecord::Base
       :declined
     elsif workflow.expired?
       :expired
+    elsif workflow.placed?
+      :placed
     else
-      raise ArgumentError, "status is #{status}"
+      raise ArgumentError, "workflow status is #{workflow.status}"
     end
     save!
   end
