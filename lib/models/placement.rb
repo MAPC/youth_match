@@ -68,6 +68,7 @@ class Placement < ActiveRecord::Base
       :placed
     else
       $logger.error "workflow status for #{id} is #{workflow.status}"
+      self.status
     end
     save!
   end
