@@ -10,6 +10,7 @@ class DeclineRefresher
     @run.refreshable_declined_placements.each do |declined|
       placement = @run.placements.create! duplicate(declined)
       placement.pool = declined.pool.dup if declined.pool
+      placement.save
     end
     $logger.info message
   end
@@ -24,8 +25,7 @@ class DeclineRefresher
 
   def message
     msg = "Refreshed #{@run.refreshable_declined_placements.count}"
-    msg << " declined placements for Run ##{@run.id}"
-    msg
+    msg += " declined placements for Run ##{@run.id}"
   end
 
 end

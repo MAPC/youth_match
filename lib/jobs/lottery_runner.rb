@@ -17,6 +17,7 @@ class LotteryRunner
   def perform
     total_positions = Position.sum(:automatic)
     @run.placeable_placements(limit: @limit).each do |placement|
+      puts "#{placement.id}"
       log_placement placement.place!
       break unless @run.exportable_placements.count < total_positions
     end
