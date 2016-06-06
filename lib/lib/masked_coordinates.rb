@@ -1,7 +1,5 @@
 class MaskedCoordinates
 
-  attr_reader :unmasked
-
   # MaskedCoordinates adds a small amount of noise to the given array of
   # coordinates, to hide the original location. This is similar to the
   # 'What They See' image describing Strava's Privacy Zones at

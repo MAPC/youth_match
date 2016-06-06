@@ -33,9 +33,7 @@ class MaskedCoordinatesTest < Minitest::Test
 
   def test_coordinates_are_new
     setup_defaults
-    [0,1].each do |i|
-      refute_equal @masked.coordinates[i], @masked.unmasked[i]
-    end
+    refute_equal UNMASKED_COORDINATES, @masked.coordinates
   end
 
   private
