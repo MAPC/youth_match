@@ -96,9 +96,11 @@ If you get stuck anywhere in this documentation, please [get in touch](mailto:mc
 - PostgreSQL and PostGIS (this can be done via the [Postgres app](http://postgresapp.com/))
 
 2. Clone the repository, `cd` into it, and `bundle install`.
+
 3. Set up the database by running `rake db:create`, then `rake db:migrate`.
 
 > Database tasks run differently than they do in Rails, because we're not using Rails as a framework. For example, you won't be able to chain commands like you can in Rails, such as `rake db:create db:migrate`. Read the database.rake file to see how the database tasks work.
+> In order to run rake:db migrate three environment variables need to be set up on your machine(ICIMS_API_KEY, ICIMS_CUSTOMER_ID, PROXY_URL). Add required environment variables in your shell profile (.bash_profile or .zshrc) and use the values set up in the test helper if you do not have your own.
 
 4. Set up the test database by running `rake db:create DATABASE_ENV=test`, then `rake db:migrate DATABASE_ENV=test`
 5. Ensure all tests are passing by running `rake test` or `rake`. (The test task is set to be the default Rake task.)

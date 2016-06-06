@@ -1,5 +1,7 @@
 class MaskedCoordinates
 
+  attr_reader :unmasked
+
   # MaskedCoordinates adds a small amount of noise to the given array of
   # coordinates, to hide the original location. This is similar to the
   # 'What They See' image describing Strava's Privacy Zones at
@@ -30,13 +32,7 @@ class MaskedCoordinates
   end
 
   def coordinates
-    [@unmasked, mask].transpose.map { |x| x.reduce(:+) }
-  end
-
-  def mask
-    # TODO: Generalize this so that MaskedCoordinates could add noise to a
-    # 1-dimensional array of any length, instead of just a length of 2.
-    2.times.map { mask_amount * mask_direction }
+    @unmasked.map { |coor| coor + (mask_amount * mask_direction) }
   end
 
   # Select a random number from the minimum range value to the maximum.
@@ -45,11 +41,7 @@ class MaskedCoordinates
   end
 
   def mask_direction
-    if @allow_negatives
-      rand > 0.5 ? +1 : -1
-    else
-      +1
-    end
+    @allow_negatives ? [+1, -1].sample : +1
   end
 
 end
