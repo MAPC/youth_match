@@ -100,6 +100,7 @@ If you get stuck anywhere in this documentation, please [get in touch](mailto:mc
 3. Set up the database by running `rake db:create`, then `rake db:migrate`.
 
 > Database tasks run differently than they do in Rails, because we're not using Rails as a framework. For example, you won't be able to chain commands like you can in Rails, such as `rake db:create db:migrate`. Read the database.rake file to see how the database tasks work.
+
 > In order to run rake:db migrate three environment variables need to be set up on your machine(ICIMS_API_KEY, ICIMS_CUSTOMER_ID, PROXY_URL). Add required environment variables in your shell profile (.bash_profile or .zshrc) and use the values set up in the test helper if you do not have your own.
 
 4. Set up the test database by running `rake db:create DATABASE_ENV=test`, then `rake db:migrate DATABASE_ENV=test`
@@ -109,6 +110,8 @@ If you get stuck anywhere in this documentation, please [get in touch](mailto:mc
 
 6. Test out the console by running `bin/console`. This script mimicks `rails console` -- it just loads the environment and starts IRB. To see if it works, try running `Applicant.new`. It should execute with no problems.
 7. Test out the webserver by running `foreman start` and navigating to the address stated in the logs. This will boot up the Sinatra web application.
+
+> Four log related environment variables need to be added to your local machine (LOG_FILE, AIRBRAKE_PROJECT_ID, AIRBRAKE_KEY, LOG_LEVEL).  Since the log files and directory are git ignored you can also add a development log during this step.
 
 > __NOTE__: This Procfile, with the `rerun` command, is not suitable for production because `rerun` is a gem in the `:development` group.
 
