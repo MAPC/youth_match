@@ -43,11 +43,12 @@ namespace :lottery do
   end
 
   desc 'Pulls in placements from ICIMS'
-  task :cleanup, [:run_id, :limit] => :environment do |task, args|
+  task :cleanup, [:run_id, :limit, :offset] => :environment do |task, args|
     Run.find(args[:run_id]).placements.
       where.not(status: :pending).
       where.not(workflow_id: [0, nil]).
       limit(args[:limit]).
+      offset(args[:offset]).
       each do |pl|
         puts "index #{pl.index}; id #{pl.id}"
         pl.pull!
