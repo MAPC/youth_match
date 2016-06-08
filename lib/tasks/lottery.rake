@@ -42,4 +42,16 @@ namespace :lottery do
     LotteryRunner.new(run_id: run_id, limit: limit).perform!
   end
 
+  desc 'Pulls in placements from ICIMS'
+  task :cleanup, [:run_id] => :environment do |task, args|
+    Run.find(run_id).placements.
+      where.not(status: :pending).
+      where.not(workflow_id: [0, nil]).
+      limit(limit).
+      each do |pl|
+        puts "index #{pl.index}; id #{pl.id}"
+        pl.pull!
+    end
+  end
+
 end
