@@ -50,7 +50,7 @@ class ICIMS::WorkflowTest < Minitest::Test
   end
 
   def test_not_updatable
-    workflow.status = "NOT UPDATABLE"
+    workflow.icims_status = "NOT UPDATABLE"
     refute workflow.accepted
     refute workflow.declined
   end
@@ -79,7 +79,7 @@ class ICIMS::WorkflowTest < Minitest::Test
     stub_update_workflow
     accepted = ICIMS::Status.accepted
     assert workflow.update(status: accepted)
-    assert_equal accepted, workflow.status
+    assert_equal 'accepted', workflow.status
     refute workflow.update(status: accepted)
   end
 
@@ -105,7 +105,7 @@ class ICIMS::WorkflowTest < Minitest::Test
     stub_update_workflow(status: ICIMS::Status.accepted)
     workflow.placed
     assert workflow.accepted, workflow.inspect
-    assert_equal ICIMS::Status.accepted, workflow.status
+    assert_equal 'accepted', workflow.status
     refute workflow.accepted
   end
 
@@ -114,14 +114,14 @@ class ICIMS::WorkflowTest < Minitest::Test
     stub_update_workflow(status: ICIMS::Status.declined)
     workflow.placed
     assert workflow.declined, workflow.inspect
-    assert_equal ICIMS::Status.declined, workflow.status
+    assert_equal 'declined', workflow.status
     refute workflow.declined
   end
 
   def test_placed
     stub_update_workflow(status: ICIMS::Status.placed)
     assert workflow.placed
-    assert_equal ICIMS::Status.placed, workflow.status
+    assert_equal 'placed', workflow.status
     refute workflow.placed
   end
 

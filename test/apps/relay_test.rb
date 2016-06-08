@@ -120,6 +120,8 @@ class RelayTest < Minitest::Test
   end
 
   def test_expired_locally
+    stub_get_workflow
+    stub_expire_workflow
     @placement.update_attributes(expires_at: 1.day.ago)
     accept
     assert_redirect_to('expire')
