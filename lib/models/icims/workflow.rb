@@ -6,7 +6,6 @@ require 'naught'
 class ICIMS::Workflow < ICIMS::Resource
 
   attr_reader :id, :job_id, :person_id
-  attr_accessor :status
 
   def initialize(id: , job_id: , person_id: , status: )
     @id = id
@@ -54,6 +53,18 @@ class ICIMS::Workflow < ICIMS::Resource
       @status = status
       return true
     end
+  end
+
+  def status
+    ICIMS::Status.from_code @status
+  end
+
+  def icims_status
+    @status
+  end
+
+  def icims_status=(icims_status_code)
+    @status = icims_status_code
   end
 
   def accepted

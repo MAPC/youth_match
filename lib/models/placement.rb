@@ -43,9 +43,13 @@ class Placement < ActiveRecord::Base
   end
 
   def unplace!
-    update_attributes(
-      position_id: nil, workflow_id: nil, expires_at: nil, status: :pending
-    )
+    $logger.puts 'Are you sure you want to reset this placement?'
+    $logger.puts "If so, type 'yes'."
+    if gets.chomp == 'yes'
+      update_attributes(
+        position_id: nil, workflow_id: nil, expires_at: nil, status: :pending
+      )
+    end
   end
 
   def push!
@@ -193,6 +197,10 @@ class Placement < ActiveRecord::Base
 
   def check_expired
     if expires_at && Time.now > expires_at
+      # Make the workflow expired
+      # TODO: Write a test for this.
+      workflow.expired unless workflow.expired?
+      # Make the local record expired.
       update_attribute(:status, :expired)
       applicant.update_attribute(:status, :opted_out)
     end
