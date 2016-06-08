@@ -199,7 +199,9 @@ class Placement < ActiveRecord::Base
     if expires_at && Time.now > expires_at
       # Make the workflow expired
       # TODO: Write a test for this.
-      workflow.expired unless workflow.expired?
+      unless [0, nil].include? workflow_id
+        workflow.expired unless workflow.expired?
+      end
       # Make the local record expired.
       update_attribute(:status, :expired)
       applicant.update_attribute(:status, :opted_out)
