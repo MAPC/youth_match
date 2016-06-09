@@ -43,8 +43,8 @@ class Placement < ActiveRecord::Base
   end
 
   def unplace!
-    $logger.puts 'Are you sure you want to reset this placement?'
-    $logger.puts "If so, type 'yes'."
+    puts 'Are you sure you want to reset this placement?'
+    puts "If so, type 'yes'."
     if gets.chomp == 'yes'
       update_attributes(
         position_id: nil, workflow_id: nil, expires_at: nil, status: :pending
