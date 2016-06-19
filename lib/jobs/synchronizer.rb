@@ -13,6 +13,7 @@ class Synchronizer
       next if check_dry_run
       attempt_to_sync placement
     end
+    true
   end
 
   def dry_run?

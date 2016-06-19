@@ -2,7 +2,7 @@ class PoolBuilder
 
   def initialize(run_id: )
     @run = Run.find(run_id)
-    assert_no_placements
+    assert_no_pools
   end
 
   def perform!
@@ -18,7 +18,7 @@ class PoolBuilder
     print(pool.pooled_positions.count > 0 ? '.' : 'F')
   end
 
-  def assert_no_placements
+  def assert_no_pools
     if @run.placements.first.pool.present?
       $logger.error "There are already pools for run #{args[:run_id]}."
       exit 1

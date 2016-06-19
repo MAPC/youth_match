@@ -1,3 +1,5 @@
+# Move into models. This is an object.
+
 module Status
 
   def self.pending

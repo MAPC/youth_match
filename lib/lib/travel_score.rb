@@ -5,11 +5,12 @@ class TravelScore < Score
   def score
     minutes = travel_time.to_i / 60
     assert_positive(minutes)
-    if @applicant.prefers_nearby?
-      care(minutes)
-    else
-      dont_care(minutes)
-    end
+    score = @applicant.prefers_nearby? ? care(minutes) : dont_care(minutes)
+    score + shift # Move the baseline travel score up.
+  end
+
+  def shift
+    +12
   end
 
   private
