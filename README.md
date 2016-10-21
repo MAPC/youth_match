@@ -128,6 +128,18 @@ If you get stuck anywhere in this documentation, please [get in touch](mailto:mc
 
 > TODO
 
+To import the spreadsheets exported from ICIMS, the general commands are:
+
+```
+# Requires spreadsheets from ICIMS, stiched together and normalized. See tasks for more details.
+rake import:applicants
+rake import:positions
+
+# Requires allocation spreadsheets. See tasks for more details.
+rake allocate:applicants
+rake allocate:positions
+```
+
 ### Lottery web interface
 
 Run `foreman start` to start the web application with environment variables stored in .env, or `ruby app.rb` to start the web interface for the runs.
@@ -140,7 +152,22 @@ Run `foreman start` to start the web application with environment variables stor
 
 The lottery is run via a set of rake tasks, collected in `lottery.rake`. The main task is `lottery:run`. This first invokes `lottery:check` to ensure the database is set up correctly, though this is more a sanity check than a thorough one. Then, it runs the MatchJob class, which is responsible for doing the work of matching. Once MatchJob has finished -- either from running out of available positions or applicants -- `lottery:stats` is invoked, which generates statistics on how well that run went, and what the overall outcomes are.
 
-We recommend running the lottery multiple times, because the random order in which applicants are matched to a job may affect the overall outcome of the matching process. We generate statistics on placement rate, satisfaction rate (how many people were matched with a job that aligns with their preferences), and travel time breakdown, in order to compare multiple runs and choose the best one to move forward with.
+After importing, the general process is:
+
+```
+rake lottery:prepare  #=> Precalculates pools.
+rake lottery:check    #=> Ensures everything is in place.
+rake lottery:run      #=> Runs batch. Requires parameters -- see task for detials.
+rake lottery:export   #=> Exports mail merge sheet.
+rake lottery:sync     #=> Send placements to ICIMS via API.
+
+# After the emails are sent out and the response period is over,
+# mark untouched placements as expired and give people who declined and have
+# one more chance a second placement.
+rake prepare:declines
+```
+
+If you're running this from your local terminal, you'll need to set the DATABASE_URL before running each command, or add Dotenv to the Rake environment and set DATABASE_URL in a .env file.
 
 #### Options for running the lottery
 
