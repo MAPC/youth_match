@@ -1,3 +1,5 @@
+require 'pry'
+
 class ApplicantCSVImporter
 
   def perform
@@ -22,16 +24,18 @@ class ApplicantCSVImporter
   end
 
   def csv_dir
-    './db/import/query_results/csv'
-    # './db/import/'
+   './db/import/'
   end
 
   def create_from_row(row)
+    $logger.debug "Creating from row!"
     {
-      id:               system_id(row),
-      interests:        interests(row),
-      prefers_nearby:   preference(row),
-      has_transit_pass: transit_pass(row)
+      interests: [row['interest1'], row['interest2'], row['interest3']],
+      prefers_nearby:   row[6],
+      has_transit_pass: row[7],
+      location: factory.point(row['X'], row['Y']),
+      index: $.,
+      market: "automatic"
     }
   end
 

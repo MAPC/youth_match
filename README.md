@@ -96,7 +96,7 @@ If you get stuck anywhere in this documentation, please [get in touch](mailto:mc
 - PostgreSQL and PostGIS (this can be done via the [Postgres app](http://postgresapp.com/))
 
 2. Clone the repository, `cd` into it, and `bundle install`.
-3. Set up the database by running `rake db:create`, then `rake db:migrate`.
+3. Set up the database by running `rake db:create`, then `rake db:migrate`, then `rake import:grid`.
 
 > Database tasks run differently than they do in Rails, because we're not using Rails as a framework. For example, you won't be able to chain commands like you can in Rails, such as `rake db:create db:migrate`. Read the database.rake file to see how the database tasks work.
 
@@ -158,7 +158,7 @@ After importing, the general process is:
 rake lottery:prepare  #=> Precalculates pools.
 rake lottery:check    #=> Ensures everything is in place.
 rake lottery:run      #=> Runs batch. Requires parameters -- see task for detials.
-rake lottery:export   #=> Exports mail merge sheet.
+rake export:mailmerge   #=> Exports mail merge sheet.
 rake lottery:sync     #=> Send placements to ICIMS via API.
 
 # After the emails are sent out and the response period is over,

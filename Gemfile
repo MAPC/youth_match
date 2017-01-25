@@ -47,4 +47,6 @@ group :development do
   gem 'guard'          # Autorun tests
   gem 'guard-minitest'
   gem 'rerun' # Reload web app on changes
+  gem 'pry'
+  gem 'pry-byebug'
 end

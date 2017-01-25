@@ -15,4 +15,10 @@ namespace :import do
     PositionGeocoder.new.perform # Add locations for those not present
   end
 
+  desc 'Import grid data'
+  task :grid => :environment do
+    sh "psql youth_match_development < db/import/grid.sql"
+    puts "Importing grid distances. WARNING: Importing this 1GB file will take a while."
+    sh "psql youth_match_development < db/import/merged_swap_all.sql"
+  end
 end

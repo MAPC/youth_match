@@ -23,6 +23,7 @@ GEM
     airbrake-ruby (1.2.3)
     arel (6.0.3)
     builder (3.2.2)
+    byebug (9.0.6)
     codeclimate-test-reporter (0.5.0)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.1)
@@ -78,6 +79,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.4.2)
+      byebug (~> 9.0)
+      pry (~> 0.10)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -145,6 +149,8 @@ DEPENDENCIES
   minitest-focus
   naught
   pg
+  pry
+  pry-byebug
   rack-test
   rake
   rb-fsevent
@@ -156,3 +162,9 @@ DEPENDENCIES
   typhoeus
   wannabe_bool
   webmock
+
+RUBY VERSION
+   ruby 2.1.5p273
+
+BUNDLED WITH
+   1.13.7
